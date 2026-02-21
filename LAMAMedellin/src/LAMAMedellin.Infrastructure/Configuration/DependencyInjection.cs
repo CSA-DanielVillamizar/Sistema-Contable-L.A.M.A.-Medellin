@@ -25,16 +25,72 @@ public static class DependencyInjection
         {
             if (environment.IsDevelopment())
             {
-                // Development: Usar Azure CLI Credential explícitamente
-                // Esto usa tu sesión de `az login` que ya está funcionando
-                var credential = new AzureCliCredential();
-                var token = credential.GetToken(
-                    new TokenRequestContext(new[] { "https://database.windows.net//.default" }),
-                    default);
+                // Development: Token SQL desde variable de entorno (si existe)
+                // Fallback: cadena de credenciales Entra (CLI, DevCLI, PowerShell, Default)
+                var tokenValue = Environment.GetEnvironmentVariable("SQL_ACCESS_TOKEN");
+
+                if (string.IsNullOrWhiteSpace(tokenValue))
+                {
+                    var tenantId = configuration["AzureAd:TenantId"];
+
+                    var credential = new ChainedTokenCredential(
+                        new AzureCliCredential(new AzureCliCredentialOptions
+                        {
+                            TenantId = tenantId,
+                            ProcessTimeout = TimeSpan.FromSeconds(90)
+                        }),
+                        new AzureDeveloperCliCredential(new AzureDeveloperCliCredentialOptions
+                        {
+                            TenantId = tenantId
+                        }),
+                        new AzurePowerShellCredential(new AzurePowerShellCredentialOptions
+                        {
+                            TenantId = tenantId
+                        }),
+                        new DefaultAzureCredential(new DefaultAzureCredentialOptions
+                        {
+                            TenantId = tenantId,
+                            ExcludeManagedIdentityCredential = true,
+                            ExcludeEnvironmentCredential = true,
+                            ExcludeSharedTokenCacheCredential = true,
+                            ExcludeVisualStudioCredential = true,
+                            ExcludeVisualStudioCodeCredential = true,
+                            ExcludeInteractiveBrowserCredential = true,
+                            ExcludeWorkloadIdentityCredential = true
+                        }));
+
+                    var requestContext = new TokenRequestContext(new[] { "https://database.windows.net/.default" });
+                    Exception? ultimoError = null;
+
+                    for (var intento = 1; intento <= 3; intento++)
+                    {
+                        try
+                        {
+                            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(90));
+                            tokenValue = credential.GetToken(requestContext, cts.Token).Token;
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            ultimoError = ex;
+                            if (intento < 3)
+                            {
+                                Thread.Sleep(TimeSpan.FromSeconds(2));
+                            }
+                        }
+                    }
+
+                    if (string.IsNullOrWhiteSpace(tokenValue) && ultimoError is not null)
+                    {
+                        throw new InvalidOperationException(
+                            "No fue posible obtener un token Entra ID para Azure SQL en Development.",
+                            ultimoError);
+                    }
+                }
 
                 var sqlConnection = new SqlConnection(connectionString)
                 {
-                    AccessToken = token.Token
+                    AccessToken = tokenValue
                 };
 
                 options.UseSqlServer(sqlConnection);

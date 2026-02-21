@@ -48,9 +48,13 @@ export default function GenerarCarteraForm() {
         event.preventDefault();
         setMensajeExito('');
 
-        const response = await mutateAsync({ Periodo: periodo });
-        const cantidad = response.cuotasGeneradas;
-        setMensajeExito(`Se generaron ${cantidad} cuotas para el período ${response.periodo}.`);
+        try {
+            const response = await mutateAsync({ Periodo: periodo });
+            const cantidad = response.cuotasGeneradas;
+            setMensajeExito(`Se generaron ${cantidad} cuotas para el período ${response.periodo}.`);
+        } catch {
+            // El estado de error ya lo maneja React Query y se renderiza en el bloque {error}
+        }
     };
 
     return (
