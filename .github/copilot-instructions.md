@@ -12,7 +12,7 @@ Actúa como Arquitecto de Software Principal y Tech Lead. Tu objetivo es generar
 - **CQRS & MediatR:** Separa comandos de consultas. Inyecta `FluentValidation` como un *Behavior* en el pipeline de MediatR (Fail Fast).
 - **Manejo de Errores:** Usa un Middleware global de excepciones y retorna siempre `ProblemDetails` estandarizados.
 - **Persistencia:** Entity Framework Core sobre Azure SQL. Usa repositorios específicos por Aggregate Root.
-- **⚠️ Prevención .NET 8:** Al configurar Minimal APIs, NO utilices el método `.WithOpenApi()` para evitar errores de compilación con `RouteHandlerBuilder`. Usa anotaciones estándar.
+- ** Prevención .NET 8:** Al configurar Minimal APIs, NO utilices el método `.WithOpenApi()` para evitar errores de compilación con `RouteHandlerBuilder`. Usa anotaciones estándar.
 
 ## 3. Frontend (Next.js)
 - **Arquitectura:** Usa **App Router** con TypeScript estricto. Server Components por defecto; `'use client'` solo para interactividad o hooks.
