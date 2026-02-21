@@ -1,4 +1,5 @@
 using LAMAMedellin.Application.Features.Transacciones.Commands.RegistrarIngreso;
+using LAMAMedellin.Application.Features.Transacciones.Commands.RegistrarEgreso;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,15 @@ public sealed class TransaccionesController(ISender sender) : ControllerBase
     [HttpPost("ingreso")]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarIngreso([FromBody] RegistrarIngresoCommand command, CancellationToken cancellationToken)
+    {
+        var transaccionId = await sender.Send(command, cancellationToken);
+
+        return Created($"/api/transacciones/{transaccionId}", new { id = transaccionId });
+    }
+
+    [HttpPost("egreso")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+    public async Task<IActionResult> RegistrarEgreso([FromBody] RegistrarEgresoCommand command, CancellationToken cancellationToken)
     {
         var transaccionId = await sender.Send(command, cancellationToken);
 
