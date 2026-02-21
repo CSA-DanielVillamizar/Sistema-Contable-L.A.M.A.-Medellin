@@ -7,6 +7,7 @@
 ## ✅ Completado
 
 ### 1. Frontend - Interfaz de Generación de Cartera
+
 - **Componente:** `GenerarCarteraForm.tsx`
   - Form con React Hook Form + Zod validation
   - Input de período (formato YYYY-MM)
@@ -23,11 +24,13 @@
 ### 2. Backend - Lógica de Negocio con Período Granular
 
 #### 2.1. Repositorio Refactorizado
+
 **Archivo:** `ICuotaAsambleaRepository.cs` / `CuotaAsambleaRepository.cs`
 
 **Cambio principal:** De `GetByAnioAsync(int anio)` a `GetVigentePorPeriodoAsync(int anio, int mes)`
 
 **Lógica implementada:**
+
 ```csharp
 // Busca la cuota más reciente donde:
 // - El año sea menor al solicitado, O
@@ -39,12 +42,14 @@ ORDER BY Anio DESC, MesInicioCobro DESC
 ```
 
 **Casos de prueba validados:**
+
 - ✅ 2026-01 → $20,000 (cuota histórica)
 - ✅ 2026-02 → $25,000 (cuota nueva)
 - ✅ 2026-03+ → $25,000 (usa cuota feb 2026)
 - ✅ 2025-12 → Sin cuota (correcto, no existe)
 
 #### 2.2. Command Handler Actualizado
+
 **Archivo:** `GenerarObligacionesMensualesCommandHandler.cs`
 
 - Parsea `mes` desde el string `Periodo` (YYYY-MM)
@@ -52,6 +57,7 @@ ORDER BY Anio DESC, MesInicioCobro DESC
 - Error message actualizado para incluir período completo
 
 #### 2.3. Entidades Actualizadas
+
 **Archivos:** `CuotaAsamblea.cs` / `CuentaPorCobrar.cs`
 
 - Agregados constructores privados sin parámetros para EF Core
@@ -63,6 +69,7 @@ ORDER BY Anio DESC, MesInicioCobro DESC
 ### 3. Base de Datos - Azure SQL
 
 #### 3.1. Esquema Creado
+
 **Script:** `2026-02-21_configuracion-cartera-y-cuotaasamblea.sql`
 
 - Tabla `Miembros` (NumeroMiembro UNIQUE, TipoAfiliacion, EstadoMiembro, IsDeleted)
@@ -72,15 +79,18 @@ ORDER BY Anio DESC, MesInicioCobro DESC
 **Estado:** ✅ Ejecutado en `LAMAMedellinContable`
 
 #### 3.2. Datos Sembrados
+
 **Script:** `2026-02-21_seed-cuotas-y-miembros.sql`
 
 **CuotasAsamblea:**
+
 | Año  | Mes Inicio | Valor COP | Acta Soporte                                   |
 |------|------------|-----------|------------------------------------------------|
 | 2026 | 1          | 20,000    | Acta Asamblea Diciembre 2025 (Cuota Histórica)|
 | 2026 | 2          | 25,000    | Acta Asamblea Enero 2026                       |
 
 **Miembros:** 37 registros activos
+
 | Tipo Afiliación | Cantidad |
 |-----------------|----------|
 | Full Color (1)  | 15       |
@@ -91,24 +101,29 @@ ORDER BY Anio DESC, MesInicioCobro DESC
 **Estado:** ✅ Seed ejecutado, datos verificados
 
 #### 3.3. Autenticación Azure
+
 - ✅ Entra ID Admin configurado (Daniel Villamizar)
 - ✅ Database User con roles `db_datareader` / `db_datawriter`
 - ✅ Autenticación vía Azure CLI (`az account get-access-token`)
 
 ### 4. Seeders Automáticos (Development Mode)
+
 **Archivos:**
+
 - `LamaDbContextSeed.cs` - Orquestador de seeding
 - `CuotaAsambleaSeeder.cs` - Seed de cuotas
 - `MiembroSeeder.cs` - Seed de miembros
 - `Program.cs` - Llama a `await context.SeedAsync()` en Development
 
-**Nota:** Actualmente con issue de autenticación local (DefaultAzureCredential intenta Managed Identity). 
+**Nota:** Actualmente con issue de autenticación local (DefaultAzureCredential intenta Managed Identity).
 **Workaround:** Usar scripts SQL manuales con Azure CLI token (método actual funcionando).
 
 ## 📋 Próximos Pasos
 
 ### Fase 1: Testing End-to-End
+
 1. **Probar endpoint de generación de cartera**
+
    ```bash
    POST /api/cartera/generar
    {
@@ -132,11 +147,13 @@ ORDER BY Anio DESC, MesInicioCobro DESC
    - Verificar respuestas y datos en DB
 
 ### Fase 2: Configuración para Desarrollo Local
+
 **Problema actual:** `DefaultAzureCredential` en `appsettings.Development.json` intenta Managed Identity (Azure Arc) y falla en local.
 
 **Soluciones:**
 
 **Opción A: Usar AzureCliCredential explícitamente**
+
 ```csharp
 // En InfrastructureServicesConfiguration.cs
 services.AddDbContext<LamaDbContext>(options =>
@@ -167,6 +184,7 @@ services.AddDbContext<LamaDbContext>(options =>
 ```
 
 **Opción B: Connection String con Interactive Auth**
+
 ```json
 {
   "ConnectionStrings": {
@@ -174,14 +192,17 @@ services.AddDbContext<LamaDbContext>(options =>
   }
 }
 ```
+
 **⚠️ Nota:** Abre navegador para autenticarse cada vez que corre la app
 
 **Opción C: Mantener scripts SQL manuales** (actual, funcional)
+
 - Pro: Simple, directo, no requiere cambios de código
 - Con: Requiere ejecución manual para seeding
 - Recomendado para: Desarrollo inicial hasta deployment a Azure
 
 ### Fase 3: Deployment y CI/CD
+
 1. **Azure App Service para Backend**
    - Configurar Managed Identity
    - Variable de entorno: `ASPNETCORE_ENVIRONMENT=Production`
@@ -198,6 +219,7 @@ services.AddDbContext<LamaDbContext>(options =>
    - Secrets: Azure credentials, connection strings
 
 ### Fase 4: Features Pendientes
+
 - [ ] Endpoint GET para listar CuentasPorCobrar por período
 - [ ] Endpoint GET para consultar deuda acumulada por miembro
 - [ ] Endpoint POST para registrar pago (afecta CuentaPorCobrar + Banco)
@@ -208,6 +230,7 @@ services.AddDbContext<LamaDbContext>(options =>
 ## 🔧 Comandos Útiles
 
 ### Git
+
 ```bash
 # Ver estado actual
 git status
@@ -223,6 +246,7 @@ git log --oneline --stat -5
 ```
 
 ### Backend
+
 ```bash
 # Build
 cd LAMAMedellin
@@ -241,6 +265,7 @@ dotnet ef database update --project src/LAMAMedellin.Infrastructure --startup-pr
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 npm run dev          # Desarrollo (puerto 3000)
@@ -250,6 +275,7 @@ npm run type-check   # TypeScript check
 ```
 
 ### Azure SQL
+
 ```powershell
 # Conectar y ejecutar query
 $token = (az account get-access-token --resource https://database.windows.net/ --query accessToken -o tsv)
@@ -277,6 +303,7 @@ $cn.Close()
 ---
 
 **Última sincronización:**
+
 - **Backend:** Commit `6790d1c` - Refactoring + EF Core fixes + seeders
 - **Scripts SQL:** Commit `b5b3ee0` - Seed de cuotas y miembros
 - **Branch remoto:** `origin/docs/spec-v1` actualizado
