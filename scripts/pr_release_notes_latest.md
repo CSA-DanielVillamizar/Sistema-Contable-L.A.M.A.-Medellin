@@ -4,7 +4,7 @@ Release notes (docs/spec-v1)
 - API: endpoint protegido POST /api/transacciones/ingreso con manejo global de errores en ProblemDetails.
 - Frontend: pantalla Registro de Ingreso implementada con Zod + React Hook Form + React Query.
 - Build fixes: provider global de React Query y ajuste de tipos Zod input/output para TS estricto.
-- Estado branch: alineado en docs/spec-v1, último commit 83fda22.
+- Estado branch: alineado en docs/spec-v1, último commit 6f80830.
 
 QA checklist sugerido
 
