@@ -6,6 +6,10 @@ namespace LAMAMedellin.Domain.Entities;
 
 public sealed class Transaccion : BaseEntity
 {
+    private Transaccion()
+    {
+    }
+
     public decimal MontoCOP { get; private set; }
     public DateTime Fecha { get; private set; }
     public TipoTransaccion Tipo { get; private set; }
