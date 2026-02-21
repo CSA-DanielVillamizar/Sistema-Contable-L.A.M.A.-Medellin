@@ -26,7 +26,7 @@ Desde la raíz del repo:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\create_github_backlog.ps1 \
-  -Repo "CSA-DanielVillamizar/Tesoreriaygerenciade-negocios" \
+  -Repo "CSA-DanielVillamizar/Sistema-Contable-L.A.M.A.-Medellin" \
   -BacklogPath "C:\Users\DanielVillamizar\Sistema Contable L.A.M.A. Medellin\backlog" \
   -ResetCatalog
 ```
@@ -35,7 +35,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\create_github_backlog.ps1 \
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\create_github_backlog.ps1 \
-  -Repo "CSA-DanielVillamizar/Tesoreriaygerenciade-negocios" \
+  -Repo "CSA-DanielVillamizar/Sistema-Contable-L.A.M.A.-Medellin" \
   -BacklogPath "C:\Users\DanielVillamizar\Sistema Contable L.A.M.A. Medellin\backlog" \
   -WhatIf
 ```

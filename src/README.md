@@ -22,18 +22,21 @@ src/
 ## Backend Development
 
 The backend is built with:
+
 - Framework: ASP.NET Core 8.0 Web API
 - Architecture: Clean Architecture (4-layer)
 - Data Access: Entity Framework Core with Azure SQL
 - Patterns: CQRS + MediatR for command/query handling
 
 For detailed setup and development workflow, see:
+
 - [Backend Setup Guide](../docs/BACKEND-SETUP.md)
 - [Local Development Setup](../docs/guides/LOCAL-SETUP.md)
 
 ## Building & Running
 
 From project root:
+
 ```powershell
 cd src/LAMAMedellin
 
@@ -55,12 +58,14 @@ dotnet test
 Each layer in LAMAMedellin follows Clean Architecture principles:
 
 **Domain**
+
 - Entities and value objects
 - Domain interfaces (contracts only)
 - Business rules and constants
 - No external dependencies
 
 **Application**
+
 - Use cases and business logic
 - Commands and queries (CQRS pattern)
 - Data transfer objects (DTOs)
@@ -68,12 +73,14 @@ Each layer in LAMAMedellin follows Clean Architecture principles:
 - Depends on: Domain
 
 **Infrastructure**
+
 - Database context (EF Core)
 - Repository implementations
 - External service clients
 - Depends on: Domain
 
 **API**
+
 - HTTP controllers
 - Middleware and filters
 - Dependency injection setup
@@ -97,9 +104,10 @@ See [Contributing Guide](../docs/guides/CONTRIBUTING.md) for detailed workflow.
 Synchronizes the canonical issue catalog with GitHub, ensuring backlog consistency.
 
 Usage:
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\create_github_backlog.ps1 `
-  -Repo "CSA-DanielVillamizar/Tesoreriaygerenciade-negocios" `
+  -Repo "CSA-DanielVillamizar/Sistema-Contable-L.A.M.A.-Medellin" `
   -BacklogPath "C:\Path\To\backlog" `
   -ResetCatalog  # Optional: reset to canonical state
 ```
@@ -107,6 +115,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\create_github_backlog.ps1 `
 ## Code Standards
 
 All code must follow:
+
 - Language: .NET C# for backend
 - Naming: Spanish for business logic, English for infrastructure
 - No emojis in comments or strings
@@ -117,4 +126,4 @@ All code must follow:
 
 - Documentation: [docs/README.md](../docs/README.md)
 - Governance: [governance/README.md](../governance/README.md)
-- Project repository: [GitHub](https://github.com/CSA-DanielVillamizar/Tesoreriaygerenciade-negocios)
+- Project repository: [GitHub](https://github.com/CSA-DanielVillamizar/Sistema-Contable-L.A.M.A.-Medellin)

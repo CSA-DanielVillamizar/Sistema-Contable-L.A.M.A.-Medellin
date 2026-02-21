@@ -77,17 +77,20 @@ Use this checklist when reviewing pull requests to ensure quality and consistenc
 ## Special Cases
 
 ### New Feature
+
 - [ ] Acceptance criteria met (from issue)
 - [ ] User stories understood and implemented
 - [ ] Edge cases considered
 - [ ] Documentation updated
 
 ### Bug Fix
+
 - [ ] Root cause identified and fixed (not just symptom)
 - [ ] Test added to prevent regression
 - [ ] Performance impact assessed
 
 ### Refactoring
+
 - [ ] No functional changes
 - [ ] All tests pass
 - [ ] Readability improved
@@ -96,6 +99,7 @@ Use this checklist when reviewing pull requests to ensure quality and consistenc
 ## Approval Criteria
 
 The PR can be merged when:
+
 1. All checks pass
 2. At least one approval from code owner
 3. All conversations resolved
@@ -104,6 +108,6 @@ The PR can be merged when:
 
 ---
 
-**Reviewer**: ___________  
-**Date**: ___________  
+**Reviewer**: ___________
+**Date**: ___________
 **Notes**: ___________

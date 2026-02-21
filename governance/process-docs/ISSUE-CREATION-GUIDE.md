@@ -11,6 +11,7 @@ A major feature or initiative that spans multiple sprints and requires breaking 
 Use when: Creating a large, phase-based initiative (e.g., "Phase 1 - Core Accounting Features")
 
 **Components**:
+
 - Title with "EPIC: " prefix
 - Clear description of scope and objectives
 - Acceptance criteria
@@ -26,6 +27,7 @@ A single, implementable feature that can be completed in one sprint.
 Use when: Breaking down an epic or adding specific functionality
 
 **Components**:
+
 - Title with clear user perspective
 - User story format: "As a [role], I want [action], so that [benefit]"
 - Acceptance criteria (testable)
@@ -43,6 +45,7 @@ Something that's broken or not working as designed.
 Use when: Reporting unexpected behavior or defects
 
 **Components**:
+
 - Clear title: "Bug: [Component] - [What's broken]"
 - Reproduction steps
 - Expected behavior
@@ -57,6 +60,7 @@ Improvement to existing functionality.
 Use when: Requesting improvements to current features
 
 **Components**:
+
 - Clear title: "Enhancement: [Component] - [Improvement]"
 - Current behavior
 - Proposed behavior
@@ -66,17 +70,20 @@ Use when: Requesting improvements to current features
 ## Title Guidelines
 
 **Good Titles**
+
 - Specific and descriptive
 - Use business language when appropriate
 - ~60 characters max
 
 **Examples**
+
 - "EPIC: Phase 1 - Contabilidad general" ✓
 - "Registrar transacciones bancarias" ✓
 - "Bug: API returns 500 when monto is null" ✓
 - "Enhancement: Add pagination to transaction list" ✓
 
 **Bad Titles**
+
 - "Fix stuff" ✗
 - "EPIC: Feature" ✗
 - "Doesn't work" ✗
@@ -87,6 +94,7 @@ Use when: Requesting improvements to current features
 Write descriptions that others can understand without needing to ask you.
 
 **What to Include**
+
 - Problem statement / What needs to be done
 - Why it matters (business impact)
 - Scope boundaries (what's in/out of scope)
@@ -94,6 +102,7 @@ Write descriptions that others can understand without needing to ask you.
 - Relevant context or links
 
 **Format**
+
 ```markdown
 ## Description
 Brief summary of what this issue is about.
@@ -121,6 +130,7 @@ Links to related issues, PRs, or documentation.
 Apply these labels to organize issues:
 
 **Type**
+
 - `epic` - Large initiative
 - `story` - Implementable feature
 - `bug` - Defect
@@ -129,18 +139,21 @@ Apply these labels to organize issues:
 - `chore` - Maintenance work
 
 **Priority**
+
 - `priority-critical` - Blocks other work
 - `priority-high` - Important but not blocking
 - `priority-medium` - Standard priority
 - `priority-low` - Nice to have
 
 **Status**
+
 - `needs-review` - Waiting for feedback
 - `in-progress` - Someone is working on it
 - `blocked` - Waiting for something else
 - `ready-for-development` - Approved and ready to start
 
 **Effort**
+
 - `effort-xs` - 1-2 hours
 - `effort-s` - Half day
 - `effort-m` - 1-2 days
@@ -161,17 +174,20 @@ Issues are assigned to development phases:
 ## Acceptance Criteria
 
 Write acceptance criteria that are:
+
 - Testable (you can verify when they're done)
 - Specific (no ambiguity)
 - Independent (can be verified separately)
 - Concise (one line each)
 
 **Good Examples**
+
 - [ ] User can register a cuota and it appears in the list
 - [ ] Cuota amount must be greater than zero or API returns 400
 - [ ] Created cuota has CentroCostoId populated
 
 **Bad Examples**
+
 - [ ] It works properly
 - [ ] User is satisfied
 - [ ] System is more efficient
@@ -179,25 +195,33 @@ Write acceptance criteria that are:
 ## Creating an Issue
 
 ### Step 1: Choose Issue Type
+
 Epic, Story, Bug, or Enhancement?
 
 ### Step 2: Write Title
+
 Clear, descriptive, ~60 characters
 
 ### Step 3: Write Description
+
 Use the format above - Problem, Solution, Acceptance Criteria
 
 ### Step 4: Add Labels
+
 Select Type, Priority, and Effort labels
 
 ### Step 5: Assign Milestone
+
 Which phase does this belong to?
 
 ### Step 6: Link Related Issues
+
 Epics link to Stories. Stories link to parent Epic.
 
 ### Step 7: Review & Submit
+
 Check for:
+
 - Clear language
 - Complete acceptance criteria
 - Correct labels
@@ -206,6 +230,7 @@ Check for:
 ## Examples
 
 ### Epic Example
+
 ```
 Title: EPIC: Phase 1 - Contabilidad general (PUC, comprobantes, libros, cierres)
 
@@ -224,11 +249,12 @@ Milestone: Phase 1
 ```
 
 ### Story Example
+
 ```
 Title: Registrar transacción bancaria con validación de CentroCosto
 
 Description:
-As an accountant, I want to record bank transactions directly, 
+As an accountant, I want to record bank transactions directly,
 so that I can keep cash accounts updated in real-time.
 
 Technical Notes:

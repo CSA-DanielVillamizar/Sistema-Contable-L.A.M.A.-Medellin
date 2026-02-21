@@ -119,7 +119,7 @@ Phase 1 - Sprint 3
 **Estimate Effort**
 - XS (Extra Small): 1-2 hours
 - S (Small): Half day
-- M (Medium): 1-2 days  
+- M (Medium): 1-2 days
 - L (Large): 3-5 days
 - XL (Extra Large): More than a week
 
