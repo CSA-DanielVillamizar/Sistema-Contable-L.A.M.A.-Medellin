@@ -6,6 +6,13 @@ namespace LAMAMedellin.Infrastructure.Persistence.Repositories;
 
 public sealed class BancoRepository(LamaDbContext dbContext) : IBancoRepository
 {
+    public Task<List<Banco>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return dbContext.Bancos
+            .OrderBy(banco => banco.NumeroCuenta)
+            .ToListAsync(cancellationToken);
+    }
+
     public Task<Banco?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return dbContext.Bancos.FirstOrDefaultAsync(banco => banco.Id == id, cancellationToken);
