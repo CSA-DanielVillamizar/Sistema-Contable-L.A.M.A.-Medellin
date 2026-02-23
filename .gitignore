@@ -27,12 +27,10 @@ out/
 # Visual Studio Code
 .vscode/launch.json
 .vscode/tasks.json
-!.vscode/settings.json
 !.vscode/extensions.json
 
 # Visual Studio
 .vscode/*
-!.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
@@ -108,7 +106,6 @@ coverage/
 # IDE
 .idea/
 .vscode/*
-!.vscode/settings.json
 !.vscode/extensions.json
 *~
 *.swp
@@ -179,7 +176,6 @@ secrets/
 !.editorconfig
 !.gitignore
 !.github/
-!.vscode/settings.json
 !.vscode/tasks.json
 !MIGRATION-NOTES.md
 
