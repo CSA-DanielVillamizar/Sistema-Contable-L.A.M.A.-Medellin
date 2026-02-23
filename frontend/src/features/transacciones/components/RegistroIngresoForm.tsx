@@ -73,7 +73,7 @@ export default function RegistroIngresoForm() {
         }
     }, [centrosCostoQuery.data, getValues, setValue]);
 
-    const esMonedaOrigenUSD = watch('EsMonedaOrigenUSD');
+    const esMonedaOrigenUSD = watch('EsMonedaOrigenUSD') ?? false;
     const trmQuery = useTrmOficial(esMonedaOrigenUSD);
 
     useEffect(() => {
