@@ -1,65 +1,13 @@
 'use client';
 
-import axios from 'axios';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
-
-type CarteraPendienteItem = {
-    id: string;
-    miembroId: string;
-    nombreMiembro: string;
-    periodo: string;
-    valorEsperadoCOP: number;
-    saldoPendienteCOP: number;
-};
-
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-};
-
-type RegistrarPagoRequest = {
-    MontoCOP: number;
-};
+import { useState } from 'react';
+import ModalPagoCartera from '@/features/cartera/components/ModalPagoCartera';
+import { useCarteraPendiente } from '@/features/cartera/hooks/useCartera';
 
 export default function TablaCartera() {
-    const queryClient = useQueryClient();
-    const { data: cartera, isLoading, error } = useQuery<CarteraPendienteItem[]>({
-        queryKey: ['cartera-pendiente'],
-        queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/cartera/pendiente');
-
-            return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                miembroId: String(item?.miembroId ?? item?.MiembroId ?? ''),
-                nombreMiembro: String(item?.nombreMiembro ?? item?.NombreMiembro ?? ''),
-                periodo: String(item?.periodo ?? item?.Periodo ?? ''),
-                valorEsperadoCOP: Number(item?.valorEsperadoCOP ?? item?.ValorEsperadoCOP ?? 0),
-                saldoPendienteCOP: Number(item?.saldoPendienteCOP ?? item?.SaldoPendienteCOP ?? 0),
-            }));
-        },
-    });
-
-    const { mutateAsync: registrarPagoAsync, isPending: isRegistrandoPago } = useMutation<void, Error, { id: string; montoCOP: number }>({
-        mutationFn: async ({ id, montoCOP }) => {
-            try {
-                await apiClient.post(`/api/cartera/${id}/pago`, {
-                    MontoCOP: montoCOP,
-                } satisfies RegistrarPagoRequest);
-            } catch (err) {
-                if (axios.isAxiosError<ProblemDetails>(err)) {
-                    const mensaje = err.response?.data?.detail ?? err.response?.data?.title ?? 'No fue posible registrar el pago.';
-                    throw new Error(mensaje);
-                }
-
-                throw new Error('No fue posible registrar el pago.');
-            }
-        },
-        onSuccess: async () => {
-            window.alert('Pago registrado exitosamente.');
-            await queryClient.invalidateQueries({ queryKey: ['cartera-pendiente'] });
-        },
-    });
+    const { data: cartera, isLoading, error } = useCarteraPendiente();
+    const [carteraSeleccionadaId, setCarteraSeleccionadaId] = useState<string | null>(null);
+    const [montoSugerido, setMontoSugerido] = useState(0);
 
     if (isLoading) {
         return (
@@ -101,19 +49,14 @@ export default function TablaCartera() {
 
     const totalSaldo = cartera.reduce((sum, item) => sum + item.saldoPendienteCOP, 0);
 
-    const handleRegistrarPago = async (item: CarteraPendienteItem): Promise<void> => {
-        const confirmar = window.confirm(
-            `¿Deseas registrar el pago por el saldo total de ${formatCurrency(item.saldoPendienteCOP)} para ${item.nombreMiembro}?`,
-        );
+    const abrirModalPago = (id: string, saldo: number) => {
+        setCarteraSeleccionadaId(id);
+        setMontoSugerido(saldo);
+    };
 
-        if (!confirmar) {
-            return;
-        }
-
-        await registrarPagoAsync({
-            id: item.id,
-            montoCOP: item.saldoPendienteCOP,
-        });
+    const cerrarModalPago = () => {
+        setCarteraSeleccionadaId(null);
+        setMontoSugerido(0);
     };
 
     return (
@@ -158,11 +101,10 @@ export default function TablaCartera() {
                                     <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
                                         <button
                                             type="button"
-                                            disabled={isRegistrandoPago}
-                                            onClick={() => void handleRegistrarPago(item)}
+                                            onClick={() => abrirModalPago(item.id, item.saldoPendienteCOP)}
                                             className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                         >
-                                            {isRegistrandoPago ? 'Registrando...' : 'Registrar Pago'}
+                                            Registrar Pago
                                         </button>
                                     </td>
                                 </tr>
@@ -182,6 +124,13 @@ export default function TablaCartera() {
                     </table>
                 </div>
             </div>
+
+            <ModalPagoCartera
+                open={Boolean(carteraSeleccionadaId)}
+                carteraId={carteraSeleccionadaId}
+                montoSugerido={montoSugerido}
+                onClose={cerrarModalPago}
+            />
 
             <div className="flex items-center justify-between rounded-lg border border-blue-200 bg-blue-50 p-4">
                 <div className="flex items-center gap-2">

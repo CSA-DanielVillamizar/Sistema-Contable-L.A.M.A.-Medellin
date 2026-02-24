@@ -174,7 +174,7 @@ export default function Home() {
                     </Link>
 
                     <Link
-                        href="/cartera/generar"
+                        href="/cartera/listado"
                         className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
                     >
                         Generar cartera
