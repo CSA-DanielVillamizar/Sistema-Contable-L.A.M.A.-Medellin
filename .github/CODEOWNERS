@@ -1,0 +1,17 @@
+# CODEOWNERS – define quién debe revisar cambios por área del proyecto.
+# Los propietarios listados aquí son requeridos como revisores en Pull Requests
+# cuando se activa la opción "Require review from Code Owners" en Branch Protection.
+# Más información: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Propietario global (todos los archivos)
+*                               @CSA-DanielVillamizar
+
+# Backend .NET 8
+/LAMAMedellin/                  @CSA-DanielVillamizar
+
+# Frontend Next.js
+/frontend/                      @CSA-DanielVillamizar
+
+# Documentación y gobernanza
+/docs/                          @CSA-DanielVillamizar
+/governance/                    @CSA-DanielVillamizar

@@ -9,5 +9,6 @@ public static class LamaDbContextSeed
         await context.SeedBancoAsync();
         await context.SeedCuotasAsambleaAsync();
         await context.SeedMiembrosAsync();
+        await context.SeedCuentasContablesAsync();
     }
 }

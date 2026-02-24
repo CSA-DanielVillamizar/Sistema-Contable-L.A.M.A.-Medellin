@@ -1,0 +1,50 @@
+# .github/settings.yml
+# Configuración declarativa del repositorio usando la aplicación "Probot Settings".
+# Para activarla, instala la app desde: https://github.com/apps/settings
+#
+# Esta configuración implementa protección de la rama `main` tal como recomienda
+# GitHub en la alerta "Your main branch isn't protected".
+
+repository:
+  # Nombre descriptivo del repositorio
+  description: "Sistema Contable – Fundación / Capítulo L.A.M.A. Medellín (.NET 8 + Next.js)"
+  private: false
+
+  # Características del repositorio
+  has_issues: true
+  has_projects: true
+  has_wiki: false
+  has_downloads: false
+
+  # Comportamiento de merge (solo squash para historial limpio)
+  allow_squash_merge: true
+  allow_merge_commit: false
+  allow_rebase_merge: false
+  delete_branch_on_merge: true
+
+branches:
+  - name: main
+    protection:
+      # Requiere que los checks de CI pasen antes de hacer merge
+      required_status_checks:
+        strict: true   # La rama debe estar actualizada con main antes del merge
+        contexts:
+          - "Build & Test (.NET 8)"
+          - "Lint & Build (Next.js)"
+
+      # Requiere al menos 1 aprobación en Pull Request
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true           # Invalida aprobaciones si hay nuevos commits
+        require_code_owner_reviews: true      # Requiere revisión del CODEOWNER del área
+
+      # Los administradores pueden saltarse las reglas para atender emergencias.
+      # Cambiar a true cuando el equipo crezca y se requiera control total.
+      enforce_admins: false
+
+      # Protege contra force-push y borrado accidental de la rama
+      allow_force_pushes: false
+      allow_deletions: false
+
+      # Requiere historial de commits lineal (evita merge commits en main)
+      required_linear_history: true

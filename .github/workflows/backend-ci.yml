@@ -1,0 +1,36 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'LAMAMedellin/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'LAMAMedellin/**'
+
+jobs:
+  build-and-test:
+    name: Build & Test (.NET 8)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore LAMAMedellin/LAMAMedellin.slnx
+
+      - name: Build
+        run: dotnet build LAMAMedellin/LAMAMedellin.slnx --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test LAMAMedellin/LAMAMedellin.slnx --no-build --configuration Release --verbosity normal

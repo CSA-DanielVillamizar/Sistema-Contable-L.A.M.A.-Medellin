@@ -48,6 +48,47 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("Bancos", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaContable", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<Guid?>("CuentaPadreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<bool>("ExigeTercero")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Naturaleza")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PermiteMovimiento")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
+                    b.HasIndex("CuentaPadreId");
+
+                    b.ToTable("CuentasContables", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CentroCosto", b =>
                 {
                     b.Property<Guid>("Id")
@@ -216,6 +257,16 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.HasIndex("CentroCostoId");
 
                     b.ToTable("Transacciones", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaContable", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaPadre")
+                        .WithMany()
+                        .HasForeignKey("CuentaPadreId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CuentaPadre");
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaPorCobrar", b =>
