@@ -31,6 +31,29 @@ public sealed class Miembro : BaseEntity
         Estado = estado;
     }
 
+    public void ActualizarDatos(
+        string nombre,
+        string apellidos,
+        string documento,
+        string email,
+        string telefono,
+        TipoAfiliacion tipoAfiliacion,
+        EstadoMiembro estado)
+    {
+        Nombre = ValidarTextoRequerido(nombre, nameof(nombre));
+        Apellidos = ValidarTextoRequerido(apellidos, nameof(apellidos));
+        Documento = ValidarTextoRequerido(documento, nameof(documento));
+        Email = ValidarTextoRequerido(email, nameof(email));
+        Telefono = ValidarTextoRequerido(telefono, nameof(telefono));
+        TipoAfiliacion = tipoAfiliacion;
+        Estado = estado;
+    }
+
+    public void Desactivar()
+    {
+        Estado = EstadoMiembro.Inactivo;
+    }
+
     private static string ValidarTextoRequerido(string valor, string nombreParametro)
     {
         if (string.IsNullOrWhiteSpace(valor))

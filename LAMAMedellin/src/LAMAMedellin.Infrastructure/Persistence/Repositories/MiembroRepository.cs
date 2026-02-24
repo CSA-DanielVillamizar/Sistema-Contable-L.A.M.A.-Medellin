@@ -21,4 +21,29 @@ public sealed class MiembroRepository(LamaDbContext dbContext) : IMiembroReposit
             .Where(m => m.Estado == EstadoMiembro.Activo)
             .ToListAsync(cancellationToken);
     }
+
+    public Task<Miembro?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return dbContext.Miembros.FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
+    }
+
+    public Task<Miembro?> GetByDocumentoAsync(string documento, CancellationToken cancellationToken = default)
+    {
+        return dbContext.Miembros.FirstOrDefaultAsync(m => m.Documento == documento, cancellationToken);
+    }
+
+    public Task<Miembro?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return dbContext.Miembros.FirstOrDefaultAsync(m => m.Email == email, cancellationToken);
+    }
+
+    public Task AddAsync(Miembro miembro, CancellationToken cancellationToken = default)
+    {
+        return dbContext.Miembros.AddAsync(miembro, cancellationToken).AsTask();
+    }
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return dbContext.SaveChangesAsync(cancellationToken);
+    }
 }
