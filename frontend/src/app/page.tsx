@@ -193,6 +193,13 @@ export default function Home() {
                     >
                         Ver movimientos
                     </Link>
+
+                    <Link
+                        href="/miembros"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Directorio de Miembros
+                    </Link>
                 </section>
             </div>
         </main>
