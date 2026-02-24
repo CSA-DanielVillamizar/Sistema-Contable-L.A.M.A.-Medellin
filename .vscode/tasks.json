@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "PR: Upsert release notes comment",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				".\\scripts\\upsert_pr_comment.ps1",
+				"-Repo",
+				"CSA-DanielVillamizar/Sistema-Contable-L.A.M.A.-Medellin",
+				"-PullRequestNumber",
+				"1",
+				"-BodyFile",
+				".\\scripts\\pr_release_notes_latest.md"
+			],
+			"isBackground": false
+		}
+	]
+}

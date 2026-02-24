@@ -1,0 +1,203 @@
+# This file specifies intentionally untracked files to ignore across this Git repository.
+# Language: C# (.NET 8), JavaScript/TypeScript (Next.js)
+# Project: LAMA Medellín - Sistema Contable
+
+# ============================================================================
+# .NET / C# (.NET 8, ASP.NET Core, EF Core)
+# ============================================================================
+
+# Build results
+bin/
+obj/
+out/
+*.dll
+*.exe
+*.pdb
+*.elf
+*.o
+
+# Visual Studio solution and project files
+.vs/
+*.sln.docstates
+*.user
+*.userosscache
+*.sln.iml
+*.userprefs
+
+# Visual Studio Code
+.vscode/launch.json
+.vscode/tasks.json
+!.vscode/extensions.json
+
+# Visual Studio
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Rider
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# Entity Framework Core
+efpt.config.json
+efpt.renaming.json
+migrations/*.Designer.cs
+*.Designer.cs
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+NuGetFallbackFolder/
+
+# Local user-specific file
+appsettings.Development.json
+appsettings.local.json
+appsettings.*.Development.json
+
+# Azure artifacts
+PublishProfiles/
+ServiceDefinition.*.csdef
+ServiceConfiguration.*.cscfg
+
+# ============================================================================
+# JavaScript / TypeScript / Node.js (Next.js Frontend)
+# ============================================================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# Next.js build artifacts
+.next/
+out/
+build/
+dist/
+
+# Production
+.next/
+out/
+
+# Cache
+.swc
+
+# Standalone output
+standalone/
+
+# Environment files (never commit secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*~
+*.swp
+*.swo
+*#
+
+# OS specific
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+*.log
+
+# ============================================================================
+# Project Specific
+# ============================================================================
+
+# Temporary scripts and utilities
+.tmp*
+*.tmp
+temp/
+temporary/
+
+# Backlog and documentation drafts (unless explicitly tracked)
+# Keep GitHub issue snapshots, sync them to git regularly
+
+# Database files (if local SQLite used for development)
+*.db
+*.sqlite
+*.sqlite3
+
+# Certificates (security)
+*.pfx
+*.p12
+*.crt
+*.pem
+*.key
+
+# Secrets
+secrets/
+.secrets/
+*.secret
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Editor backup files
+*.orig
+
+# ============================================================================
+# Archive Files
+# ============================================================================
+
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ============================================================================
+# Keep These (Override with !)
+# ============================================================================
+
+# Important config files - keep in repo
+!appsettings.json
+!appsettings.Production.json
+!.editorconfig
+!.gitignore
+!.github/
+!.vscode/tasks.json
+!MIGRATION-NOTES.md
+
+# ============================================================================
+# Notes
+# ============================================================================
+# This .gitignore follows GitHub's recommended patterns for:
+# - .NET 8 Web API (C# / ASP.NET Core)
+# - Next.js (JavaScript / TypeScript)
+# - Node.js tooling
+#
+# Never commit:
+# - Compiled binaries (.dll, .exe, .o)
+# - Build artifacts (bin/, obj/, node_modules/, .next/)
+# - Environment secrets (.env, appsettings.Development.json)
+# - IDE user settings (.vs/, .idea/)
+# - Database files (*.db, *.sqlite)
+# - OS artifacts (.DS_Store, Thumbs.db)
+#
+# Safe to commit:
+# - Source code (.cs, .ts, .tsx, .js)
+# - Configuration templates (appsettings.json, .env.example)
+# - Documentation (*.md)
+# - Git config (.gitignore, .github/)
+# - Project files (*.csproj, package.json)
