@@ -131,6 +131,90 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("CuotasAsamblea", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Donacion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BancoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CentroCostoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("CertificadoEmitido")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CodigoVerificacion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("DonanteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MontoCOP")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BancoId");
+
+                    b.HasIndex("CentroCostoId");
+
+                    b.HasIndex("CodigoVerificacion")
+                        .IsUnique();
+
+                    b.HasIndex("DonanteId");
+
+                    b.ToTable("Donaciones", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Donante", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NombreORazonSocial")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NumeroDocumento")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("TipoDocumento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoPersona")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoDocumento", "NumeroDocumento")
+                        .IsUnique();
+
+                    b.ToTable("Donantes", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Miembro", b =>
                 {
                     b.Property<Guid>("Id")
@@ -227,6 +311,33 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Miembro");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Donacion", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.Banco", "Banco")
+                        .WithMany()
+                        .HasForeignKey("BancoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.CentroCosto", "CentroCosto")
+                        .WithMany()
+                        .HasForeignKey("CentroCostoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.Donante", "Donante")
+                        .WithMany()
+                        .HasForeignKey("DonanteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Banco");
+
+                    b.Navigation("CentroCosto");
+
+                    b.Navigation("Donante");
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Transaccion", b =>
