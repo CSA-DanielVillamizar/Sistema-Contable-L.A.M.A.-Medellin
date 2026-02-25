@@ -200,6 +200,13 @@ export default function Home() {
                     >
                         Directorio de Miembros
                     </Link>
+
+                    <Link
+                        href="/donaciones"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Gestión de Donaciones
+                    </Link>
                 </section>
             </div>
         </main>
