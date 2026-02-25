@@ -23,6 +23,9 @@ public sealed class CuentaContableConfiguration : IEntityTypeConfiguration<Cuent
         builder.Property(x => x.PermiteMovimiento)
             .IsRequired();
 
+        builder.Property(x => x.ExigeTercero)
+            .IsRequired();
+
         builder.HasIndex(x => x.Codigo)
             .IsUnique();
 
