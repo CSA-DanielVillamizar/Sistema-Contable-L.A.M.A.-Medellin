@@ -111,6 +111,8 @@ public static class DependencyInjection
         services.AddScoped<ICuentaPorCobrarRepository, CuentaPorCobrarRepository>();
         services.AddScoped<IDonanteRepository, DonanteRepository>();
         services.AddScoped<IDonacionRepository, DonacionRepository>();
+        services.AddScoped<IProyectoSocialRepository, ProyectoSocialRepository>();
+        services.AddScoped<IBeneficiarioRepository, BeneficiarioRepository>();
 
         return services;
     }
