@@ -125,6 +125,11 @@ function TokenSync({ children }: AuthProviderProps) {
             }
         };
 
+        const isTimeoutAuthError = (error: unknown) => {
+            const message = error instanceof Error ? error.message.toLowerCase() : '';
+            return message.includes('timed_out') || message.includes('monitor_window_timeout') || message.includes('token renewal operation failed');
+        };
+
         const resolveReady = () => {
             sessionStorage.removeItem(redirectInFlightKey);
             hasTriggeredRedirectRef.current = false;
@@ -195,6 +200,21 @@ function TokenSync({ children }: AuthProviderProps) {
                         await instance.acquireTokenRedirect({ scopes: [apiScope] });
                     });
                     return;
+                }
+
+                if (isTimeoutAuthError(error)) {
+                    const retries = Number(sessionStorage.getItem(authRetryKey) ?? '0');
+
+                    if (retries < 1) {
+                        sessionStorage.setItem(authRetryKey, String(retries + 1));
+                        sessionStorage.removeItem(redirectInFlightKey);
+                        hasTriggeredRedirectRef.current = false;
+
+                        await beginRedirect(async () => {
+                            await instance.acquireTokenRedirect({ scopes: [apiScope] });
+                        });
+                        return;
+                    }
                 }
 
                 const errorMessage = error instanceof Error ? error.message : 'Error desconocido de autenticación';
