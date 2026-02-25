@@ -5,6 +5,7 @@ export type CuentaContableItem = {
     id: string;
     codigo: string;
     descripcion: string;
+    naturaleza: string;
     permiteMovimiento: boolean;
     exigeTercero: boolean;
 };
@@ -18,6 +19,7 @@ export function useCuentasContables() {
                 id: String(item?.id ?? item?.Id ?? ''),
                 codigo: String(item?.codigo ?? item?.Codigo ?? ''),
                 descripcion: String(item?.descripcion ?? item?.Descripcion ?? ''),
+                naturaleza: String(item?.naturaleza ?? item?.Naturaleza ?? ''),
                 permiteMovimiento: Boolean(item?.permiteMovimiento ?? item?.PermiteMovimiento ?? false),
                 exigeTercero: Boolean(item?.exigeTercero ?? item?.ExigeTercero ?? false),
             }));

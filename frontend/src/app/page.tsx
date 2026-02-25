@@ -221,6 +221,13 @@ export default function Home() {
                     >
                         Comprobantes Contables
                     </Link>
+
+                    <Link
+                        href="/contabilidad/cuentas"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Catálogo de Cuentas
+                    </Link>
                 </section>
             </div>
         </main>
