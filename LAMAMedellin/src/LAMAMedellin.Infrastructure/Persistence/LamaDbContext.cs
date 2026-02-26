@@ -19,6 +19,9 @@ public sealed class LamaDbContext(DbContextOptions<LamaDbContext> options) : DbC
     public DbSet<Beneficiario> Beneficiarios => Set<Beneficiario>();
     public DbSet<Miembro> Miembros => Set<Miembro>();
     public DbSet<Transaccion> Transacciones => Set<Transaccion>();
+    public DbSet<Articulo> Articulos => Set<Articulo>();
+    public DbSet<Venta> Ventas => Set<Venta>();
+    public DbSet<DetalleVenta> DetallesVenta => Set<DetalleVenta>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
