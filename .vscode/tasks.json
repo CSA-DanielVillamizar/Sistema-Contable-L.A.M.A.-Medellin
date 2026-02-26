@@ -18,6 +18,17 @@
 				".\\scripts\\pr_release_notes_latest.md"
 			],
 			"isBackground": false
+		},
+		{
+			"label": "phase4-log-head-now",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"log",
+				"-3",
+				"--oneline"
+			],
+			"isBackground": false
 		}
 	]
 }
