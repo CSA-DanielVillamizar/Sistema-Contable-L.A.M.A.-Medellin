@@ -18,6 +18,19 @@
 				".\\scripts\\pr_release_notes_latest.md"
 			],
 			"isBackground": false
+		},
+		{
+			"label": "git-docs-phase4-commit-push",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"-C",
+				"c:/Users/DanielVillamizar/Sistema Contable L.A.M.A. Medellin",
+				"add",
+				"README.md",
+				".vscode/tasks.json"
+			],
+			"isBackground": false
 		}
 	]
 }
