@@ -35,3 +35,13 @@ El frontend queda disponible en `http://localhost:3000`.
 - Manual de usuario: docs/MANUAL_USUARIO.md
 - Arquitectura: docs/docs_ARCHITECTURE-AZURE.md
 - Backlog: docs/docs_BACKLOG.md
+
+## Modulos funcionales recientes
+
+### 1) Modulo de Donaciones
+
+Gestiona donantes y donaciones, incluyendo soporte para dinero y especie, y permite la emision de certificados de donacion con informacion legal, trazabilidad y codigo de verificacion.
+
+### 2) Modulo de Proyectos Sociales y Beneficiarios
+
+Gestiona proyectos sociales y beneficiarios con formularios y listados dedicados, aplicando validacion obligatoria de consentimiento de Habeas Data para el registro de beneficiarios.

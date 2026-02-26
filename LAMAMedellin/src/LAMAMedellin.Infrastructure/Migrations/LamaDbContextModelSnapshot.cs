@@ -22,6 +22,52 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.AsientoContable", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CentroCostoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ComprobanteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CuentaContableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Debe")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Haber")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Referencia")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid?>("TerceroId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CentroCostoId");
+
+                    b.HasIndex("ComprobanteId");
+
+                    b.HasIndex("CuentaContableId");
+
+                    b.ToTable("AsientosContables", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_AsientoContable_DebeHaber_Exclusivo", "(([Debe] > 0 AND [Haber] = 0) OR ([Debe] = 0 AND [Haber] > 0))");
+                        });
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Banco", b =>
                 {
                     b.Property<Guid>("Id")
@@ -48,6 +94,51 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("Bancos", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Beneficiario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NumeroDocumento")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("TieneConsentimientoHabeasData")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TipoDocumento")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoDocumento", "NumeroDocumento")
+                        .IsUnique();
+
+                    b.ToTable("Beneficiarios", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CentroCosto", b =>
                 {
                     b.Property<Guid>("Id")
@@ -68,6 +159,83 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CentrosCosto", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Comprobante", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("EstadoComprobante")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NumeroConsecutivo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("TipoComprobante")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NumeroConsecutivo")
+                        .IsUnique();
+
+                    b.ToTable("Comprobantes", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaContable", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<Guid?>("CuentaPadreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<bool>("ExigeTercero")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Naturaleza")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PermiteMovimiento")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
+                    b.HasIndex("CuentaPadreId");
+
+                    b.ToTable("CuentasContables", (string)null);
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaPorCobrar", b =>
@@ -131,6 +299,98 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("CuotasAsamblea", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Donacion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BancoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CentroCostoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("CertificadoEmitido")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CodigoVerificacion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("DonanteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FormaDonacion")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MedioPagoODescripcion")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("MontoCOP")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BancoId");
+
+                    b.HasIndex("CentroCostoId");
+
+                    b.HasIndex("CodigoVerificacion")
+                        .IsUnique();
+
+                    b.HasIndex("DonanteId");
+
+                    b.ToTable("Donaciones", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Donante", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NombreORazonSocial")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NumeroDocumento")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("TipoDocumento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoPersona")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoDocumento", "NumeroDocumento")
+                        .IsUnique();
+
+                    b.ToTable("Donantes", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Miembro", b =>
                 {
                     b.Property<Guid>("Id")
@@ -176,6 +436,43 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("Miembros", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.ProyectoSocial", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("FechaFin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("PresupuestoEstimado")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProyectosSociales", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Transaccion", b =>
                 {
                     b.Property<Guid>("Id")
@@ -218,6 +515,43 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("Transacciones", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.AsientoContable", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.CentroCosto", "CentroCosto")
+                        .WithMany("AsientosContables")
+                        .HasForeignKey("CentroCostoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.Comprobante", "Comprobante")
+                        .WithMany("AsientosContables")
+                        .HasForeignKey("ComprobanteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaContable")
+                        .WithMany("AsientosContables")
+                        .HasForeignKey("CuentaContableId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CentroCosto");
+
+                    b.Navigation("Comprobante");
+
+                    b.Navigation("CuentaContable");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaContable", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaPadre")
+                        .WithMany("CuentasHijas")
+                        .HasForeignKey("CuentaPadreId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CuentaPadre");
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaPorCobrar", b =>
                 {
                     b.HasOne("LAMAMedellin.Domain.Entities.Miembro", "Miembro")
@@ -227,6 +561,33 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Miembro");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Donacion", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.Banco", "Banco")
+                        .WithMany()
+                        .HasForeignKey("BancoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.CentroCosto", "CentroCosto")
+                        .WithMany()
+                        .HasForeignKey("CentroCostoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.Donante", "Donante")
+                        .WithMany()
+                        .HasForeignKey("DonanteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Banco");
+
+                    b.Navigation("CentroCosto");
+
+                    b.Navigation("Donante");
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Transaccion", b =>
@@ -285,6 +646,23 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Navigation("CentroCosto");
 
                     b.Navigation("TransaccionMultimoneda");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CentroCosto", b =>
+                {
+                    b.Navigation("AsientosContables");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Comprobante", b =>
+                {
+                    b.Navigation("AsientosContables");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaContable", b =>
+                {
+                    b.Navigation("AsientosContables");
+
+                    b.Navigation("CuentasHijas");
                 });
 #pragma warning restore 612, 618
         }

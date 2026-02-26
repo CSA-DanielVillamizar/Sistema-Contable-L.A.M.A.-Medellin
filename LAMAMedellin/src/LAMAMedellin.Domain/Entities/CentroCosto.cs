@@ -7,6 +7,7 @@ public sealed class CentroCosto : BaseEntity
 {
     public string Nombre { get; private set; }
     public TipoCentroCosto Tipo { get; private set; }
+    public List<AsientoContable> AsientosContables { get; private set; } = [];
 
     public CentroCosto(string nombre, TipoCentroCosto tipo)
     {

@@ -200,6 +200,34 @@ export default function Home() {
                     >
                         Directorio de Miembros
                     </Link>
+
+                    <Link
+                        href="/donaciones"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Gestión de Donaciones
+                    </Link>
+
+                    <Link
+                        href="/proyectos"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Gestión Misional
+                    </Link>
+
+                    <Link
+                        href="/contabilidad/comprobantes"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Comprobantes Contables
+                    </Link>
+
+                    <Link
+                        href="/contabilidad/cuentas"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Catálogo de Cuentas
+                    </Link>
                 </section>
             </div>
         </main>
