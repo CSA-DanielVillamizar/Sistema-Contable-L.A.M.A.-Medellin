@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '@/lib/apiClient';
 import type { VentaFormValues } from '@/features/merchandising/schemas/ventaSchema';
 
@@ -13,6 +13,15 @@ type ProblemDetails = {
 
 type ProcesarVentaResponse = {
     id: string;
+};
+
+export type VentaHistorialItem = {
+    id: string;
+    fecha: string;
+    numeroFacturaInterna: string;
+    cliente: string;
+    metodoPago: string;
+    total: number;
 };
 
 function mapError(error: unknown, fallback: string): Error {
@@ -49,6 +58,25 @@ export function useProcesarVenta() {
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['merchandising', 'articulos'] });
+            await queryClient.invalidateQueries({ queryKey: ['merchandising', 'ventas'] });
+        },
+    });
+}
+
+export function useVentas() {
+    return useQuery<VentaHistorialItem[]>({
+        queryKey: ['merchandising', 'ventas'],
+        queryFn: async () => {
+            const response = await apiClient.get<any[]>('/api/ventas');
+
+            return (response.data ?? []).map((item) => ({
+                id: String(item?.id ?? item?.Id ?? ''),
+                fecha: String(item?.fecha ?? item?.Fecha ?? ''),
+                numeroFacturaInterna: String(item?.numeroFacturaInterna ?? item?.NumeroFacturaInterna ?? ''),
+                cliente: String(item?.cliente ?? item?.Cliente ?? 'Consumidor final'),
+                metodoPago: String(item?.metodoPago ?? item?.MetodoPago ?? ''),
+                total: Number(item?.total ?? item?.Total ?? 0),
+            }));
         },
     });
 }

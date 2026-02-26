@@ -4,7 +4,9 @@ import { useState } from 'react';
 import ModalNuevoArticulo from '@/features/merchandising/components/ModalNuevoArticulo';
 import ModalNuevaVenta from '@/features/merchandising/components/ModalNuevaVenta';
 import TablaArticulos from '@/features/merchandising/components/TablaArticulos';
+import TablaVentas from '@/features/merchandising/components/TablaVentas';
 import { useArticulos } from '@/features/merchandising/hooks/useArticulos';
+import { useVentas } from '@/features/merchandising/hooks/useVentas';
 
 type SeccionInventario = 'inventario' | 'historial';
 
@@ -13,6 +15,7 @@ export default function InventarioPage() {
     const [modalVentaAbierto, setModalVentaAbierto] = useState(false);
     const [seccionActiva, setSeccionActiva] = useState<SeccionInventario>('inventario');
     const articulosQuery = useArticulos();
+    const ventasQuery = useVentas();
 
     return (
         <main className="min-h-screen bg-slate-50 px-6 py-10">
@@ -66,9 +69,12 @@ export default function InventarioPage() {
                         error={articulosQuery.error as Error | null}
                     />
                 ) : (
-                    <section className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
-                        Historial de Ventas
-                    </section>
+                    <TablaVentas
+                        ventas={ventasQuery.data ?? []}
+                        isLoading={ventasQuery.isLoading}
+                        isError={ventasQuery.isError}
+                        error={ventasQuery.error as Error | null}
+                    />
                 )}
             </div>
 
