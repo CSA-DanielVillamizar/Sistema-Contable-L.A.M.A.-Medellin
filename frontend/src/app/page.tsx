@@ -228,6 +228,13 @@ export default function Home() {
                     >
                         Catálogo de Cuentas
                     </Link>
+
+                    <Link
+                        href="/merchandising/inventario"
+                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                    >
+                        Inventario y Merchandising
+                    </Link>
                 </section>
             </div>
         </main>
