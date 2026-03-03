@@ -20,6 +20,7 @@ jobs:
     env:
       AZURE_WEBAPP_NAME: tesorerialamamedellin
       APP_PATH: frontend
+      DEPLOY_PATH: frontend-deploy
       NEXT_PUBLIC_API_BASE_URL: https://app-lamamedellin-backend-prod.azurewebsites.net
 
     steps:
@@ -41,9 +42,18 @@ jobs:
         run: npm run build
         working-directory: ${{ env.APP_PATH }}
 
+      - name: Prepare deploy package
+        run: |
+          rm -rf $DEPLOY_PATH
+          mkdir -p $DEPLOY_PATH
+          cp -R $APP_PATH/.next/standalone/. $DEPLOY_PATH/
+          mkdir -p $DEPLOY_PATH/.next
+          cp -R $APP_PATH/.next/static $DEPLOY_PATH/.next/static
+          if [ -d "$APP_PATH/public" ]; then cp -R $APP_PATH/public $DEPLOY_PATH/public; fi
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_FRONTEND }}
-          package: ${{ env.APP_PATH }}
+          package: ${{ env.DEPLOY_PATH }}
