@@ -93,13 +93,25 @@ public static class DependencyInjection
                     AccessToken = tokenValue
                 };
 
-                options.UseSqlServer(sqlConnection);
+                options.UseSqlServer(sqlConnection, sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null);
+                });
             }
             else
             {
                 // Production: Usar DefaultAzureCredential
                 // En Azure App Service, esto automáticamente usará Managed Identity (System Assigned)
-                options.UseSqlServer(connectionString);
+                options.UseSqlServer(connectionString, sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null);
+                });
             }
         });
 
