@@ -28,8 +28,8 @@ priority:high|medium|low
 8. [Epic][Phase 1] Multimoneda informativa USD + Diferencia en cambio
 9. [Epic][Phase 2] Donaciones + campañas + certificados obligatorios
 10. [Epic][Phase 3][Done] Proyectos sociales + beneficiarios + consentimiento + rendición
-11. [Epic][Phase 4][In Progress] Negocios (inventario simple, compras/ventas, comprobante interno)
-12. [Epic][Phase 5] Reportes tributarios base (exógena, beneficiarios finales)
+11. [Epic][Phase 4][Done] Negocios (inventario simple, compras/ventas, comprobante interno)
+12. [Epic][Phase 5][In Progress] Reportes tributarios base (exógena, beneficiarios finales)
 13. [Epic][Phase X] Preparación para facturación electrónica (estructura/adapter) — NO implementar
 
 ## Historias (mínimo para iniciar)

@@ -14,16 +14,27 @@
 
 **Estado Épica Fase 3:** `COMPLETADA`.
 
-### ▶️ Inicio de Fase 4 — Negocios
+### ✅ Cierre de Fase 4 — Negocios (Merchandising)
 
-- Se inicia la épica de `inventario simple de merchandising y ventas`.
-- Alcance inicial priorizado para Fase 4:
-  1. Catálogo básico de artículos (camisetas, parches).
-  2. Movimientos mínimos de inventario (entrada/salida).
-  3. Registro de venta con impacto en inventario.
-  4. Comprobante interno de venta (base para PDF + QR).
+- Implementación de inventario de artículos completada:
+  - Catálogo de artículos con creación, edición y consulta.
+  - Gestión de stock actual por artículo.
+- Implementación de POS de ventas completada:
+  - Carrito simple por ítems (artículo/cantidad).
+  - Validación y descuento de stock al procesar venta.
+  - Registro de venta con medio de pago y centro de costo.
+- Implementación de reportes merchandising completada:
+  - Valorización de inventario.
+  - Resumen de ventas con costo total y utilidad neta (con filtro opcional por fechas).
 
-**Estado Épica Fase 4:** `EN INICIO`.
+**Estado Épica Fase 4:** `COMPLETADA`.
+
+### ▶️ Inicio de Fase 5 — Tributario avanzado
+
+- Se inicia la fase de reportes tributarios avanzados para cumplimiento y salida estructurada.
+- Objetivo inicial: consolidar base para exógena y reportes tributarios exportables.
+
+**Estado Épica Fase 5:** `EN INICIO`.
 
 **Fecha:** 21 de Febrero 2026
 **Branch:** `docs/spec-v1`
