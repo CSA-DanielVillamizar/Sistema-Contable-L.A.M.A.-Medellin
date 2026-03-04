@@ -1,5 +1,6 @@
 using LAMAMedellin.Application.Features.Donaciones.Commands.CrearDonante;
 using LAMAMedellin.Application.Features.Donaciones.Commands.RegistrarDonacion;
+using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetCertificadoDonacion;
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetDonaciones;
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetDonantes;
@@ -12,7 +13,7 @@ namespace LAMAMedellin.API.Controllers;
 [ApiController]
 [Route("api/donaciones")]
 [Authorize]
-public sealed class DonacionesController(ISender sender) : ControllerBase
+public sealed class DonacionesController(ISender sender, ICertificadoDonacionService certificadoDonacionService) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(List<DonacionDto>), StatusCodes.Status200OK)]
@@ -87,5 +88,20 @@ public sealed class DonacionesController(ISender sender) : ControllerBase
             certificado.Fecha,
             certificado.CodigoVerificacion
         });
+    }
+
+    [HttpGet("{id:guid}/certificado/pdf")]
+    [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DescargarCertificadoPdf(Guid id, CancellationToken cancellationToken)
+    {
+        var certificado = await sender.Send(new GetCertificadoDonacionQuery(id), cancellationToken);
+        if (certificado is null)
+        {
+            return NotFound();
+        }
+
+        var pdf = certificadoDonacionService.GenerarPdf(certificado);
+        return File(pdf, "application/pdf", $"certificado-donacion-{certificado.CodigoVerificacion}.pdf");
     }
 }

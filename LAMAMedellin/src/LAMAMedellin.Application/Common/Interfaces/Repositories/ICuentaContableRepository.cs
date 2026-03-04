@@ -6,4 +6,5 @@ public interface ICuentaContableRepository
 {
     Task<IReadOnlyList<CuentaContable>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<CuentaContable>> GetByIdsAsync(IReadOnlyCollection<Guid> ids, CancellationToken cancellationToken = default);
+    Task<CuentaContable?> GetByCodigoAsync(string codigo, CancellationToken cancellationToken = default);
 }

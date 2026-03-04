@@ -1,5 +1,6 @@
 using LAMAMedellin.Application.Common.Exceptions;
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
+using LAMAMedellin.Application.Features.Contabilidad.Commands.RegistrarComprobante;
 using LAMAMedellin.Domain.Entities;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
@@ -11,7 +12,9 @@ public sealed class RegistrarDonacionCommandHandler(
     IDonacionRepository donacionRepository,
     IBancoRepository bancoRepository,
     ICentroCostoRepository centroCostoRepository,
-    ITransaccionRepository transaccionRepository)
+    ITransaccionRepository transaccionRepository,
+    ICuentaContableRepository cuentaContableRepository,
+    ISender sender)
     : IRequestHandler<RegistrarDonacionCommand, Guid>
 {
     public async Task<Guid> Handle(RegistrarDonacionCommand request, CancellationToken cancellationToken)
@@ -63,6 +66,40 @@ public sealed class RegistrarDonacionCommandHandler(
 
         await donacionRepository.AddAsync(donacion, cancellationToken);
         await transaccionRepository.AddAsync(transaccion, cancellationToken);
+
+        var cuentaDebito = await cuentaContableRepository.GetByCodigoAsync("3210", cancellationToken);
+        if (cuentaDebito is null)
+        {
+            throw new ExcepcionNegocio("No existe la cuenta contable 3210 para débito de donación.");
+        }
+
+        var cuentaIngreso = await cuentaContableRepository.GetByCodigoAsync("411505", cancellationToken);
+        if (cuentaIngreso is null)
+        {
+            throw new ExcepcionNegocio("No existe la cuenta contable 411505 para ingreso de donación.");
+        }
+
+        await sender.Send(new RegistrarComprobanteCommand(
+            DateTime.UtcNow,
+            TipoComprobante.Ingreso,
+            $"Donación {codigoVerificacion} - {donante.NombreORazonSocial}",
+            [
+                new RegistrarAsientoComprobanteDto(
+                    cuentaDebito.Id,
+                    request.DonanteId,
+                    request.CentroCostoId,
+                    request.MontoCOP,
+                    0m,
+                    "Registro donación - débito"),
+                new RegistrarAsientoComprobanteDto(
+                    cuentaIngreso.Id,
+                    request.DonanteId,
+                    request.CentroCostoId,
+                    0m,
+                    request.MontoCOP,
+                    "Registro donación - crédito")
+            ]), cancellationToken);
+
         await donacionRepository.SaveChangesAsync(cancellationToken);
 
         return donacion.Id;

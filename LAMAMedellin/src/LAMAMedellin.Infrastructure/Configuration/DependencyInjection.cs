@@ -1,6 +1,8 @@
 using Azure.Core;
 using Azure.Identity;
+using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
+using LAMAMedellin.Infrastructure.Documents;
 using LAMAMedellin.Infrastructure.Persistence;
 using LAMAMedellin.Infrastructure.Persistence.Repositories;
 using Microsoft.Data.SqlClient;
@@ -124,6 +126,7 @@ public static class DependencyInjection
         services.AddScoped<ICuentaContableRepository, CuentaContableRepository>();
         services.AddScoped<IDonanteRepository, DonanteRepository>();
         services.AddScoped<IDonacionRepository, DonacionRepository>();
+        services.AddScoped<ICertificadoDonacionService, CertificadoDonacionService>();
         services.AddScoped<IComprobanteRepository, ComprobanteRepository>();
         services.AddScoped<IProyectoSocialRepository, ProyectoSocialRepository>();
         services.AddScoped<IBeneficiarioRepository, BeneficiarioRepository>();

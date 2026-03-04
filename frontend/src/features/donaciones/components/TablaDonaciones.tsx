@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import VistaCertificado from '@/features/donaciones/components/VistaCertificado';
 import { useCertificadoDonacion, useDonaciones } from '@/features/donaciones/hooks/useDonaciones';
+import apiClient from '@/lib/apiClient';
+import { useState } from 'react';
 
 function formatCOP(value: number): string {
     return new Intl.NumberFormat('es-CO', {
@@ -34,6 +35,22 @@ export default function TablaDonaciones() {
         return <p className="text-sm text-slate-600">No hay donaciones registradas.</p>;
     }
 
+    const descargarPdf = async (donacionId: string) => {
+        const response = await apiClient.get(`/api/donaciones/${donacionId}/certificado/pdf`, {
+            responseType: 'blob',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `certificado-donacion-${donacionId}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <>
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -56,21 +73,29 @@ export default function TablaDonaciones() {
                                     <td className="px-4 py-3 text-sm text-slate-700">{formatFecha(item.fecha)}</td>
                                     <td className="px-4 py-3 text-sm">
                                         <span
-                                            className={`rounded-full px-2 py-1 text-xs font-medium ${
-                                                item.certificadoEmitido ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                                            }`}
+                                            className={`rounded-full px-2 py-1 text-xs font-medium ${item.certificadoEmitido ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                                                }`}
                                         >
                                             {item.certificadoEmitido ? 'Emitido' : 'Pendiente'}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3 text-right text-sm">
-                                        <button
-                                            type="button"
-                                            onClick={() => setDonacionSeleccionadaId(item.id)}
-                                            className="rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-blue-700 hover:bg-blue-100"
-                                        >
-                                            Ver Certificado
-                                        </button>
+                                        <div className="flex justify-end gap-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => setDonacionSeleccionadaId(item.id)}
+                                                className="rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-blue-700 hover:bg-blue-100"
+                                            >
+                                                Ver Certificado
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => void descargarPdf(item.id)}
+                                                className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-emerald-700 hover:bg-emerald-100"
+                                            >
+                                                Descargar PDF
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
