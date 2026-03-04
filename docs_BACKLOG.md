@@ -1,12 +1,14 @@
 # Backlog (Épicas y Historias) — para GitHub Issues
 
 ## Labels sugeridos
-epic, story, task  
-phase:0..phase:5  
-area:iam, area:infra, area:accounting, area:treasury, area:members, area:donations, area:projects, area:business, area:reports  
+
+epic, story, task
+phase:0..phase:5
+area:iam, area:infra, area:accounting, area:treasury, area:members, area:donations, area:projects, area:business, area:reports
 priority:high|medium|low
 
 ## Milestones sugeridos
+
 - Phase 0 - Foundations
 - Phase 1 - MVP Contabilidad + Cuotas
 - Phase 2 - Donaciones
@@ -15,6 +17,7 @@ priority:high|medium|low
 - Phase 5 - Tributario avanzado
 
 ## Épicas
+
 1. [Epic][Phase 0] IAM Entra External ID + Roles internos + MFA
 2. [Epic][Phase 0] Infra mínima Azure + Observabilidad + Key Vault + Blob
 3. [Epic][Phase 0] Modelo base: Centros de costo + Medios de pago + Terceros + Mapeo contable
@@ -24,12 +27,13 @@ priority:high|medium|low
 7. [Epic][Phase 1] CxP proveedores (facturas, vencimientos, pagos)
 8. [Epic][Phase 1] Multimoneda informativa USD + Diferencia en cambio
 9. [Epic][Phase 2] Donaciones + campañas + certificados obligatorios
-10. [Epic][Phase 3] Proyectos sociales + beneficiarios + consentimiento + rendición
-11. [Epic][Phase 4] Negocios (inventario simple, compras/ventas, comprobante interno)
+10. [Epic][Phase 3][Done] Proyectos sociales + beneficiarios + consentimiento + rendición
+11. [Epic][Phase 4][In Progress] Negocios (inventario simple, compras/ventas, comprobante interno)
 12. [Epic][Phase 5] Reportes tributarios base (exógena, beneficiarios finales)
 13. [Epic][Phase X] Preparación para facturación electrónica (estructura/adapter) — NO implementar
 
 ## Historias (mínimo para iniciar)
+
 - [Story][Phase 0] Integrar login OIDC con Entra External ID
 - [Story][Phase 0] CRUD roles internos (Admin/Operador/Tesorero/Contador/Junta) con auditoría
 - [Story][Phase 0] Parametrizar centros de costo CAPITULO/FUNDACION/PROYECTO/EVENTO

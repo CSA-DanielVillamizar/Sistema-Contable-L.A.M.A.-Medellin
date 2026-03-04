@@ -1,7 +1,32 @@
 # Estado de Implementación - Módulo Cartera
 
-**Fecha:** 21 de Febrero 2026  
-**Branch:** `docs/spec-v1`  
+## Actualización Ejecutiva — 04 de Marzo 2026
+
+### ✅ Cierre de Fase 3 — Proyectos y Donaciones
+
+- Migración productiva aplicada: `20260304200521_AddProyectoSocialIdToBeneficiario`.
+- Validación técnica en Azure SQL completada (`MigrationApplied=1`, columna/FK/índice en `Beneficiarios`).
+- Prueba E2E en entorno real ejecutada:
+  - Proyecto de prueba creado y asociado a beneficiario.
+  - Beneficiario guardado con `ProyectoSocialId` y `TieneConsentimientoHabeasData=true`.
+  - Verificación en listado: cruce de proyecto y estado de Habeas Data correcto.
+  - Limpieza de datos de prueba ejecutada (beneficiario y proyecto eliminados).
+
+**Estado Épica Fase 3:** `COMPLETADA`.
+
+### ▶️ Inicio de Fase 4 — Negocios
+
+- Se inicia la épica de `inventario simple de merchandising y ventas`.
+- Alcance inicial priorizado para Fase 4:
+  1. Catálogo básico de artículos (camisetas, parches).
+  2. Movimientos mínimos de inventario (entrada/salida).
+  3. Registro de venta con impacto en inventario.
+  4. Comprobante interno de venta (base para PDF + QR).
+
+**Estado Épica Fase 4:** `EN INICIO`.
+
+**Fecha:** 21 de Febrero 2026
+**Branch:** `docs/spec-v1`
 **Última actualización:** Commit `b5b3ee0`
 
 ## ✅ Completado
@@ -14,7 +39,7 @@
   - Centro de costo obligatorio
   - Selector de tipo de afiliación (multi-select)
   - Llamada a endpoint `/api/cartera/generar`
-  
+
 - **Página:** `/cartera/generar`
   - Integrada en Next.js App Router
   - Accesible desde la aplicación
@@ -164,10 +189,10 @@ services.AddDbContext<LamaDbContext>(options =>
         var token = credential.GetToken(
             new TokenRequestContext(new[] { "https://database.windows.net//.default" })
         );
-        
+
         var connString = configuration.GetConnectionString("DefaultConnection");
         var connBuilder = new SqlConnectionStringBuilder(connString);
-        
+
         options.UseSqlServer(connString, sqlOptions =>
         {
             sqlOptions.AccessToken(token.Token);
