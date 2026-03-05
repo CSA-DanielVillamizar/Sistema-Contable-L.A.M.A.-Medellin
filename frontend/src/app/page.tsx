@@ -1,6 +1,7 @@
 'use client';
 
 import apiClient from '@/lib/apiClient';
+import { getUserRolesFromToken, hasAnyAllowedRole, TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -32,16 +33,19 @@ export default function Home() {
     const [authReady, setAuthReady] = useState(false);
     const [hasToken, setHasToken] = useState(false);
     const [authError, setAuthError] = useState<string | null>(null);
+    const [canAccessExogena, setCanAccessExogena] = useState(false);
 
     useEffect(() => {
         const syncAuthState = () => {
             const token = localStorage.getItem('token');
             const authWasResolved = sessionStorage.getItem('auth_ready') === '1';
             const lastAuthError = sessionStorage.getItem('msal_auth_last_error');
+            const roles = getUserRolesFromToken(token);
 
             setHasToken(Boolean(token));
             setAuthReady(Boolean(token) || authWasResolved);
             setAuthError(lastAuthError);
+            setCanAccessExogena(hasAnyAllowedRole(roles, TRIBUTARIO_ALLOWED_ROLES));
         };
 
         syncAuthState();
@@ -235,6 +239,15 @@ export default function Home() {
                     >
                         Inventario y Merchandising
                     </Link>
+
+                    {canAccessExogena ? (
+                        <Link
+                            href="/tributario/exogena"
+                            className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                        >
+                            Reporte Exógena
+                        </Link>
+                    ) : null}
                 </section>
             </div>
         </main>

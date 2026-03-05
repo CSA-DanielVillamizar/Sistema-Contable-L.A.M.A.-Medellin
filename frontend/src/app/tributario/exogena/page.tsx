@@ -1,9 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TablaExogena from '@/features/tributario/components/TablaExogena';
 import { useReporteExogena } from '@/features/tributario/hooks/useReporteExogena';
 import { exportExogenaCsv } from '@/features/tributario/utils/exportExogenaCsv';
+import { getUserRolesFromToken, hasAnyAllowedRole, TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
 
 const MONTH_OPTIONS = [
     { value: '', label: 'Todos los meses' },
@@ -24,15 +25,44 @@ const MONTH_OPTIONS = [
 export default function ExogenaPage() {
     const [anio, setAnio] = useState(new Date().getFullYear());
     const [mesValue, setMesValue] = useState('');
+    const [canAccess, setCanAccess] = useState(false);
+    const [isRoleReady, setIsRoleReady] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const roles = getUserRolesFromToken(token);
+        setCanAccess(hasAnyAllowedRole(roles, TRIBUTARIO_ALLOWED_ROLES));
+        setIsRoleReady(true);
+    }, []);
 
     const mes = mesValue ? Number(mesValue) : undefined;
-    const query = useReporteExogena({ anio, mes });
+    const query = useReporteExogena({ anio, mes, enabled: canAccess && isRoleReady });
 
     const isExportDisabled = query.isLoading || (query.data?.length ?? 0) === 0;
     const nombreArchivo = useMemo(() => {
         const sufijoMes = mes ? `-mes-${String(mes).padStart(2, '0')}` : '-anual';
         return `reporte-exogena-${anio}${sufijoMes}.csv`;
     }, [anio, mes]);
+
+    if (!isRoleReady) {
+        return (
+            <main className="min-h-screen bg-slate-50 px-6 py-10">
+                <div className="mx-auto w-full max-w-7xl rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
+                    Validando permisos...
+                </div>
+            </main>
+        );
+    }
+
+    if (!canAccess) {
+        return (
+            <main className="min-h-screen bg-slate-50 px-6 py-10">
+                <div className="mx-auto w-full max-w-7xl rounded-xl border border-red-200 bg-white p-6 text-red-700">
+                    No tienes permisos para acceder al módulo de exógena.
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="min-h-screen bg-slate-50 px-6 py-10">

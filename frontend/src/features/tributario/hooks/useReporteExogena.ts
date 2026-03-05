@@ -16,9 +16,10 @@ export type ReporteExogenaItem = {
 type UseReporteExogenaParams = {
     anio: number;
     mes?: number;
+    enabled?: boolean;
 };
 
-export function useReporteExogena({ anio, mes }: UseReporteExogenaParams) {
+export function useReporteExogena({ anio, mes, enabled = true }: UseReporteExogenaParams) {
     return useQuery<ReporteExogenaItem[]>({
         queryKey: ['tributario', 'exogena', anio, mes ?? 'all'],
         queryFn: async () => {
@@ -39,6 +40,6 @@ export function useReporteExogena({ anio, mes }: UseReporteExogenaParams) {
                 saldoMovimiento: Number(item?.saldoMovimiento ?? item?.SaldoMovimiento ?? 0),
             }));
         },
-        enabled: Number.isInteger(anio) && anio > 0,
+        enabled: enabled && Number.isInteger(anio) && anio > 0,
     });
 }

@@ -7,7 +7,7 @@ namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
 [Route("api/tributario")]
-[Authorize]
+[Authorize(Roles = "Contador,Admin")]
 public sealed class TributarioController(ISender sender) : ControllerBase
 {
     [HttpGet("exogena")]
