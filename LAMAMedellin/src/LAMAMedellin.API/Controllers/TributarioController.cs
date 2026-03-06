@@ -1,4 +1,5 @@
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteBeneficiariosFinales;
+using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteCalidadDatos;
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteExogena;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,14 @@ namespace LAMAMedellin.API.Controllers;
 [Authorize(Roles = "Contador,Admin")]
 public sealed class TributarioController(ISender sender) : ControllerBase
 {
+    [HttpGet("calidad-datos")]
+    [ProducesResponseType(typeof(IReadOnlyList<InconsistenciaTributariaDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetReporteCalidadDatos(CancellationToken cancellationToken)
+    {
+        var reporte = await sender.Send(new GetReporteCalidadDatosQuery(), cancellationToken);
+        return Ok(reporte);
+    }
+
     [HttpGet("beneficiarios-finales")]
     [ProducesResponseType(typeof(IReadOnlyList<BeneficiarioFinalDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetReporteBeneficiariosFinales(CancellationToken cancellationToken)

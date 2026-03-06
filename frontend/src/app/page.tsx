@@ -244,7 +244,7 @@ export default function Home() {
                 {canAccessExogena ? (
                     <section className="rounded-xl border border-slate-200 bg-white p-4">
                         <h2 className="mb-3 text-base font-semibold text-slate-900">Reportes Tributarios</h2>
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                             <Link
                                 href="/tributario/exogena"
                                 className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
@@ -257,6 +257,13 @@ export default function Home() {
                                 className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
                             >
                                 Beneficiarios Finales
+                            </Link>
+
+                            <Link
+                                href="/tributario/calidad-datos"
+                                className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                            >
+                                Auditoría de Datos
                             </Link>
                         </div>
                     </section>

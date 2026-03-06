@@ -1,4 +1,5 @@
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
+using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteCalidadDatos;
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteBeneficiariosFinales;
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteExogena;
 using LAMAMedellin.Domain.Enums;
@@ -9,6 +10,50 @@ namespace LAMAMedellin.Infrastructure.Persistence.Repositories;
 public sealed class TributarioRepository(LamaDbContext context) : ITributarioRepository
 {
     private readonly LamaDbContext _context = context;
+
+    public async Task<IReadOnlyList<InconsistenciaTributariaDto>> GetReporteCalidadDatosAsync(CancellationToken cancellationToken = default)
+    {
+        var inconsistenciasMiembros = await _context.Miembros
+            .AsNoTracking()
+            .Where(x => !x.IsDeleted)
+            .Where(x => string.IsNullOrWhiteSpace(x.Documento))
+            .Select(x => new InconsistenciaTributariaDto(
+                x.Id.ToString(),
+                $"{x.Nombre} {x.Apellidos}".Trim(),
+                "Miembro",
+                "Falta Número de Documento"))
+            .ToListAsync(cancellationToken);
+
+        var inconsistenciasDonantesNumeroDocumento = await _context.Donantes
+            .AsNoTracking()
+            .Where(x => !x.IsDeleted)
+            .Where(x => string.IsNullOrWhiteSpace(x.NumeroDocumento))
+            .Select(x => new InconsistenciaTributariaDto(
+                x.Id.ToString(),
+                x.NombreORazonSocial,
+                "Donante",
+                "Falta Número de Documento"))
+            .ToListAsync(cancellationToken);
+
+        var inconsistenciasDonantesTipoDocumento = await _context.Donantes
+            .AsNoTracking()
+            .Where(x => !x.IsDeleted)
+            .Where(x => x.TipoDocumento == TipoDocumentoDonante.Otro)
+            .Select(x => new InconsistenciaTributariaDto(
+                x.Id.ToString(),
+                x.NombreORazonSocial,
+                "Donante",
+                "Falta Tipo de Documento"))
+            .ToListAsync(cancellationToken);
+
+        return inconsistenciasMiembros
+            .Concat(inconsistenciasDonantesNumeroDocumento)
+            .Concat(inconsistenciasDonantesTipoDocumento)
+            .OrderBy(x => x.TipoRelacion)
+            .ThenBy(x => x.NombreObtenido)
+            .ThenBy(x => x.DescripcionInconsistencia)
+            .ToList();
+    }
 
     public async Task<IReadOnlyList<BeneficiarioFinalDto>> GetReporteBeneficiariosFinalesAsync(CancellationToken cancellationToken = default)
     {
