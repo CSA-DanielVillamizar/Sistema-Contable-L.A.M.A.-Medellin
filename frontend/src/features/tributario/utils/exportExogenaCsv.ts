@@ -6,27 +6,8 @@ function escapeCsvValue(value: string | number): string {
     return `"${escaped}"`;
 }
 
-export function exportExogenaCsv(rows: ReporteExogenaItem[], fileName: string) {
-    const headers = [
-        'TerceroId',
-        'NombreTercero',
-        'CuentaContableCodigo',
-        'CuentaContableNombre',
-        'TotalDebito',
-        'TotalCredito',
-        'SaldoMovimiento',
-    ];
-
-    const lines = rows.map((row) => [
-        escapeCsvValue(row.terceroId),
-        escapeCsvValue(row.nombreTercero),
-        escapeCsvValue(row.cuentaContableCodigo),
-        escapeCsvValue(row.cuentaContableNombre),
-        escapeCsvValue(row.totalDebito),
-        escapeCsvValue(row.totalCredito),
-        escapeCsvValue(row.saldoMovimiento),
-    ].join(','));
-
+export function downloadCsv(headers: string[], rows: Array<Array<string | number>>, fileName: string) {
+    const lines = rows.map((row) => row.map((value) => escapeCsvValue(value)).join(','));
     const csv = [headers.join(','), ...lines].join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -39,4 +20,28 @@ export function exportExogenaCsv(rows: ReporteExogenaItem[], fileName: string) {
     document.body.removeChild(anchor);
 
     URL.revokeObjectURL(url);
+}
+
+export function exportExogenaCsv(rows: ReporteExogenaItem[], fileName: string) {
+    const headers = [
+        'TerceroId',
+        'NombreTercero',
+        'CuentaContableCodigo',
+        'CuentaContableNombre',
+        'TotalDebito',
+        'TotalCredito',
+        'SaldoMovimiento',
+    ];
+
+    const dataRows = rows.map((row) => [
+        row.terceroId,
+        row.nombreTercero,
+        row.cuentaContableCodigo,
+        row.cuentaContableNombre,
+        row.totalDebito,
+        row.totalCredito,
+        row.saldoMovimiento,
+    ]);
+
+    downloadCsv(headers, dataRows, fileName);
 }

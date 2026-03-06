@@ -1,3 +1,4 @@
+using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteBeneficiariosFinales;
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteExogena;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,14 @@ namespace LAMAMedellin.API.Controllers;
 [Authorize(Roles = "Contador,Admin")]
 public sealed class TributarioController(ISender sender) : ControllerBase
 {
+    [HttpGet("beneficiarios-finales")]
+    [ProducesResponseType(typeof(IReadOnlyList<BeneficiarioFinalDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetReporteBeneficiariosFinales(CancellationToken cancellationToken)
+    {
+        var reporte = await sender.Send(new GetReporteBeneficiariosFinalesQuery(), cancellationToken);
+        return Ok(reporte);
+    }
+
     [HttpGet("exogena")]
     [ProducesResponseType(typeof(IReadOnlyList<ReporteExogenaDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetReporteExogena(

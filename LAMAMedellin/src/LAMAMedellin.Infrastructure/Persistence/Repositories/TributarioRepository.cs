@@ -1,4 +1,5 @@
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
+using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteBeneficiariosFinales;
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteExogena;
 using LAMAMedellin.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,24 @@ namespace LAMAMedellin.Infrastructure.Persistence.Repositories;
 public sealed class TributarioRepository(LamaDbContext context) : ITributarioRepository
 {
     private readonly LamaDbContext _context = context;
+
+    public async Task<IReadOnlyList<BeneficiarioFinalDto>> GetReporteBeneficiariosFinalesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Miembros
+            .AsNoTracking()
+            .Where(x => !x.IsDeleted)
+            .Where(x => x.Estado == EstadoMiembro.Activo)
+            .OrderBy(x => x.Apellidos)
+            .ThenBy(x => x.Nombre)
+            .Select(x => new BeneficiarioFinalDto(
+                "NO_DEFINIDO",
+                x.Documento,
+                x.Nombre,
+                x.Apellidos,
+                "CO",
+                x.TipoAfiliacion.ToString()))
+            .ToListAsync(cancellationToken);
+    }
 
     public async Task<IReadOnlyList<ReporteExogenaDto>> GetReporteExogenaAsync(int anio, int? mes, CancellationToken cancellationToken = default)
     {
