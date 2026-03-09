@@ -75,17 +75,16 @@ public sealed class ImportarHistoricoCommandHandler
             var terceroGenericoId = Guid.Parse("00000000-0000-0000-0000-000000000001");
             // Asumimos que existe un miembro genérico con este ID
 
-            // 5. Leer archivo CSV
-            var rutaCsv = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "..", "..", "docs", "Historico.csv");
-
-            if (!File.Exists(rutaCsv))
+            // 5. Leer contenido CSV recibido en el comando
+            if (string.IsNullOrWhiteSpace(request.ContenidoCsv))
             {
-                throw new FileNotFoundException($"Archivo CSV no encontrado: {rutaCsv}");
+                throw new InvalidOperationException("El contenido CSV es obligatorio para ejecutar la migración.");
             }
 
-            var lineasCsv = await File.ReadAllLinesAsync(rutaCsv, cancellationToken);
+            var lineasCsv = request.ContenidoCsv
+                .Replace("\r\n", "\n", StringComparison.Ordinal)
+                .Replace("\r", "\n", StringComparison.Ordinal)
+                .Split('\n');
 
             // 6. Procesar cada línea del CSV (saltar encabezado)
             for (var index = 1; index < lineasCsv.Length; index++)

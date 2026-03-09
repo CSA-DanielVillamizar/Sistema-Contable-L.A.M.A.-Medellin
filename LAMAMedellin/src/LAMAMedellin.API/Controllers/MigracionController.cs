@@ -50,6 +50,7 @@ public class MigracionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ImportarHistoricoResult>> CargarHistorico(
+        [FromBody] ImportarHistoricoCommand command,
         CancellationToken cancellationToken)
     {
         _logger.LogWarning(
@@ -57,7 +58,6 @@ public class MigracionController : ControllerBase
             User.FindFirst("oid")?.Value ?? "Unknown",
             User.FindFirst("roles")?.Value ?? "Unknown");
 
-        var command = new ImportarHistoricoCommand();
         var resultado = await _sender.Send(command, cancellationToken);
 
         if (resultado.Advertencias.Any())
