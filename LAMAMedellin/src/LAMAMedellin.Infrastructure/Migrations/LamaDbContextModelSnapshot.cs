@@ -610,6 +610,87 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("Miembros", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.MovimientoInventario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("ProductoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TipoMovimiento")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fecha")
+                        .HasDatabaseName("IX_MovimientoInventario_Fecha");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("MovimientosInventario", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Producto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CantidadStock")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<Guid>("CuentaContableIngresoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<decimal>("PrecioVentaCOP")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("SKU")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CuentaContableIngresoId");
+
+                    b.HasIndex("SKU")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Producto_SKU_Unique");
+
+                    b.ToTable("Productos", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.ProyectoSocial", b =>
                 {
                     b.Property<Guid>("Id")
@@ -917,6 +998,30 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Navigation("CuentaContable");
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.MovimientoInventario", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.Producto", "Producto")
+                        .WithMany("Movimientos")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_MovimientoInventario_Producto");
+
+                    b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Producto", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaContableIngreso")
+                        .WithMany()
+                        .HasForeignKey("CuentaContableIngresoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Producto_CuentaContable_Ingreso");
+
+                    b.Navigation("CuentaContableIngreso");
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.ProyectoSocial", b =>
                 {
                     b.HasOne("LAMAMedellin.Domain.Entities.CentroCosto", "CentroCosto")
@@ -1017,6 +1122,11 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Navigation("AsientosContables");
 
                     b.Navigation("CuentasHijas");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Producto", b =>
+                {
+                    b.Navigation("Movimientos");
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Venta", b =>

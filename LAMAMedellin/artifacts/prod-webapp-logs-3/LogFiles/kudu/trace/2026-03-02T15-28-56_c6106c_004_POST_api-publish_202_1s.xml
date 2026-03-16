@@ -1,0 +1,16 @@
+<step title="Incoming Request" date="2026-03-02T15:28:56.098" instance="c6106c" url="/api/publish?async=true&amp;deployer=GITHUB_ONE_DEPLOY&amp;type=zip&amp;message=%7B%22type%22%3A%22deployment%22%2C%22sha%22%3A%22c5bac8d038ffb87b4506c4a1e7a847249be61d1c%22%2C%22repoName%22%3A%22CSA-DanielVillamizar%2FSistema-Contable-L.A.M.A.-Medellin%22%2C%22actor%22%3A%22CSA-DanielVillamizar%22%2C%22slotName%22%3A%22production%22%2C%22commitMessage%22%3A%22%22%7D" method="POST" type="request" pid="837,1,47" Host="app-lamamedellin-backend-prod.scm.azurewebsites.net" User-Agent="GITHUBACTIONS_DeployWebAppToAzure_f9a48f0be84f1f32feb49cf11b05912b8921b6e775a8750ea5ca44b8eee7222a_v3.0.7" Authorization="Bas..." Content-Type="application/octet-stream" Cookie="ARRAffinity=c6106cdc84b69dbe98505fe696bca744f23b1ce7038786979342fcee7645dd4c;Path=/;HttpOnly;Secure;Domain=app-lamamedellin-backend-prod.scm.azurewebsites.net; ARRAffinitySameSite=c6106cdc84b69dbe98505fe696bca744f23b1ce7038786979342fcee7645dd4c;Path=/;HttpOnly;SameSite=None;Secure;Domain=app-lamamedellin-backend-prod.scm.azurewebsites.net" Transfer-Encoding="chunked" X-ARR-LOG-ID="70075a74-a1ae-4a57-b07a-f804a98d4d93" CLIENT-IP="52.154.130.217:26688" X-SITE-DEPLOYMENT-ID="app-lamamedellin-backend-prod" WAS-DEFAULT-HOSTNAME="app-lamamedellin-backend-prod.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?async=true&amp;deployer=GITHUB_ONE_DEPLOY&amp;type=zip&amp;message=%7B%22type%22%3A%22deployment%22%2C%22sha%22%3A%22c5bac8d038ffb87b4506c4a1e7a847249be61d1c%22%2C%22repoName%22%3A%22CSA-DanielVillamizar%2FSistema-Contable-L.A.M.A.-Medellin%22%2C%22actor%22%3A%22CSA-DanielVillamizar%22%2C%22slotName%22%3A%22production%22%2C%22commitMessage%22%3A%22%22%7D" X-Client-IP="52.154.130.217" X-Client-Port="26688" >
+  <step title="OneDeploy" date="2026-03-02T15:28:56.216" >
+    <step title="None repository commit" date="2026-03-02T15:28:56.237" >
+      <step title="Commit id: cd16281b-0ea6-4129-a393-f609459d732c" date="2026-03-02T15:28:56.240" Message="N/A" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 2ms -->
+    </step><!-- duration: 9ms -->
+    <step title="Starting PushDeployAsync" date="2026-03-02T15:28:56.247" /><!-- duration: 2ms -->
+    <step title="Writing artifact to /tmp/zipdeploy/ffa08647-a4fb-4e85-9f50-e75558472798.zip" date="2026-03-02T15:28:56.275" >
+      <step title="Writing multipart request body to /tmp/zipdeploy/ffa08647-a4fb-4e85-9f50-e75558472798.zip" date="2026-03-02T15:28:56.282" /><!-- duration: 2ms -->
+    </step><!-- duration: 411ms -->
+    <step title="Start deployment in the background" date="2026-03-02T15:28:56.698" >
+      <step title="Acquiring Deployment Lock" date="2026-03-02T15:28:56.788" /><!-- duration: 2ms -->
+      <step title="Acquired Deployment Lock" date="2026-03-02T15:28:56.842" /><!-- duration: 2ms -->
+    </step><!-- duration: 296ms -->
+  </step><!-- duration: 787ms -->
+  <step title="Outgoing response" date="2026-03-02T15:28:57.041" type="response" statusCode="202" statusText="Accepted" /><!-- duration: 12ms -->
+</step><!-- duration: 956ms -->

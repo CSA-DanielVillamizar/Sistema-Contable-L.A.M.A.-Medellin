@@ -1,0 +1,80 @@
+﻿PLAN_EXIT=0
+PLAN_OUTPUT_START
+{
+  "id": "/subscriptions/a90e8a4a-74dd-4f34-bd61-24e59885a3ac/resourceGroups/rg-lamaregionnorte-prod/providers/Microsoft.Web/serverfarms/plan-lamamedellin-prod",
+  "kind": "linux",
+  "location": "Central US",
+  "name": "plan-lamamedellin-prod",
+  "properties": {
+    "adminRuntimeSiteName": null,
+    "adminSiteName": null,
+    "asyncScalingEnabled": false,
+    "computeMode": "Dedicated",
+    "createdTime": "2026-02-27T01:16:06.3333333",
+    "currentNumberOfWorkers": 1,
+    "currentNumberOfZonesUtilized": 1,
+    "currentWorkerSize": "Small",
+    "currentWorkerSizeId": 0,
+    "elasticScaleEnabled": false,
+    "eligibleLogCategories": "",
+    "existingServerFarmIds": null,
+    "freeOfferExpirationTime": null,
+    "geoRegion": "Central US",
+    "hostingEnvironment": null,
+    "hostingEnvironmentId": null,
+    "hostingEnvironmentProfile": null,
+    "hyperV": false,
+    "isCustomMode": false,
+    "isSpot": false,
+    "isXenon": false,
+    "kind": "linux",
+    "kubeEnvironmentProfile": null,
+    "maximumElasticWorkerCount": 1,
+    "maximumNumberOfWorkers": 3,
+    "maximumNumberOfZones": 3,
+    "mdmId": "waws-prod-dm1-303_56662",
+    "migrateToVMSS": null,
+    "name": "plan-lamamedellin-prod",
+    "numberOfSites": 0,
+    "numberOfWorkers": 1,
+    "perSiteScaling": false,
+    "planName": "VirtualDedicatedPlan",
+    "powerState": "Running",
+    "provisioningState": "Succeeded",
+    "reserved": true,
+    "resourceGroup": "rg-lamaregionnorte-prod",
+    "serverFarmId": 56662,
+    "siteMode": null,
+    "spotExpirationTime": null,
+    "status": "Ready",
+    "subscription": "a90e8a4a-74dd-4f34-bd61-24e59885a3ac",
+    "tags": null,
+    "targetWorkerCount": 0,
+    "targetWorkerSizeId": 0,
+    "targetWorkerSku": "",
+    "vnetConnectionsMax": 2,
+    "vnetConnectionsUsed": 0,
+    "webSiteId": null,
+    "webSpace": "rg-lamaregionnorte-prod-CentralUSwebspace-Linux",
+    "workerSize": "Small",
+    "workerSizeId": 0,
+    "workerTierName": null,
+    "zoneRedundant": false
+  },
+  "resourceGroup": "rg-lamaregionnorte-prod",
+  "sku": {
+    "capacity": 1,
+    "family": "B",
+    "name": "B1",
+    "size": "B1",
+    "tier": "Basic"
+  },
+  "type": "Microsoft.Web/serverfarms"
+}
+PLAN_OUTPUT_END
+WEBAPP_EXIT=3
+WEBAPP_OUTPUT_START
+ERROR: (ResourceNotFound) The Resource 'Microsoft.Web/sites/app-lamamedellin-backend-prod' under resource group 'rg-lamaregionnorte-prod' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix
+Code: ResourceNotFound
+Message: The Resource 'Microsoft.Web/sites/app-lamamedellin-backend-prod' under resource group 'rg-lamaregionnorte-prod' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix
+WEBAPP_OUTPUT_END

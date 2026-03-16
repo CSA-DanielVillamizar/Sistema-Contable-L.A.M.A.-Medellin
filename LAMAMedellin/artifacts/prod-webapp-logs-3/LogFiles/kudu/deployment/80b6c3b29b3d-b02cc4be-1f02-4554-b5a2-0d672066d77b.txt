@@ -1,0 +1,990 @@
+2026-03-09T18:42:40  Fetching changes.
+2026-03-09T18:42:40    Starting  LocalZipHandler
+2026-03-09T18:42:40    Cleaning up temp folders from previous zip deployments and extracting pushed zip file /tmp/zipdeploy/6bc084eb-e009-4ef0-8272-176448fa272e.zip (29.83 MB) to /tmp/zipdeploy/extracted
+2026-03-09T18:42:47  Updating submodules.
+2026-03-09T18:42:47  Preparing deployment for commit id '6afe7beb-1'.
+2026-03-09T18:42:47  PreDeployment: context.CleanOutputPath False
+2026-03-09T18:42:47  PreDeployment: context.OutputPath /home/site/wwwroot
+2026-03-09T18:42:47  Running build. Project type: OneDeploy
+2026-03-09T18:42:47  Copying the manifest
+2026-03-09T18:42:48  Running deployment command...
+2026-03-09T18:42:48    Command: /opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ False False  
+2026-03-09T18:42:48    Run rsync from: /tmp/zipdeploy/extracted/ to: /home/site/wwwroot/ in 8 parallel threads
+2026-03-09T18:42:48    Delete options: clean=False, use manifest=False, directory to ignore=
+2026-03-09T18:42:48    Prev manifest = /home/site/deployments/39fb8eb1-12ec-4b14-9849-2f6385897d44/manifest and next /home/site/deployments/6afe7beb-166c-4970-ab19-efe0972b6d39/manifest
+2026-03-09T18:42:48    Cleaning up /tmp//filelist.txt and /tmp//splits
+2026-03-09T18:42:48    Creating a list of all files at /tmp//filelist.txt
+2026-03-09T18:42:48    No directory to exclude.
+2026-03-09T18:42:48    Created /tmp//filelist.txt. Total number of files to be synced = 105.
+2026-03-09T18:42:49    Created batches from the list of files. Processing 14 files in each thread
+2026-03-09T18:42:49    Running rsync for filelist /tmp//splits/split.ac from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+2026-03-09T18:42:49    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+2026-03-09T18:42:49    Running rsync for filelist /tmp//splits/split.ad from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+2026-03-09T18:42:49    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+2026-03-09T18:42:49    Running rsync for filelist /tmp//splits/split.aa from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+2026-03-09T18:42:49    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+2026-03-09T18:42:49    Running rsync for filelist /tmp//splits/split.ae from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+2026-03-09T18:42:49    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:49    Running rsync for filelist /tmp//splits/split.af from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+2026-03-09T18:42:49    Running rsync for filelist /tmp//splits/split.ah from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+nvalid argument (22)
+2026-03-09T18:42:50    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+2026-03-09T18:42:50    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+2026-03-09T18:42:50    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+2026-03-09T18:42:50    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+2026-03-09T18:42:50    
+2026-03-09T18:42:50    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:50    Number of files: 14 (reg: 14)
+2026-03-09T18:42:51    Number of created files: 1 (reg: 1)
+ailed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+2026-03-09T18:42:51    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+2026-03-09T18:42:51    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+2026-03-09T18:42:51    Number of regular files transferred: 7
+2026-03-09T18:42:51    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:51    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+2026-03-09T18:42:51    Total transferred file size: 274.30K bytes
+o stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+2026-03-09T18:42:51    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+2026-03-09T18:42:51    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+2026-03-09T18:42:51    Matched data: 0 bytes
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+2026-03-09T18:42:52    File list size: 0
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:52    File list generation time: 0.059 seconds
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+2026-03-09T18:42:52    File list transfer time: 0.000 seconds
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:52    Total bytes sent: 133.95K
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+2026-03-09T18:42:52    Total bytes received: 149
+nerator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+2026-03-09T18:42:52    
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+2026-03-09T18:42:52    sent 133.95K bytes  received 149 bytes  53.64K bytes/sec
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+2026-03-09T18:42:52    
+2026-03-09T18:42:52    Number of files: 7 (reg: 7)
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:52    Number of created files: 0
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+2026-03-09T18:42:52    Number of deleted files: 0
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+2026-03-09T18:42:52    Number of regular files transferred: 4
+2026-03-09T18:42:52    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:52    Total file size: 1.89M bytes
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+2026-03-09T18:42:53    Literal data: 532.25K bytes
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:53    Matched data: 0 bytes
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:53    File list size: 0
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+2026-03-09T18:42:53    File list generation time: 0.001 seconds
+2026-03-09T18:42:53    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:53    File list transfer time: 0.000 seconds
+2026-03-09T18:42:53    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:53    Total bytes sent: 217.24K
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+2026-03-09T18:42:53    Total bytes received: 88
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:53    
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+2026-03-09T18:42:53    sent 217.24K bytes  received 88 bytes  144.89K bytes/sec
+2026-03-09T18:42:53    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:53    total size is 1.89M  speedup is 8.70
+2026-03-09T18:42:53    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:53    Attempt 1: Rsync for filelist /tmp//splits/split.ah completed with exit code 23
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+2026-03-09T18:42:53    Attempt 1: Rsync for filelist /tmp//splits/split.ac completed with exit code 23
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+2026-03-09T18:42:53    
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:53    Number of files: 14 (reg: 14)
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+2026-03-09T18:42:53    Number of created files: 0
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+2026-03-09T18:42:53    Number of deleted files: 0
+2026-03-09T18:42:53    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+2026-03-09T18:42:53    Number of regular files transferred: 9
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+2026-03-09T18:42:54    Total file size: 8.18M bytes
+2026-03-09T18:42:54    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:54    Total transferred file size: 516.10K bytes
+2026-03-09T18:42:54    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:54    Literal data: 516.10K bytes
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+2026-03-09T18:42:54    Matched data: 0 bytes
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:54    File list size: 0
+2026-03-09T18:42:54    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:54    File list generation time: 0.002 seconds
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+2026-03-09T18:42:54    File list transfer time: 0.000 seconds
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+2026-03-09T18:42:54    Total bytes sent: 213.75K
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+2026-03-09T18:42:54    
+2026-03-09T18:42:54    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:54    sent 213.75K bytes  received 187 bytes  142.62K bytes/sec
+2026-03-09T18:42:54    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:54    total size is 8.18M  speedup is 38.22
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BlackItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:54    Attempt 1: Rsync for filelist /tmp//splits/split.ad completed with exit code 23
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+2026-03-09T18:42:54    
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+2026-03-09T18:42:54    Number of files: 14 (reg: 14)
+2026-03-09T18:42:54    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:54    Number of created files: 0
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+2026-03-09T18:42:55    Number of deleted files: 0
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:55    Number of regular files transferred: 8
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+2026-03-09T18:42:55    Total file size: 15.43M bytes
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+2026-03-09T18:42:55    Total transferred file size: 808.52K bytes
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:55    Literal data: 808.52K bytes
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+2026-03-09T18:42:55    Matched data: 0 bytes
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:55    File list size: 0
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+2026-03-09T18:42:55    File list generation time: 0.001 seconds
+2026-03-09T18:42:55    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:55    File list transfer time: 0.000 seconds
+2026-03-09T18:42:55    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:55    Total bytes sent: 283.03K
+nerator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+2026-03-09T18:42:55    Total bytes received: 168
+nerator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+2026-03-09T18:42:55    
+2026-03-09T18:42:55    sent 283.03K bytes  received 168 bytes  113.28K bytes/sec
+ite/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:55    total size is 15.43M  speedup is 54.50
+ed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+2026-03-09T18:42:55    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+2026-03-09T18:42:55    Attempt 1: Rsync for filelist /tmp//splits/split.aa completed with exit code 23
+2026-03-09T18:42:55    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:56    
+sync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:56    Number of files: 7 (reg: 7)
+rator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+2026-03-09T18:42:56    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:56    Number of created files: 0
+2026-03-09T18:42:56    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:56    Number of deleted files: 0
+2026-03-09T18:42:56    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:56    Number of regular files transferred: 0
+2026-03-09T18:42:56    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+2026-03-09T18:42:56    Total file size: 1.89M bytes
+2026-03-09T18:42:56    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+2026-03-09T18:42:56    Total transferred file size: 0 bytes
+2026-03-09T18:42:56    rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+2026-03-09T18:42:56    Literal data: 0 bytes
+2026-03-09T18:42:56    Matched data: 0 bytes
+2026-03-09T18:42:56    File list size: 0
+2026-03-09T18:42:56    File list generation time: 0.001 seconds
+2026-03-09T18:42:56    File list transfer time: 0.000 seconds
+2026-03-09T18:42:56    Total bytes sent: 354
+2026-03-09T18:42:56    Total bytes received: 24
+2026-03-09T18:42:56    
+2026-03-09T18:42:56    sent 354 bytes  received 24 bytes  756.00 bytes/sec
+2026-03-09T18:42:56    total size is 1.89M  speedup is 5,001.80
+2026-03-09T18:42:56    Attempt 2: Rsync for filelist /tmp//splits/split.ah completed with exit code 23
+2026-03-09T18:42:56    
+2026-03-09T18:42:56    Number of files: 14 (reg: 14)
+2026-03-09T18:42:56    Number of created files: 0
+2026-03-09T18:42:56    Number of deleted files: 0
+2026-03-09T18:42:56    Number of regular files transferred: 0
+2026-03-09T18:42:56    Total file size: 8.12M bytes
+2026-03-09T18:42:56    Total transferred file size: 0 bytes
+2026-03-09T18:42:56    Literal data: 0 bytes
+2026-03-09T18:42:56    Matched data: 0 bytes
+2026-03-09T18:42:56    File list size: 0
+2026-03-09T18:42:56    File list generation time: 0.001 seconds
+2026-03-09T18:42:56    File list transfer time: 0.000 seconds
+2026-03-09T18:42:57    Total bytes sent: 712
+2026-03-09T18:42:57    Total bytes received: 37
+2026-03-09T18:42:57    
+2026-03-09T18:42:57    sent 712 bytes  received 37 bytes  499.33 bytes/sec
+2026-03-09T18:42:57    total size is 8.12M  speedup is 10,836.16
+2026-03-09T18:42:57    Attempt 2: Rsync for filelist /tmp//splits/split.ac completed with exit code 23
+2026-03-09T18:42:57    
+2026-03-09T18:42:57    Number of files: 14 (reg: 14)
+2026-03-09T18:42:57    Number of created files: 0
+2026-03-09T18:42:57    Number of deleted files: 0
+2026-03-09T18:42:57    Number of regular files transferred: 7
+2026-03-09T18:42:57    Total file size: 15.84M bytes
+2026-03-09T18:42:57    Total transferred file size: 962.24K bytes
+2026-03-09T18:42:57    Literal data: 962.24K bytes
+2026-03-09T18:42:57    Matched data: 0 bytes
+2026-03-09T18:42:57    File list size: 0
+2026-03-09T18:42:57    File list generation time: 0.105 seconds
+2026-03-09T18:42:57    File list transfer time: 0.000 seconds
+2026-03-09T18:42:57    Total bytes sent: 385.42K
+2026-03-09T18:42:57    Total bytes received: 149
+2026-03-09T18:42:57    
+2026-03-09T18:42:57    sent 385.42K bytes  received 149 bytes  154.23K bytes/sec
+2026-03-09T18:42:57    total size is 15.84M  speedup is 41.08
+2026-03-09T18:42:57    Attempt 1: Rsync for filelist /tmp//splits/split.ae completed with exit code 23
+2026-03-09T18:42:57    
+2026-03-09T18:42:57    Number of files: 14 (reg: 14)
+2026-03-09T18:42:57    Number of created files: 0
+2026-03-09T18:42:57    Number of deleted files: 0
+2026-03-09T18:42:57    Number of regular files transferred: 0
+2026-03-09T18:42:57    Total file size: 15.43M bytes
+2026-03-09T18:42:57    Total transferred file size: 0 bytes
+2026-03-09T18:42:57    Literal data: 0 bytes
+2026-03-09T18:42:57    Matched data: 0 bytes
+2026-03-09T18:42:57    File list size: 0
+2026-03-09T18:42:57    File list generation time: 0.002 seconds
+2026-03-09T18:42:57    File list transfer time: 0.000 seconds
+2026-03-09T18:42:57    Total bytes sent: 738
+2026-03-09T18:42:57    Total bytes received: 40
+2026-03-09T18:42:57    
+2026-03-09T18:42:57    sent 738 bytes  received 40 bytes  1.56K bytes/sec
+2026-03-09T18:42:57    total size is 15.43M  speedup is 19,839.04
+2026-03-09T18:42:57    Attempt 2: Rsync for filelist /tmp//splits/split.aa completed with exit code 23
+2026-03-09T18:42:57    
+2026-03-09T18:42:57    Number of files: 14 (reg: 14)
+2026-03-09T18:42:57    Number of created files: 1 (reg: 1)
+2026-03-09T18:42:57    Number of deleted files: 0
+2026-03-09T18:42:57    Number of regular files transferred: 8
+2026-03-09T18:42:57    Total file size: 11.62M bytes
+2026-03-09T18:42:57    Total transferred file size: 1.62M bytes
+2026-03-09T18:42:58    Literal data: 1.62M bytes
+2026-03-09T18:42:58    Matched data: 0 bytes
+2026-03-09T18:42:58    File list size: 0
+2026-03-09T18:42:58    File list generation time: 0.029 seconds
+2026-03-09T18:42:58    File list transfer time: 0.000 seconds
+2026-03-09T18:42:58    Total bytes sent: 575.58K
+2026-03-09T18:42:58    Total bytes received: 168
+2026-03-09T18:42:58    
+2026-03-09T18:42:58    sent 575.58K bytes  received 168 bytes  164.50K bytes/sec
+2026-03-09T18:42:58    total size is 11.62M  speedup is 20.18
+2026-03-09T18:42:58    Attempt 1: Rsync for filelist /tmp//splits/split.ab completed with exit code 23
+2026-03-09T18:42:58    
+2026-03-09T18:42:58    Number of files: 14 (reg: 14)
+2026-03-09T18:42:58    Number of created files: 0
+2026-03-09T18:42:58    Number of deleted files: 0
+2026-03-09T18:42:58    Number of regular files transferred: 0
+2026-03-09T18:42:58    Total file size: 8.18M bytes
+2026-03-09T18:42:58    Total transferred file size: 0 bytes
+2026-03-09T18:42:58    Literal data: 0 bytes
+2026-03-09T18:42:58    Matched data: 0 bytes
+2026-03-09T18:42:58    File list size: 0
+2026-03-09T18:42:58    File list generation time: 0.001 seconds
+2026-03-09T18:42:58    File list transfer time: 0.000 seconds
+2026-03-09T18:42:58    Total bytes sent: 773
+2026-03-09T18:42:58    Total bytes received: 43
+2026-03-09T18:42:58    
+2026-03-09T18:42:58    sent 773 bytes  received 43 bytes  1.63K bytes/sec
+2026-03-09T18:42:58    total size is 8.18M  speedup is 10,020.95
+2026-03-09T18:42:58    Attempt 2: Rsync for filelist /tmp//splits/split.ad completed with exit code 23
+2026-03-09T18:42:58    
+2026-03-09T18:42:58    Number of files: 14 (reg: 14)
+2026-03-09T18:42:58    Number of created files: 0
+2026-03-09T18:42:58    Number of deleted files: 0
+2026-03-09T18:42:58    Number of regular files transferred: 0
+2026-03-09T18:42:58    Total file size: 15.84M bytes
+2026-03-09T18:42:58    Total transferred file size: 0 bytes
+2026-03-09T18:42:58    Literal data: 0 bytes
+2026-03-09T18:42:58    Matched data: 0 bytes
+2026-03-09T18:42:58    File list size: 0
+2026-03-09T18:42:59    File list generation time: 0.049 seconds
+2026-03-09T18:42:59    File list transfer time: 0.000 seconds
+2026-03-09T18:42:59    Total bytes sent: 736
+2026-03-09T18:42:59    Total bytes received: 37
+2026-03-09T18:42:59    
+2026-03-09T18:42:59    sent 736 bytes  received 37 bytes  1.55K bytes/sec
+2026-03-09T18:42:59    total size is 15.84M  speedup is 20,488.44
+2026-03-09T18:42:59    Attempt 2: Rsync for filelist /tmp//splits/split.ae completed with exit code 23
+2026-03-09T18:42:59    
+2026-03-09T18:42:59    Number of files: 14 (reg: 14)
+2026-03-09T18:42:59    Number of created files: 0
+2026-03-09T18:42:59    Number of deleted files: 0
+2026-03-09T18:42:59    Number of regular files transferred: 0
+2026-03-09T18:42:59    Total file size: 11.62M bytes
+2026-03-09T18:42:59    Total transferred file size: 0 bytes
+2026-03-09T18:42:59    Literal data: 0 bytes
+2026-03-09T18:42:59    Matched data: 0 bytes
+2026-03-09T18:42:59    File list size: 0
+2026-03-09T18:42:59    File list generation time: 0.001 seconds
+2026-03-09T18:42:59    File list transfer time: 0.000 seconds
+2026-03-09T18:42:59    Total bytes sent: 682
+2026-03-09T18:42:59    Total bytes received: 40
+2026-03-09T18:42:59    
+2026-03-09T18:42:59    sent 682 bytes  received 40 bytes  1.44K bytes/sec
+2026-03-09T18:42:59    total size is 11.62M  speedup is 16,091.31
+2026-03-09T18:42:59    Attempt 2: Rsync for filelist /tmp//splits/split.ab completed with exit code 23
+2026-03-09T18:42:59    
+2026-03-09T18:42:59    Number of files: 14 (reg: 14)
+2026-03-09T18:42:59    Number of created files: 0
+2026-03-09T18:42:59    Number of deleted files: 0
+2026-03-09T18:42:59    Number of regular files transferred: 12
+2026-03-09T18:42:59    Total file size: 4.73M bytes
+2026-03-09T18:42:59    Total transferred file size: 3.40M bytes
+2026-03-09T18:42:59    Literal data: 3.40M bytes
+2026-03-09T18:42:59    Matched data: 0 bytes
+2026-03-09T18:42:59    File list size: 0
+2026-03-09T18:43:00    File list generation time: 0.001 seconds
+2026-03-09T18:43:00    File list transfer time: 0.000 seconds
+2026-03-09T18:43:00    Total bytes sent: 1.16M
+2026-03-09T18:43:00    Total bytes received: 244
+2026-03-09T18:43:00    
+2026-03-09T18:43:00    sent 1.16M bytes  received 244 bytes  331.97K bytes/sec
+2026-03-09T18:43:00    total size is 4.73M  speedup is 4.07
+2026-03-09T18:43:00    Attempt 1: Rsync for filelist /tmp//splits/split.ag completed with exit code 23
+2026-03-09T18:43:00    
+2026-03-09T18:43:00    Number of files: 14 (reg: 14)
+2026-03-09T18:43:00    Number of created files: 0
+2026-03-09T18:43:00    Number of deleted files: 0
+2026-03-09T18:43:00    Number of regular files transferred: 0
+2026-03-09T18:43:00    Total file size: 4.73M bytes
+2026-03-09T18:43:00    Total transferred file size: 0 bytes
+2026-03-09T18:43:00    Literal data: 0 bytes
+2026-03-09T18:43:00    Matched data: 0 bytes
+2026-03-09T18:43:00    File list size: 0
+2026-03-09T18:43:00    File list generation time: 0.017 seconds
+2026-03-09T18:43:00    File list transfer time: 0.000 seconds
+2026-03-09T18:43:00    Total bytes sent: 660
+2026-03-09T18:43:00    Total bytes received: 52
+2026-03-09T18:43:00    
+2026-03-09T18:43:00    sent 660 bytes  received 52 bytes  1.42K bytes/sec
+2026-03-09T18:43:00    total size is 4.73M  speedup is 6,644.60
+2026-03-09T18:43:00    Attempt 2: Rsync for filelist /tmp//splits/split.ag completed with exit code 23
+2026-03-09T18:43:01    
+2026-03-09T18:43:01    Number of files: 14 (reg: 14)
+2026-03-09T18:43:01    Number of created files: 0
+2026-03-09T18:43:01    Number of deleted files: 0
+2026-03-09T18:43:01    Number of regular files transferred: 12
+2026-03-09T18:43:01    Total file size: 5.70M bytes
+2026-03-09T18:43:01    Total transferred file size: 4.51M bytes
+2026-03-09T18:43:01    Literal data: 4.51M bytes
+2026-03-09T18:43:01    Matched data: 0 bytes
+2026-03-09T18:43:01    File list size: 0
+2026-03-09T18:43:01    File list generation time: 0.011 seconds
+2026-03-09T18:43:01    File list transfer time: 0.000 seconds
+2026-03-09T18:43:01    Total bytes sent: 1.54M
+2026-03-09T18:43:01    Total bytes received: 244
+2026-03-09T18:43:01    
+2026-03-09T18:43:01    sent 1.54M bytes  received 244 bytes  440.45K bytes/sec
+2026-03-09T18:43:01    total size is 5.70M  speedup is 3.70
+2026-03-09T18:43:01    Attempt 1: Rsync for filelist /tmp//splits/split.af completed with exit code 23
+2026-03-09T18:43:01    
+2026-03-09T18:43:02    Number of files: 14 (reg: 14)
+2026-03-09T18:43:02    Number of created files: 0
+2026-03-09T18:43:02    Number of deleted files: 0
+2026-03-09T18:43:02    Number of regular files transferred: 0
+2026-03-09T18:43:02    Total file size: 5.70M bytes
+2026-03-09T18:43:02    Total transferred file size: 0 bytes
+2026-03-09T18:43:02    Literal data: 0 bytes
+2026-03-09T18:43:02    Matched data: 0 bytes
+2026-03-09T18:43:02    File list size: 0
+2026-03-09T18:43:02    File list generation time: 0.001 seconds
+2026-03-09T18:43:02    File list transfer time: 0.000 seconds
+2026-03-09T18:43:02    Total bytes sent: 705
+2026-03-09T18:43:02    Total bytes received: 52
+2026-03-09T18:43:02    
+2026-03-09T18:43:02    sent 705 bytes  received 52 bytes  1.51K bytes/sec
+2026-03-09T18:43:02    total size is 5.70M  speedup is 7,535.91
+2026-03-09T18:43:02    Attempt 2: Rsync for filelist /tmp//splits/split.af completed with exit code 23
+2026-03-09T18:43:02    An error has occurred during web site deployment.
+2026-03-09T18:43:02    Rsync failed in 5 seconds
+2026-03-09T18:43:02    rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BlackItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BlackItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+/opt/Kudu/Scripts/starter.sh /opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ False False  
+2026-03-09T18:43:02  
+2026-03-09T18:43:02  WARNING!! Exception in parallel rsync: ExitCode: 123  Output: Run rsync from: /tmp/zipdeploy/extracted/ to: /home/site/wwwroot/ in 8 parallel threads
+Delete options: clean=False  use manifest=False  directory to ignore=
+Prev manifest = /home/site/deployments/39fb8eb1-12ec-4b14-9849-2f6385897d44/manifest and next /home/site/deployments/6afe7beb-166c-4970-ab19-efe0972b6d39/manifest
+Cleaning up /tmp//filelist.txt and /tmp//splits
+Creating a list of all files at /tmp//filelist.txt
+No directory to exclude.
+Created /tmp//filelist.txt. Total number of files to be synced = 105.
+Created batches from the list of files. Processing 14 files in each thread
+Running rsync for filelist /tmp//splits/split.ac from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ad from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ab from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.aa from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ae from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.af from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ah from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+Running rsync for filelist /tmp//splits/split.ag from /tmp/zipdeploy/extracted/ to /home/site/wwwroot/
+
+Number of files: 14 (reg: 14)
+Number of created files: 1 (reg: 1)
+Number of deleted files: 0
+Number of regular files transferred: 7
+Total file size: 8.12M bytes
+Total transferred file size: 274.30K bytes
+Literal data: 274.30K bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.059 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 133.95K
+Total bytes received: 149
+
+sent 133.95K bytes  received 149 bytes  53.64K bytes/sec
+total size is 8.12M  speedup is 60.53
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 4
+Total file size: 1.89M bytes
+Total transferred file size: 532.25K bytes
+Literal data: 532.25K bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 217.24K
+Total bytes received: 88
+
+sent 217.24K bytes  received 88 bytes  144.89K bytes/sec
+total size is 1.89M  speedup is 8.70
+Attempt 1: Rsync for filelist /tmp//splits/split.ah completed with exit code 23
+Attempt 1: Rsync for filelist /tmp//splits/split.ac completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 9
+Total file size: 8.18M bytes
+Total transferred file size: 516.10K bytes
+Literal data: 516.10K bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.002 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 213.75K
+Total bytes received: 187
+
+sent 213.75K bytes  received 187 bytes  142.62K bytes/sec
+total size is 8.18M  speedup is 38.22
+Attempt 1: Rsync for filelist /tmp//splits/split.ad completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 8
+Total file size: 15.43M bytes
+Total transferred file size: 808.52K bytes
+Literal data: 808.52K bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 283.03K
+Total bytes received: 168
+
+sent 283.03K bytes  received 168 bytes  113.28K bytes/sec
+total size is 15.43M  speedup is 54.50
+Attempt 1: Rsync for filelist /tmp//splits/split.aa completed with exit code 23
+
+Number of files: 7 (reg: 7)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 1.89M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 354
+Total bytes received: 24
+
+sent 354 bytes  received 24 bytes  756.00 bytes/sec
+total size is 1.89M  speedup is 5 001.80
+Attempt 2: Rsync for filelist /tmp//splits/split.ah completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 8.12M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 712
+Total bytes received: 37
+
+sent 712 bytes  received 37 bytes  499.33 bytes/sec
+total size is 8.12M  speedup is 10 836.16
+Attempt 2: Rsync for filelist /tmp//splits/split.ac completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 7
+Total file size: 15.84M bytes
+Total transferred file size: 962.24K bytes
+Literal data: 962.24K bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.105 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 385.42K
+Total bytes received: 149
+
+sent 385.42K bytes  received 149 bytes  154.23K bytes/sec
+total size is 15.84M  speedup is 41.08
+Attempt 1: Rsync for filelist /tmp//splits/split.ae completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 15.43M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.002 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 738
+Total bytes received: 40
+
+sent 738 bytes  received 40 bytes  1.56K bytes/sec
+total size is 15.43M  speedup is 19 839.04
+Attempt 2: Rsync for filelist /tmp//splits/split.aa completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 1 (reg: 1)
+Number of deleted files: 0
+Number of regular files transferred: 8
+Total file size: 11.62M bytes
+Total transferred file size: 1.62M bytes
+Literal data: 1.62M bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.029 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 575.58K
+Total bytes received: 168
+
+sent 575.58K bytes  received 168 bytes  164.50K bytes/sec
+total size is 11.62M  speedup is 20.18
+Attempt 1: Rsync for filelist /tmp//splits/split.ab completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 8.18M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 773
+Total bytes received: 43
+
+sent 773 bytes  received 43 bytes  1.63K bytes/sec
+total size is 8.18M  speedup is 10 020.95
+Attempt 2: Rsync for filelist /tmp//splits/split.ad completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 15.84M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.049 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 736
+Total bytes received: 37
+
+sent 736 bytes  received 37 bytes  1.55K bytes/sec
+total size is 15.84M  speedup is 20 488.44
+Attempt 2: Rsync for filelist /tmp//splits/split.ae completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 11.62M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 682
+Total bytes received: 40
+
+sent 682 bytes  received 40 bytes  1.44K bytes/sec
+total size is 11.62M  speedup is 16 091.31
+Attempt 2: Rsync for filelist /tmp//splits/split.ab completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 12
+Total file size: 4.73M bytes
+Total transferred file size: 3.40M bytes
+Literal data: 3.40M bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 1.16M
+Total bytes received: 244
+
+sent 1.16M bytes  received 244 bytes  331.97K bytes/sec
+total size is 4.73M  speedup is 4.07
+Attempt 1: Rsync for filelist /tmp//splits/split.ag completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 4.73M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.017 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 660
+Total bytes received: 52
+
+sent 660 bytes  received 52 bytes  1.42K bytes/sec
+total size is 4.73M  speedup is 6 644.60
+Attempt 2: Rsync for filelist /tmp//splits/split.ag completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 12
+Total file size: 5.70M bytes
+Total transferred file size: 4.51M bytes
+Literal data: 4.51M bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.011 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 1.54M
+Total bytes received: 244
+
+sent 1.54M bytes  received 244 bytes  440.45K bytes/sec
+total size is 5.70M  speedup is 3.70
+Attempt 1: Rsync for filelist /tmp//splits/split.af completed with exit code 23
+
+Number of files: 14 (reg: 14)
+Number of created files: 0
+Number of deleted files: 0
+Number of regular files transferred: 0
+Total file size: 5.70M bytes
+Total transferred file size: 0 bytes
+Literal data: 0 bytes
+Matched data: 0 bytes
+File list size: 0
+File list generation time: 0.001 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 705
+Total bytes received: 52
+
+sent 705 bytes  received 52 bytes  1.51K bytes/sec
+total size is 5.70M  speedup is 7 535.91
+Attempt 2: Rsync for filelist /tmp//splits/split.af completed with exit code 23
+An error has occurred during web site deployment.
+Rsync failed in 5 seconds  Error: rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BlackItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BlackItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]  Kudu.Core.Infrastructure.CommandLineException: rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BlackItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Regular.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\OFL.txt": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Bold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Italic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-LightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-SemiBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-arm64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBold.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraBoldItalic.ttf": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Runtime.Caching.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BlackItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\osx-x64\native\libQuestPdfSkia.dylib": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLightItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Thin.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-arm64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x64\native\QuestPdfSkia.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win\lib\net6.0\System.Windows.Extensions.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Black.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ExtraLight.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Light.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-ThinItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\linux-musl-x64\native\libQuestPdfSkia.so": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\unix\lib\net6.0\System.Drawing.Common.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-Medium.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-MediumItalic.ttf": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/LatoFont\Lato-BoldItalic.ttf": Invalid argument (22)
+rsync: [generator] recv_generator: failed to stat "/home/site/wwwroot/runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll": Invalid argument (22)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1338) [sender=3.2.7]
+/opt/Kudu/Scripts/starter.sh /opt/Kudu/Scripts/parallel_rsync.sh /tmp/zipdeploy/extracted /home/site/wwwroot 8 /tmp/ False False  
+   at Kudu.Core.Infrastructure.Executable.ExecuteInternal(ITracer tracer  Func`2 onWriteOutput  Func`2 onWriteError  CancellationToken token  Encoding encoding  String arguments  Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 239
+   at Kudu.Core.Infrastructure.Executable.ExecuteWithProgressWriter(ILogger logger  ITracer tracer  CancellationToken token  String arguments  Object[] args) in /tmp/KuduLite/Kudu.Core/Infrastructure/Executable.cs:line 118
+   at Kudu.Core.Deployment.Generator.ExternalCommandBuilder.RunCommand(DeploymentContext context  String command  Boolean ignoreManifest  CancellationToken token  String message) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/ExternalCommandBuilder.cs:line 135
+   at Kudu.Core.Deployment.Generator.OneDeployBuilder.Build(DeploymentContext context  CancellationToken token) in /tmp/KuduLite/Kudu.Core/Deployment/Generator/OneDeployBuilder.cs:line 97
+2026-03-09T18:43:03  Incrementally deploying to /home/site/wwwroot
+2026-03-09T18:43:04  Deployment Failed. deployer = OneDeploy deploymentPath = OneDeploy

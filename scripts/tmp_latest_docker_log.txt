@@ -1,0 +1,529 @@
+﻿2026-03-03T00:03:32.9130236Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:03:37.4372538Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:03:37.4494501Z Container start method called.
+2026-03-03T00:03:37.4557581Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:03:37.4571827Z Establishing network.
+2026-03-03T00:03:37.4588655Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T00:03:43.1933199Z Container is starting.
+2026-03-03T00:03:43.2016968Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:03:43.2043297Z Establishing user namespace if not established already.
+2026-03-03T00:03:43.2101671Z Establishing network if not established already.
+2026-03-03T00:03:43.2205670Z Mounting volumes.
+2026-03-03T00:03:43.2570116Z Nested mountpoint 
+2026-03-03T00:03:43.4011809Z Nested mountpoint volatile/logs
+2026-03-03T00:03:43.4317094Z Nested mountpoint 
+2026-03-03T00:03:43.7222585Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T00:03:43.7314506Z Creating container.
+2026-03-03T00:03:43.7439321Z Creating pipes for streaming container io.
+2026-03-03T00:03:43.7542373Z Creating stdout named pipe at /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stdout_7bcbfb8fcf404321ad0329c70ebd26bc.
+2026-03-03T00:03:43.7809229Z Successfully created stdout named pipe at: /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stdout_7bcbfb8fcf404321ad0329c70ebd26bc.
+2026-03-03T00:03:43.7938073Z Opening named pipe /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stdout_7bcbfb8fcf404321ad0329c70ebd26bc for reading in non-blocking mode.
+2026-03-03T00:03:43.8005937Z Successfully opened named pipe: /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stdout_7bcbfb8fcf404321ad0329c70ebd26bc.
+2026-03-03T00:03:43.8019230Z Successfully removed non-blocking flag from /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stdout_7bcbfb8fcf404321ad0329c70ebd26bc.
+2026-03-03T00:03:43.8368783Z Creating stderr named pipe at /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stderr_602d2e58e1f540fda09432dd831d4442.
+2026-03-03T00:03:43.8398012Z Successfully created stderr named pipe at: /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stderr_602d2e58e1f540fda09432dd831d4442.
+2026-03-03T00:03:43.8642185Z Opening named pipe /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stderr_602d2e58e1f540fda09432dd831d4442 for reading in non-blocking mode.
+2026-03-03T00:03:43.8650847Z Successfully opened named pipe: /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stderr_602d2e58e1f540fda09432dd831d4442.
+2026-03-03T00:03:43.8652779Z Successfully removed non-blocking flag from /podr/container/pipe/f056b2e7dcc7_tesorerialamamedellin/stderr_602d2e58e1f540fda09432dd831d4442.
+2026-03-03T00:03:43.8844045Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T00:03:46.2860437Z Starting container: f056b2e7dcc7_tesorerialamamedellin.
+2026-03-03T00:03:46.5501810Z Starting watchers and probes.
+2026-03-03T00:03:46.5914015Z Starting metrics collection.
+2026-03-03T00:03:46.6280815Z Container is running.
+2026-03-03T00:03:46.6283097Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:03:46.9802417Z Container start method finished after 9530 ms.
+2026-03-03T00:03:47.0001451Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:03:47.0192775Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T00:05:01.6876341Z Site startup probe succeeded after 74.5820353 seconds.
+2026-03-03T00:05:04.7534868Z State: Starting, Action: WarmUpProbeSucceeded, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site startup probe succeeded after 74.5820353 seconds., DetailsLevel: INFO
+2026-03-03T00:05:05.3272320Z Site is running with deployment version: f8e69634-17e7-4a84-9e5a-40df2a7c5ca6
+2026-03-03T00:05:05.3377558Z Site started.
+2026-03-03T00:05:05.3378822Z State: Started, Action: None, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site started at 03/03/2026 00:05:05 (UTC), DetailsLevel: INFO
+2026-03-03T00:05:05.4362742Z Site is running with patch version PHP 8.2.30
+2026-03-03T00:05:25.9446116Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/02/2026 23:56:45 (UTC), DetailsLevel: INFO
+2026-03-03T00:05:25.9566810Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/02/2026 23:56:45 (UTC), DetailsLevel: INFO
+2026-03-03T00:05:25.9578037Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T00:05:26.1543474Z Stop and delete container. Retry count = 0
+2026-03-03T00:05:26.1548959Z Stopping container: 92c29fb9861a_tesorerialamamedellin.
+2026-03-03T00:05:31.6767130Z Deleting container: 92c29fb9861a_tesorerialamamedellin. Retry count = 0
+2026-03-03T00:05:32.7578313Z Container spec TerminationMessagePolicy  path 
+2026-03-03T00:05:32.7667591Z Container is terminated. Total time elapsed: 6801 ms.
+2026-03-03T00:05:32.7761627Z Site: tesorerialamamedellin stopped.
+2026-03-03T00:18:18.0909465Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:18:21.5699461Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:18:21.5784795Z Container start method called.
+2026-03-03T00:18:21.5793822Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.4:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:18:21.5796489Z Establishing network.
+2026-03-03T00:18:21.5867865Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T00:18:24.4880579Z Container is starting.
+2026-03-03T00:18:24.4896656Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:18:24.4968987Z Establishing user namespace if not established already.
+2026-03-03T00:18:24.4979228Z Establishing network if not established already.
+2026-03-03T00:18:24.5060533Z Mounting volumes.
+2026-03-03T00:18:24.5149767Z Nested mountpoint 
+2026-03-03T00:18:24.5939539Z Nested mountpoint volatile/logs
+2026-03-03T00:18:24.6587522Z Nested mountpoint 
+2026-03-03T00:18:24.7918635Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T00:18:24.7983323Z Creating container.
+2026-03-03T00:18:24.7996919Z Creating pipes for streaming container io.
+2026-03-03T00:18:24.8000067Z Creating stdout named pipe at /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stdout_5c6ffccef06d47118d06da8345417df0.
+2026-03-03T00:18:24.8016392Z Successfully created stdout named pipe at: /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stdout_5c6ffccef06d47118d06da8345417df0.
+2026-03-03T00:18:24.8105105Z Opening named pipe /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stdout_5c6ffccef06d47118d06da8345417df0 for reading in non-blocking mode.
+2026-03-03T00:18:24.8196222Z Successfully opened named pipe: /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stdout_5c6ffccef06d47118d06da8345417df0.
+2026-03-03T00:18:24.8269096Z Successfully removed non-blocking flag from /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stdout_5c6ffccef06d47118d06da8345417df0.
+2026-03-03T00:18:24.8285361Z Creating stderr named pipe at /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stderr_c0c86381c594457fa0d1ca4a330868f7.
+2026-03-03T00:18:24.8367978Z Successfully created stderr named pipe at: /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stderr_c0c86381c594457fa0d1ca4a330868f7.
+2026-03-03T00:18:24.8383403Z Opening named pipe /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stderr_c0c86381c594457fa0d1ca4a330868f7 for reading in non-blocking mode.
+2026-03-03T00:18:24.8385467Z Successfully opened named pipe: /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stderr_c0c86381c594457fa0d1ca4a330868f7.
+2026-03-03T00:18:24.8386626Z Successfully removed non-blocking flag from /podr/container/pipe/9c77c4fe061c_tesorerialamamedellin/stderr_c0c86381c594457fa0d1ca4a330868f7.
+2026-03-03T00:18:24.8466317Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T00:18:25.9571596Z Starting container: 9c77c4fe061c_tesorerialamamedellin.
+2026-03-03T00:18:26.1520117Z Starting watchers and probes.
+2026-03-03T00:18:26.1947197Z Starting metrics collection.
+2026-03-03T00:18:26.2064527Z Container is running.
+2026-03-03T00:18:26.2241029Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:18:26.4344149Z Container start method finished after 4855 ms.
+2026-03-03T00:18:26.4622504Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:18:26.4816124Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T00:18:57.7538227Z Site startup probe succeeded after 31.0986874 seconds.
+2026-03-03T00:18:58.3752058Z State: Starting, Action: WarmUpProbeSucceeded, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site startup probe succeeded after 31.0986874 seconds., DetailsLevel: INFO
+2026-03-03T00:18:58.7547157Z Site is running with deployment version: 12c7ca08-26b3-499b-b8ac-4dac0082e3ce
+2026-03-03T00:18:58.7833633Z Site started.
+2026-03-03T00:18:58.7855960Z State: Started, Action: None, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site started at 03/03/2026 00:18:58 (UTC), DetailsLevel: INFO
+2026-03-03T00:18:58.8029923Z Site is running with patch version PHP 8.2.30
+2026-03-03T00:19:19.3330238Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:05:05 (UTC), DetailsLevel: INFO
+2026-03-03T00:19:19.3403116Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:05:05 (UTC), DetailsLevel: INFO
+2026-03-03T00:19:19.3439159Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T00:19:19.3737250Z Stop and delete container. Retry count = 0
+2026-03-03T00:19:19.3780697Z Stopping container: f056b2e7dcc7_tesorerialamamedellin.
+2026-03-03T00:19:24.6887061Z Deleting container: f056b2e7dcc7_tesorerialamamedellin. Retry count = 0
+2026-03-03T00:19:25.0483769Z Container spec TerminationMessagePolicy  path 
+2026-03-03T00:19:25.0578066Z Container is terminated. Total time elapsed: 5710 ms.
+2026-03-03T00:19:25.0592654Z Site: tesorerialamamedellin stopped.
+2026-03-03T00:34:32.6467352Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:34:35.8726878Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:34:35.8836152Z Container start method called.
+2026-03-03T00:34:35.9005237Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:34:35.9138204Z Establishing network.
+2026-03-03T00:34:35.9236040Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T00:34:38.5375977Z Container is starting.
+2026-03-03T00:34:38.5385644Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:34:38.5391179Z Establishing user namespace if not established already.
+2026-03-03T00:34:38.5396428Z Establishing network if not established already.
+2026-03-03T00:34:38.5444557Z Mounting volumes.
+2026-03-03T00:34:38.5469787Z Nested mountpoint 
+2026-03-03T00:34:38.5952973Z Nested mountpoint volatile/logs
+2026-03-03T00:34:38.6326061Z Nested mountpoint 
+2026-03-03T00:34:38.8219545Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T00:34:38.8222421Z Creating container.
+2026-03-03T00:34:38.8315116Z Creating pipes for streaming container io.
+2026-03-03T00:34:38.8316831Z Creating stdout named pipe at /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stdout_7c50d3f116ec461c966e38dbd89ccd98.
+2026-03-03T00:34:38.8329354Z Successfully created stdout named pipe at: /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stdout_7c50d3f116ec461c966e38dbd89ccd98.
+2026-03-03T00:34:38.8351933Z Opening named pipe /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stdout_7c50d3f116ec461c966e38dbd89ccd98 for reading in non-blocking mode.
+2026-03-03T00:34:38.9016417Z Successfully opened named pipe: /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stdout_7c50d3f116ec461c966e38dbd89ccd98.
+2026-03-03T00:34:38.9033155Z Successfully removed non-blocking flag from /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stdout_7c50d3f116ec461c966e38dbd89ccd98.
+2026-03-03T00:34:38.9121528Z Creating stderr named pipe at /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stderr_d4273b06eca948bd9519a3b95ddc0246.
+2026-03-03T00:34:38.9221971Z Successfully created stderr named pipe at: /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stderr_d4273b06eca948bd9519a3b95ddc0246.
+2026-03-03T00:34:38.9223733Z Opening named pipe /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stderr_d4273b06eca948bd9519a3b95ddc0246 for reading in non-blocking mode.
+2026-03-03T00:34:38.9233026Z Successfully opened named pipe: /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stderr_d4273b06eca948bd9519a3b95ddc0246.
+2026-03-03T00:34:38.9234383Z Successfully removed non-blocking flag from /podr/container/pipe/9ffc9caee62f_tesorerialamamedellin/stderr_d4273b06eca948bd9519a3b95ddc0246.
+2026-03-03T00:34:38.9244295Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T00:34:39.9898133Z Starting container: 9ffc9caee62f_tesorerialamamedellin.
+2026-03-03T00:34:40.1124015Z Starting watchers and probes.
+2026-03-03T00:34:40.1197569Z Starting metrics collection.
+2026-03-03T00:34:40.1471617Z Container is running.
+2026-03-03T00:34:40.1789113Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:34:40.5785517Z Container start method finished after 4677 ms.
+2026-03-03T00:34:40.5790326Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:34:40.5790625Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T00:35:20.7780981Z Site startup probe succeeded after 40.1483391 seconds.
+2026-03-03T00:35:21.3811328Z State: Starting, Action: WarmUpProbeSucceeded, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site startup probe succeeded after 40.1483391 seconds., DetailsLevel: INFO
+2026-03-03T00:35:21.5114331Z Site is running with deployment version: 62693ec6-605d-4ad0-a27f-76d8fb24fd36
+2026-03-03T00:35:21.5183676Z Site started.
+2026-03-03T00:35:21.5184906Z State: Started, Action: None, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site started at 03/03/2026 00:35:21 (UTC), DetailsLevel: INFO
+2026-03-03T00:35:21.5216446Z Site is running with patch version PHP 8.2.30
+2026-03-03T00:35:41.6548812Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:18:58 (UTC), DetailsLevel: INFO
+2026-03-03T00:35:41.6683361Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:18:58 (UTC), DetailsLevel: INFO
+2026-03-03T00:35:41.6698142Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T00:35:41.7639650Z Stop and delete container. Retry count = 0
+2026-03-03T00:35:41.7643853Z Stopping container: 9c77c4fe061c_tesorerialamamedellin.
+2026-03-03T00:35:47.9906251Z Deleting container: 9c77c4fe061c_tesorerialamamedellin. Retry count = 0
+2026-03-03T00:35:48.5931095Z Container spec TerminationMessagePolicy  path 
+2026-03-03T00:35:48.6018095Z Container is terminated. Total time elapsed: 6923 ms.
+2026-03-03T00:35:48.6100881Z Site: tesorerialamamedellin stopped.
+2026-03-03T00:49:49.3141389Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:49:53.2480117Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:49:53.3251217Z Container start method called.
+2026-03-03T00:49:53.3252829Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:49:53.3515350Z Establishing network.
+2026-03-03T00:49:53.3530016Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T00:50:05.6753310Z Container is starting.
+2026-03-03T00:50:05.6754537Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:50:05.6755652Z Establishing user namespace if not established already.
+2026-03-03T00:50:05.6756729Z Establishing network if not established already.
+2026-03-03T00:50:05.6758036Z Mounting volumes.
+2026-03-03T00:50:05.6760044Z Nested mountpoint 
+2026-03-03T00:50:05.7535101Z Nested mountpoint volatile/logs
+2026-03-03T00:50:05.8848331Z Nested mountpoint 
+2026-03-03T00:50:06.1190423Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T00:50:06.1287533Z Creating container.
+2026-03-03T00:50:06.1446357Z Creating pipes for streaming container io.
+2026-03-03T00:50:06.1461995Z Creating stdout named pipe at /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stdout_8d90951443214c59bf126ba3aedaf45a.
+2026-03-03T00:50:06.1842154Z Successfully created stdout named pipe at: /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stdout_8d90951443214c59bf126ba3aedaf45a.
+2026-03-03T00:50:06.1862527Z Opening named pipe /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stdout_8d90951443214c59bf126ba3aedaf45a for reading in non-blocking mode.
+2026-03-03T00:50:06.1946306Z Successfully opened named pipe: /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stdout_8d90951443214c59bf126ba3aedaf45a.
+2026-03-03T00:50:06.2232280Z Successfully removed non-blocking flag from /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stdout_8d90951443214c59bf126ba3aedaf45a.
+2026-03-03T00:50:06.2234379Z Creating stderr named pipe at /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stderr_3be9f69bcc9047faa77e26e2ddb874b9.
+2026-03-03T00:50:06.2236741Z Successfully created stderr named pipe at: /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stderr_3be9f69bcc9047faa77e26e2ddb874b9.
+2026-03-03T00:50:06.2238026Z Opening named pipe /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stderr_3be9f69bcc9047faa77e26e2ddb874b9 for reading in non-blocking mode.
+2026-03-03T00:50:06.2239371Z Successfully opened named pipe: /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stderr_3be9f69bcc9047faa77e26e2ddb874b9.
+2026-03-03T00:50:06.2241760Z Successfully removed non-blocking flag from /podr/container/pipe/30d4a6ade985_tesorerialamamedellin/stderr_3be9f69bcc9047faa77e26e2ddb874b9.
+2026-03-03T00:50:06.2244200Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T00:50:08.5498874Z Starting container: 30d4a6ade985_tesorerialamamedellin.
+2026-03-03T00:50:08.8607288Z Starting watchers and probes.
+2026-03-03T00:50:08.8628174Z Starting metrics collection.
+2026-03-03T00:50:08.8630133Z Container is running.
+2026-03-03T00:50:08.8634536Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:50:09.1279307Z Container start method finished after 15753 ms.
+2026-03-03T00:50:09.1362463Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:50:09.1366036Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T00:51:00.3639135Z Site startup probe succeeded after 51.0473733 seconds.
+2026-03-03T00:51:00.6032895Z State: Starting, Action: WarmUpProbeSucceeded, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site startup probe succeeded after 51.0473733 seconds., DetailsLevel: INFO
+2026-03-03T00:51:00.7138402Z Site is running with deployment version: 62693ec6-605d-4ad0-a27f-76d8fb24fd36
+2026-03-03T00:51:00.7162184Z Site started.
+2026-03-03T00:51:00.7226505Z State: Started, Action: None, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site started at 03/03/2026 00:51:00 (UTC), DetailsLevel: INFO
+2026-03-03T00:51:00.7253557Z Site is running with patch version PHP 8.2.30
+2026-03-03T00:51:20.8729996Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:35:21 (UTC), DetailsLevel: INFO
+2026-03-03T00:51:20.8734642Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:35:21 (UTC), DetailsLevel: INFO
+2026-03-03T00:51:20.8736281Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T00:51:21.0330808Z Stop and delete container. Retry count = 0
+2026-03-03T00:51:21.0812149Z Stopping container: 9ffc9caee62f_tesorerialamamedellin.
+2026-03-03T00:51:26.3160950Z Deleting container: 9ffc9caee62f_tesorerialamamedellin. Retry count = 0
+2026-03-03T00:51:26.8997158Z Container spec TerminationMessagePolicy  path 
+2026-03-03T00:51:26.9144716Z Container is terminated. Total time elapsed: 6033 ms.
+2026-03-03T00:51:26.9271930Z Site: tesorerialamamedellin stopped.
+2026-03-03T00:55:54.0582375Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:55:57.1637608Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T00:55:57.1740366Z Container start method called.
+2026-03-03T00:55:57.1823520Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.4:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:55:57.1839659Z Establishing network.
+2026-03-03T00:55:57.2138050Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T00:56:00.1017855Z Container is starting.
+2026-03-03T00:56:00.1018980Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T00:56:00.1020495Z Establishing user namespace if not established already.
+2026-03-03T00:56:00.1021647Z Establishing network if not established already.
+2026-03-03T00:56:00.1023680Z Mounting volumes.
+2026-03-03T00:56:00.1031797Z Nested mountpoint 
+2026-03-03T00:56:00.1716752Z Nested mountpoint volatile/logs
+2026-03-03T00:56:00.2200952Z Nested mountpoint 
+2026-03-03T00:56:00.3080013Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T00:56:00.3172565Z Creating container.
+2026-03-03T00:56:00.4073089Z Creating pipes for streaming container io.
+2026-03-03T00:56:00.4152893Z Creating stdout named pipe at /podr/container/pipe/28771b50b993_tesorerialamamedellin/stdout_d4f530667c174d9381cb594fd97c6788.
+2026-03-03T00:56:00.4259668Z Successfully created stdout named pipe at: /podr/container/pipe/28771b50b993_tesorerialamamedellin/stdout_d4f530667c174d9381cb594fd97c6788.
+2026-03-03T00:56:00.4269993Z Opening named pipe /podr/container/pipe/28771b50b993_tesorerialamamedellin/stdout_d4f530667c174d9381cb594fd97c6788 for reading in non-blocking mode.
+2026-03-03T00:56:00.4346791Z Successfully opened named pipe: /podr/container/pipe/28771b50b993_tesorerialamamedellin/stdout_d4f530667c174d9381cb594fd97c6788.
+2026-03-03T00:56:00.4354233Z Successfully removed non-blocking flag from /podr/container/pipe/28771b50b993_tesorerialamamedellin/stdout_d4f530667c174d9381cb594fd97c6788.
+2026-03-03T00:56:00.4362890Z Creating stderr named pipe at /podr/container/pipe/28771b50b993_tesorerialamamedellin/stderr_ccbdfe1babe244f59bbff802c0c0f8ce.
+2026-03-03T00:56:00.4375514Z Successfully created stderr named pipe at: /podr/container/pipe/28771b50b993_tesorerialamamedellin/stderr_ccbdfe1babe244f59bbff802c0c0f8ce.
+2026-03-03T00:56:00.4459794Z Opening named pipe /podr/container/pipe/28771b50b993_tesorerialamamedellin/stderr_ccbdfe1babe244f59bbff802c0c0f8ce for reading in non-blocking mode.
+2026-03-03T00:56:00.4462130Z Successfully opened named pipe: /podr/container/pipe/28771b50b993_tesorerialamamedellin/stderr_ccbdfe1babe244f59bbff802c0c0f8ce.
+2026-03-03T00:56:00.4464905Z Successfully removed non-blocking flag from /podr/container/pipe/28771b50b993_tesorerialamamedellin/stderr_ccbdfe1babe244f59bbff802c0c0f8ce.
+2026-03-03T00:56:00.4467332Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T00:56:01.3039016Z Starting container: 28771b50b993_tesorerialamamedellin.
+2026-03-03T00:56:01.4202718Z Starting watchers and probes.
+2026-03-03T00:56:01.4222609Z Starting metrics collection.
+2026-03-03T00:56:01.4224681Z Container is running.
+2026-03-03T00:56:01.4226133Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:56:01.7083732Z Container start method finished after 4534 ms.
+2026-03-03T00:56:01.7086147Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T00:56:01.7086462Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T00:56:35.7670665Z Site startup probe succeeded after 34.0417133 seconds.
+2026-03-03T00:56:35.9994086Z State: Starting, Action: WarmUpProbeSucceeded, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site startup probe succeeded after 34.0417133 seconds., DetailsLevel: INFO
+2026-03-03T00:56:36.1399381Z Site is running with deployment version: e9036ff0-4c57-4f7f-b23e-12b74f8856f2
+2026-03-03T00:56:36.1874888Z Site started.
+2026-03-03T00:56:36.2167379Z State: Started, Action: None, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site started at 03/03/2026 00:56:36 (UTC), DetailsLevel: INFO
+2026-03-03T00:56:36.2444519Z Site is running with patch version PHP 8.2.30
+2026-03-03T00:56:56.2844332Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:51:00 (UTC), DetailsLevel: INFO
+2026-03-03T00:56:56.3021485Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:51:00 (UTC), DetailsLevel: INFO
+2026-03-03T00:56:56.3029535Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T00:56:56.3626533Z Stop and delete container. Retry count = 0
+2026-03-03T00:56:56.3715200Z Stopping container: 30d4a6ade985_tesorerialamamedellin.
+2026-03-03T00:57:01.6090899Z Deleting container: 30d4a6ade985_tesorerialamamedellin. Retry count = 0
+2026-03-03T00:57:02.2576437Z Container spec TerminationMessagePolicy  path 
+2026-03-03T00:57:02.2592195Z Container is terminated. Total time elapsed: 5956 ms.
+2026-03-03T00:57:02.3163034Z Site: tesorerialamamedellin stopped.
+2026-03-03T03:38:44.4814985Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:38:48.3669022Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:38:48.3872130Z Container start method called.
+2026-03-03T03:38:48.4130563Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:38:48.4147014Z Establishing network.
+2026-03-03T03:38:48.4156925Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T03:38:58.0013819Z Container is starting.
+2026-03-03T03:38:58.0034656Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:38:58.0099699Z Establishing user namespace if not established already.
+2026-03-03T03:38:58.0105269Z Establishing network if not established already.
+2026-03-03T03:38:58.0110798Z Mounting volumes.
+2026-03-03T03:38:58.0116235Z Nested mountpoint 
+2026-03-03T03:38:58.0501581Z Nested mountpoint volatile/logs
+2026-03-03T03:38:58.1438556Z Nested mountpoint 
+2026-03-03T03:38:58.4386041Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T03:38:58.4394412Z Creating container.
+2026-03-03T03:38:58.4396501Z Creating pipes for streaming container io.
+2026-03-03T03:38:58.4398976Z Creating stdout named pipe at /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stdout_b9bafe1d0e6a402db9ae48d9f07fa537.
+2026-03-03T03:38:58.4402127Z Successfully created stdout named pipe at: /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stdout_b9bafe1d0e6a402db9ae48d9f07fa537.
+2026-03-03T03:38:58.4403783Z Opening named pipe /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stdout_b9bafe1d0e6a402db9ae48d9f07fa537 for reading in non-blocking mode.
+2026-03-03T03:38:58.4405489Z Successfully opened named pipe: /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stdout_b9bafe1d0e6a402db9ae48d9f07fa537.
+2026-03-03T03:38:58.4407006Z Successfully removed non-blocking flag from /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stdout_b9bafe1d0e6a402db9ae48d9f07fa537.
+2026-03-03T03:38:58.5099674Z Creating stderr named pipe at /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stderr_21d29771e35548489d7799a4ab9a83d5.
+2026-03-03T03:38:58.5642845Z Successfully created stderr named pipe at: /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stderr_21d29771e35548489d7799a4ab9a83d5.
+2026-03-03T03:38:58.5646932Z Opening named pipe /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stderr_21d29771e35548489d7799a4ab9a83d5 for reading in non-blocking mode.
+2026-03-03T03:38:58.5666273Z Successfully opened named pipe: /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stderr_21d29771e35548489d7799a4ab9a83d5.
+2026-03-03T03:38:58.5670485Z Successfully removed non-blocking flag from /podr/container/pipe/e2a95171bd57_tesorerialamamedellin/stderr_21d29771e35548489d7799a4ab9a83d5.
+2026-03-03T03:38:58.5747858Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T03:38:59.6260720Z Starting container: e2a95171bd57_tesorerialamamedellin.
+2026-03-03T03:38:59.7694754Z Starting watchers and probes.
+2026-03-03T03:38:59.7699567Z Starting metrics collection.
+2026-03-03T03:38:59.7701260Z Container is running.
+2026-03-03T03:38:59.7702611Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:38:59.8319939Z Container start method finished after 11444 ms.
+2026-03-03T03:38:59.9178575Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:38:59.9438126Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T03:40:08.1824964Z Site startup probe succeeded after 68.1042912 seconds.
+2026-03-03T03:40:08.8562648Z State: Starting, Action: WarmUpProbeSucceeded, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site startup probe succeeded after 68.1042912 seconds., DetailsLevel: INFO
+2026-03-03T03:40:09.0917629Z Site is running with deployment version: e9036ff0-4c57-4f7f-b23e-12b74f8856f2
+2026-03-03T03:40:09.1211701Z Site started.
+2026-03-03T03:40:09.1598942Z State: Started, Action: None, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site started at 03/03/2026 03:40:09 (UTC), DetailsLevel: INFO
+2026-03-03T03:40:09.1708623Z Site is running with patch version PHP 8.2.30
+2026-03-03T03:40:29.4423059Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:56:36 (UTC), DetailsLevel: INFO
+2026-03-03T03:40:29.4645343Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 00:56:36 (UTC), DetailsLevel: INFO
+2026-03-03T03:40:29.4647386Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T03:40:29.4932080Z Stop and delete container. Retry count = 0
+2026-03-03T03:40:29.4937185Z Stopping container: 28771b50b993_tesorerialamamedellin.
+2026-03-03T03:40:34.6461443Z Deleting container: 28771b50b993_tesorerialamamedellin. Retry count = 0
+2026-03-03T03:40:35.1235848Z Container spec TerminationMessagePolicy  path 
+2026-03-03T03:40:35.1345995Z Container is terminated. Total time elapsed: 5658 ms.
+2026-03-03T03:40:35.1363236Z Site: tesorerialamamedellin stopped.
+2026-03-03T03:41:16.9060571Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:41:20.3281519Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:41:20.3352680Z Container start method called.
+2026-03-03T03:41:20.3353660Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.4:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:41:20.3355134Z Establishing network.
+2026-03-03T03:41:20.3356542Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T03:41:26.9324161Z Container is starting.
+2026-03-03T03:41:26.9411627Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:41:26.9800250Z Establishing user namespace if not established already.
+2026-03-03T03:41:26.9803446Z Establishing network if not established already.
+2026-03-03T03:41:26.9806170Z Mounting volumes.
+2026-03-03T03:41:26.9813713Z Nested mountpoint 
+2026-03-03T03:41:27.0406498Z Nested mountpoint volatile/logs
+2026-03-03T03:41:27.1169885Z Nested mountpoint 
+2026-03-03T03:41:27.4677163Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T03:41:27.4680678Z Creating container.
+2026-03-03T03:41:27.4878820Z Creating pipes for streaming container io.
+2026-03-03T03:41:27.4882103Z Creating stdout named pipe at /podr/container/pipe/2545d958e518_tesorerialamamedellin/stdout_f6b70ed33b244577955cbf31233719f3.
+2026-03-03T03:41:27.4987623Z Successfully created stdout named pipe at: /podr/container/pipe/2545d958e518_tesorerialamamedellin/stdout_f6b70ed33b244577955cbf31233719f3.
+2026-03-03T03:41:27.5065450Z Opening named pipe /podr/container/pipe/2545d958e518_tesorerialamamedellin/stdout_f6b70ed33b244577955cbf31233719f3 for reading in non-blocking mode.
+2026-03-03T03:41:27.5086621Z Successfully opened named pipe: /podr/container/pipe/2545d958e518_tesorerialamamedellin/stdout_f6b70ed33b244577955cbf31233719f3.
+2026-03-03T03:41:27.5090577Z Successfully removed non-blocking flag from /podr/container/pipe/2545d958e518_tesorerialamamedellin/stdout_f6b70ed33b244577955cbf31233719f3.
+2026-03-03T03:41:27.5566973Z Creating stderr named pipe at /podr/container/pipe/2545d958e518_tesorerialamamedellin/stderr_56d092c37a79402c96196218a9e456b7.
+2026-03-03T03:41:27.5570209Z Successfully created stderr named pipe at: /podr/container/pipe/2545d958e518_tesorerialamamedellin/stderr_56d092c37a79402c96196218a9e456b7.
+2026-03-03T03:41:27.5571357Z Opening named pipe /podr/container/pipe/2545d958e518_tesorerialamamedellin/stderr_56d092c37a79402c96196218a9e456b7 for reading in non-blocking mode.
+2026-03-03T03:41:27.6046095Z Successfully opened named pipe: /podr/container/pipe/2545d958e518_tesorerialamamedellin/stderr_56d092c37a79402c96196218a9e456b7.
+2026-03-03T03:41:27.6116812Z Successfully removed non-blocking flag from /podr/container/pipe/2545d958e518_tesorerialamamedellin/stderr_56d092c37a79402c96196218a9e456b7.
+2026-03-03T03:41:27.6138215Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T03:41:30.0021044Z Starting container: 2545d958e518_tesorerialamamedellin.
+2026-03-03T03:41:30.1487492Z Starting watchers and probes.
+2026-03-03T03:41:30.1992346Z Starting metrics collection.
+2026-03-03T03:41:30.1999110Z Container is running.
+2026-03-03T03:41:30.2000446Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:41:30.3398024Z Container start method finished after 10004 ms.
+2026-03-03T03:41:30.3663830Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:41:30.3670709Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T03:42:46.4911747Z Site startup probe succeeded after 76.1227848 seconds.
+2026-03-03T03:42:47.6728265Z State: Starting, Action: WarmUpProbeSucceeded, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site startup probe succeeded after 76.1227848 seconds., DetailsLevel: INFO
+2026-03-03T03:42:47.9762268Z Site is running with deployment version: e9036ff0-4c57-4f7f-b23e-12b74f8856f2
+2026-03-03T03:42:48.0244136Z Site started.
+2026-03-03T03:42:48.0516645Z State: Started, Action: None, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site started at 03/03/2026 03:42:47 (UTC), DetailsLevel: INFO
+2026-03-03T03:42:48.0725907Z Site is running with patch version PHP 8.2.30
+2026-03-03T03:43:08.1614000Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 03:40:09 (UTC), DetailsLevel: INFO
+2026-03-03T03:43:08.1771014Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 03:40:09 (UTC), DetailsLevel: INFO
+2026-03-03T03:43:08.1775096Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T03:43:08.2736857Z Stop and delete container. Retry count = 0
+2026-03-03T03:43:08.2836024Z Stopping container: e2a95171bd57_tesorerialamamedellin.
+2026-03-03T03:43:13.4353772Z Deleting container: e2a95171bd57_tesorerialamamedellin. Retry count = 0
+2026-03-03T03:43:13.8011434Z Container spec TerminationMessagePolicy  path 
+2026-03-03T03:43:13.8289158Z Container is terminated. Total time elapsed: 5643 ms.
+2026-03-03T03:43:13.8294557Z Site: tesorerialamamedellin stopped.
+2026-03-03T03:46:17.3457386Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:46:21.6373381Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:46:21.6828217Z Container start method called.
+2026-03-03T03:46:21.6931554Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:46:21.6948016Z Establishing network.
+2026-03-03T03:46:21.7507258Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T03:46:27.7400220Z Container is starting.
+2026-03-03T03:46:27.7402099Z State: Starting, Action: MountingVolumes, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:46:27.7665768Z Establishing user namespace if not established already.
+2026-03-03T03:46:27.7669221Z Establishing network if not established already.
+2026-03-03T03:46:27.7678110Z Mounting volumes.
+2026-03-03T03:46:27.7681269Z Nested mountpoint 
+2026-03-03T03:46:27.8954177Z Nested mountpoint volatile/logs
+2026-03-03T03:46:27.9324680Z Nested mountpoint 
+2026-03-03T03:46:28.2966993Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T03:46:28.2972936Z Creating container.
+2026-03-03T03:46:28.2974770Z Creating pipes for streaming container io.
+2026-03-03T03:46:28.3086239Z Creating stdout named pipe at /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stdout_465104dcb77e43de997c51cfff5f7dfb.
+2026-03-03T03:46:28.3091738Z Successfully created stdout named pipe at: /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stdout_465104dcb77e43de997c51cfff5f7dfb.
+2026-03-03T03:46:28.3165264Z Opening named pipe /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stdout_465104dcb77e43de997c51cfff5f7dfb for reading in non-blocking mode.
+2026-03-03T03:46:28.3167562Z Successfully opened named pipe: /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stdout_465104dcb77e43de997c51cfff5f7dfb.
+2026-03-03T03:46:28.3169674Z Successfully removed non-blocking flag from /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stdout_465104dcb77e43de997c51cfff5f7dfb.
+2026-03-03T03:46:28.3387785Z Creating stderr named pipe at /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stderr_48e73608b52346d8a7c57f9b8f5116b0.
+2026-03-03T03:46:28.3495392Z Successfully created stderr named pipe at: /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stderr_48e73608b52346d8a7c57f9b8f5116b0.
+2026-03-03T03:46:28.3692863Z Opening named pipe /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stderr_48e73608b52346d8a7c57f9b8f5116b0 for reading in non-blocking mode.
+2026-03-03T03:46:28.3695833Z Successfully opened named pipe: /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stderr_48e73608b52346d8a7c57f9b8f5116b0.
+2026-03-03T03:46:28.3702324Z Successfully removed non-blocking flag from /podr/container/pipe/47f2e5a2c7d9_tesorerialamamedellin/stderr_48e73608b52346d8a7c57f9b8f5116b0.
+2026-03-03T03:46:28.3777140Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T03:46:30.0368450Z Starting container: 47f2e5a2c7d9_tesorerialamamedellin.
+2026-03-03T03:46:30.2434914Z Starting watchers and probes.
+2026-03-03T03:46:30.2440252Z Starting metrics collection.
+2026-03-03T03:46:30.2444530Z Container is running.
+2026-03-03T03:46:30.2650363Z State: Starting, Action: CreatingContainer, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:46:30.4413239Z Container start method finished after 8758 ms.
+2026-03-03T03:46:30.4431297Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:46:30.4501411Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T03:47:27.1640279Z Site startup probe failed after 56.6520601 seconds.
+2026-03-03T03:47:28.8086029Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: ERR
+2026-03-03T03:47:29.0464040Z Failed to start site. Revert by stopping site.
+2026-03-03T03:47:29.1711719Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: ERR
+2026-03-03T03:47:29.1818164Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: ERR
+2026-03-03T03:47:29.1907712Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T03:47:29.5933820Z Stop and delete container. Retry count = 0
+2026-03-03T03:47:29.6807492Z Stopping container: 47f2e5a2c7d9_tesorerialamamedellin.
+2026-03-03T03:47:34.6468713Z Deleting container: 47f2e5a2c7d9_tesorerialamamedellin. Retry count = 0
+2026-03-03T03:47:35.5600063Z Container spec TerminationMessagePolicy  path 
+2026-03-03T03:47:35.5698852Z Container is terminated. Total time elapsed: 6370 ms.
+2026-03-03T03:47:35.6179538Z Site container: tesorerialamamedellin terminated during site startup.
+2026-03-03T03:47:35.6197159Z State: Stopping, Action: CancellingStartup, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site container: tesorerialamamedellin terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-03-03T03:47:35.6366175Z Site: tesorerialamamedellin stopped.
+2026-03-03T03:47:58.3343776Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 03:42:47 (UTC), DetailsLevel: INFO
+2026-03-03T03:47:58.3622167Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/02/2026 23:23:12, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 03:42:47 (UTC), DetailsLevel: INFO
+2026-03-03T03:47:58.3632040Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T03:47:58.3919104Z Stop and delete container. Retry count = 0
+2026-03-03T03:47:58.4009051Z Stopping container: 2545d958e518_tesorerialamamedellin.
+2026-03-03T03:48:03.7192181Z Deleting container: 2545d958e518_tesorerialamamedellin. Retry count = 0
+2026-03-03T03:48:04.3043861Z Container spec TerminationMessagePolicy  path 
+2026-03-03T03:48:04.3348604Z Container is terminated. Total time elapsed: 5971 ms.
+2026-03-03T03:48:04.3355608Z Site: tesorerialamamedellin stopped.
+2026-03-03T03:49:57.1155749Z State: Starting, Action: EstablishingSiteNetworks, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 03/03/2026 03:47:38 (UTC), DetailsLevel: ERR
+2026-03-03T03:49:58.8316757Z State: Starting, Action: StartingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site stopped at 03/03/2026 03:47:38 (UTC), DetailsLevel: ERR
+2026-03-03T03:49:58.8318392Z Container start method called.
+2026-03-03T03:49:58.8318927Z State: Starting, Action: PullingImage, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pulling image 10.1.0.5:13209/appsvc/php:8.2-fpm_20260113.7.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:49:58.8319961Z Establishing network.
+2026-03-03T03:49:58.8321101Z Pulling image: appsvc/php:8.2-fpm_20260113.7.tuxprod.
+2026-03-03T03:50:00.6892903Z Container is starting.
+2026-03-03T03:50:00.6957102Z State: Starting, Action: MountingVolumes, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:50:00.6958960Z Establishing user namespace if not established already.
+2026-03-03T03:50:00.6960408Z Establishing network if not established already.
+2026-03-03T03:50:00.6962341Z Mounting volumes.
+2026-03-03T03:50:00.6963972Z Nested mountpoint 
+2026-03-03T03:50:00.7474128Z Nested mountpoint volatile/logs
+2026-03-03T03:50:00.7653663Z Nested mountpoint 
+2026-03-03T03:50:00.8591597Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T03:50:00.8592933Z Creating container.
+2026-03-03T03:50:00.8594398Z Creating pipes for streaming container io.
+2026-03-03T03:50:00.8603912Z Creating stdout named pipe at /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stdout_e8c1e11d6ef54c36b6bd329e0a86aeca.
+2026-03-03T03:50:00.8674276Z Successfully created stdout named pipe at: /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stdout_e8c1e11d6ef54c36b6bd329e0a86aeca.
+2026-03-03T03:50:00.8948751Z Opening named pipe /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stdout_e8c1e11d6ef54c36b6bd329e0a86aeca for reading in non-blocking mode.
+2026-03-03T03:50:00.8961942Z Successfully opened named pipe: /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stdout_e8c1e11d6ef54c36b6bd329e0a86aeca.
+2026-03-03T03:50:00.9138659Z Successfully removed non-blocking flag from /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stdout_e8c1e11d6ef54c36b6bd329e0a86aeca.
+2026-03-03T03:50:00.9243066Z Creating stderr named pipe at /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stderr_27f364c0e1184a2ebf66e712cd9b4685.
+2026-03-03T03:50:00.9411197Z Successfully created stderr named pipe at: /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stderr_27f364c0e1184a2ebf66e712cd9b4685.
+2026-03-03T03:50:00.9413412Z Opening named pipe /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stderr_27f364c0e1184a2ebf66e712cd9b4685 for reading in non-blocking mode.
+2026-03-03T03:50:00.9415183Z Successfully opened named pipe: /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stderr_27f364c0e1184a2ebf66e712cd9b4685.
+2026-03-03T03:50:00.9416391Z Successfully removed non-blocking flag from /podr/container/pipe/d4d0d494beaf_tesorerialamamedellin/stderr_27f364c0e1184a2ebf66e712cd9b4685.
+2026-03-03T03:50:00.9524577Z Creating container with image: appsvc/php:8.2-fpm_20260113.7.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/php:8.2-fpm_20260113.7.tuxprod
+2026-03-03T03:50:01.9123721Z Starting container: d4d0d494beaf_tesorerialamamedellin.
+2026-03-03T03:50:02.1591549Z Starting watchers and probes.
+2026-03-03T03:50:02.1594759Z Starting metrics collection.
+2026-03-03T03:50:02.1866286Z Container is running.
+2026-03-03T03:50:02.1867488Z State: Starting, Action: CreatingContainer, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:50:02.5411245Z Container start method finished after 3708 ms.
+2026-03-03T03:50:02.5512451Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:50:02.5788768Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T03:50:29.6282590Z Site startup probe succeeded after 27.0465944 seconds.
+2026-03-03T03:50:29.8000668Z State: Starting, Action: WarmUpProbeSucceeded, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site startup probe succeeded after 27.0465944 seconds., DetailsLevel: INFO
+2026-03-03T03:50:29.8853523Z Site is running with deployment version: e9036ff0-4c57-4f7f-b23e-12b74f8856f2
+2026-03-03T03:50:29.8863766Z Site started.
+2026-03-03T03:50:29.8884389Z State: Started, Action: None, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 03:50:29 (UTC), DetailsLevel: INFO
+2026-03-03T03:50:29.9268360Z Site is running with patch version PHP 8.2.30
+2026-03-03T03:51:25.6705383Z State: Starting, Action: EstablishingSiteNetworks, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:51:28.0089775Z State: Starting, Action: StartingSiteContainers, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: , DetailsLevel: INFO
+2026-03-03T03:51:28.0104491Z Container start method called.
+2026-03-03T03:51:28.0224557Z State: Starting, Action: PullingImage, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/node:24-lts_20260115.4.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:51:28.0707198Z Establishing network.
+2026-03-03T03:51:28.0716078Z Pulling image: appsvc/node:24-lts_20260115.4.tuxprod.
+2026-03-03T03:51:48.0879186Z Container pull image interrupted. Revert by terminate.
+2026-03-03T03:51:48.0948900Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T03:51:48.0953612Z Container spec TerminationMessagePolicy  path 
+2026-03-03T03:51:48.1050131Z Container is terminated. Total time elapsed: 4 ms.
+2026-03-03T03:51:48.1057942Z Site container: tesorerialamamedellin terminated during site startup.
+2026-03-03T03:51:48.1066774Z State: Stopping, Action: CancellingStartup, LastError: , LastErrorTimestamp: 01/01/0001 00:00:00, LastErrorDetails: , Details: Site container: tesorerialamamedellin terminated during site startup. Cancelling site startup., DetailsLevel: ERR
+2026-03-03T03:51:48.1148911Z State: Stopping, Action: CancellingStartup, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Site container: tesorerialamamedellin terminated during site startup. Cancelling site startup., DetailsLevel: WARN
+2026-03-03T03:51:48.1363384Z State: Stopping, Action: StoppingSite, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Site container: tesorerialamamedellin terminated during site startup. Cancelling site startup., DetailsLevel: WARN
+2026-03-03T03:51:48.1367565Z State: Stopping, Action: StoppingSiteContainers, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Site container: tesorerialamamedellin terminated during site startup. Cancelling site startup., DetailsLevel: WARN
+2026-03-03T03:51:48.1367967Z Site: tesorerialamamedellin stopped.
+2026-03-03T03:52:08.8298622Z State: Stopping, Action: StoppingSite, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 03:50:29 (UTC), DetailsLevel: INFO
+2026-03-03T03:52:08.8390323Z State: Stopping, Action: StoppingSiteContainers, LastError: ContainerTimeout, LastErrorTimestamp: 03/03/2026 03:47:28, LastErrorDetails: Container did not start within expected time limit of 230s. Please inspect your container logs for more details., Details: Site started at 03/03/2026 03:50:29 (UTC), DetailsLevel: INFO
+2026-03-03T03:52:08.8402182Z Container is terminating. Grace period: 5 seconds.
+2026-03-03T03:52:08.8665709Z Stop and delete container. Retry count = 0
+2026-03-03T03:52:08.8682318Z Stopping container: d4d0d494beaf_tesorerialamamedellin.
+2026-03-03T03:52:14.2152629Z Deleting container: d4d0d494beaf_tesorerialamamedellin. Retry count = 0
+2026-03-03T03:52:14.8651426Z Container spec TerminationMessagePolicy  path 
+2026-03-03T03:52:14.8660285Z Container is terminated. Total time elapsed: 6025 ms.
+2026-03-03T03:52:14.8675094Z Site: tesorerialamamedellin stopped.
+2026-03-03T03:54:01.9066916Z State: Starting, Action: EstablishingSiteNetworks, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Site stopped at 03/03/2026 03:51:48 (UTC), DetailsLevel: WARN
+2026-03-03T03:54:04.8113355Z State: Starting, Action: StartingSiteContainers, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Site stopped at 03/03/2026 03:51:48 (UTC), DetailsLevel: WARN
+2026-03-03T03:54:04.8117821Z Container start method called.
+2026-03-03T03:54:04.8118403Z State: Starting, Action: PullingImage, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Pulling image 10.1.0.5:13209/appsvc/node:24-lts_20260115.4.tuxprod for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:54:04.8120148Z Establishing network.
+2026-03-03T03:54:04.8194075Z Pulling image: appsvc/node:24-lts_20260115.4.tuxprod.
+2026-03-03T03:54:55.4691949Z Image appsvc/node:24-lts_20260115.4.tuxprod is pulled from registry mcr.microsoft.com
+2026-03-03T03:54:55.4843180Z Container is starting.
+2026-03-03T03:54:55.5148820Z State: Starting, Action: MountingVolumes, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Mounting volumes for tesorerialamamedellin., DetailsLevel: INFO
+2026-03-03T03:54:55.5154771Z Establishing user namespace if not established already.
+2026-03-03T03:54:55.5157208Z Establishing network if not established already.
+2026-03-03T03:54:55.5159311Z Mounting volumes.
+2026-03-03T03:54:55.5315814Z Nested mountpoint 
+2026-03-03T03:54:55.6011092Z Nested mountpoint volatile/logs
+2026-03-03T03:54:55.6387765Z Nested mountpoint 
+2026-03-03T03:54:55.6691973Z Nested mountpoint 
+2026-03-03T03:54:55.7174665Z Nested mountpoint 
+2026-03-03T03:54:57.2934944Z State: Starting, Action: CreatingContainer, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Finished pulling container image and mounting volumes for tesorerialamamedellin. Allocatinng the rest of the container resources to finish container creation., DetailsLevel: INFO
+2026-03-03T03:54:57.2948880Z Creating container.
+2026-03-03T03:54:57.2950201Z Creating pipes for streaming container io.
+2026-03-03T03:54:57.2951797Z Creating stdout named pipe at /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stdout_c988c475a8f94200bdebb7119764dece.
+2026-03-03T03:54:57.3032051Z Successfully created stdout named pipe at: /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stdout_c988c475a8f94200bdebb7119764dece.
+2026-03-03T03:54:57.3033900Z Opening named pipe /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stdout_c988c475a8f94200bdebb7119764dece for reading in non-blocking mode.
+2026-03-03T03:54:57.3038179Z Successfully opened named pipe: /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stdout_c988c475a8f94200bdebb7119764dece.
+2026-03-03T03:54:57.3039986Z Successfully removed non-blocking flag from /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stdout_c988c475a8f94200bdebb7119764dece.
+2026-03-03T03:54:57.3053502Z Creating stderr named pipe at /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stderr_a6e9ff65a372485f99c6b751ca1a66f0.
+2026-03-03T03:54:57.3134315Z Successfully created stderr named pipe at: /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stderr_a6e9ff65a372485f99c6b751ca1a66f0.
+2026-03-03T03:54:57.3135564Z Opening named pipe /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stderr_a6e9ff65a372485f99c6b751ca1a66f0 for reading in non-blocking mode.
+2026-03-03T03:54:57.3209195Z Successfully opened named pipe: /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stderr_a6e9ff65a372485f99c6b751ca1a66f0.
+2026-03-03T03:54:57.3211203Z Successfully removed non-blocking flag from /podr/container/pipe/fd513f5f8574_tesorerialamamedellin/stderr_a6e9ff65a372485f99c6b751ca1a66f0.
+2026-03-03T03:54:57.3215125Z Creating container with image: appsvc/node:24-lts_20260115.4.tuxprod from registry: mcr.microsoft.com and fully qualified image name: mcr.microsoft.com/appsvc/node:24-lts_20260115.4.tuxprod
+2026-03-03T03:54:58.8079751Z Starting container: fd513f5f8574_tesorerialamamedellin.
+2026-03-03T03:54:58.9125483Z Starting watchers and probes.
+2026-03-03T03:54:58.9304845Z Starting metrics collection.
+2026-03-03T03:54:58.9498690Z Container is running.
+2026-03-03T03:54:58.9504437Z State: Starting, Action: CreatingContainer, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:54:59.2186617Z Container start method finished after 54406 ms.
+2026-03-03T03:54:59.2188834Z State: Starting, Action: InitiatingSiteWarmUpProbe, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Container tesorerialamamedellin successfully created and is running., DetailsLevel: INFO
+2026-03-03T03:54:59.2209510Z State: Starting, Action: WaitingForSiteWarmUpProbeSuccess, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Pinging warmup path to ensure container is ready to receive requests., DetailsLevel: INFO
+2026-03-03T03:55:54.1951233Z Site startup probe succeeded after 54.9459943 seconds.
+2026-03-03T03:55:54.3655302Z State: Starting, Action: WarmUpProbeSucceeded, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Site startup probe succeeded after 54.9459943 seconds., DetailsLevel: INFO
+2026-03-03T03:55:54.4524042Z Site is running with deployment version: e9036ff0-4c57-4f7f-b23e-12b74f8856f2
+2026-03-03T03:55:54.4532406Z Site started.
+2026-03-03T03:55:54.4533754Z State: Started, Action: None, LastError: SiteStartupCancelled, LastErrorTimestamp: 03/03/2026 03:51:48, LastErrorDetails: , Details: Site started at 03/03/2026 03:55:54 (UTC), DetailsLevel: INFO
+2026-03-03T03:55:54.4935515Z Site is running with patch version NODE 24.13.0
+

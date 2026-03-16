@@ -1,0 +1,11 @@
+<step title="Incoming Request" date="2026-03-12T03:17:49.760" instance="b39512" url="/api/deployments/latest?deployer=OneDeploy&amp;time=2026-03-12_03-17-43Z" method="GET" type="request" pid="833,1,5" Host="app-lamamedellin-backend-prod.scm.azurewebsites.net" User-Agent="GITHUBACTIONS_DeployWebAppToAzure_f9a48f0be84f1f32feb49cf11b05912b8921b6e775a8750ea5ca44b8eee7222a_v3.0.7" Authorization="Bas..." Content-Type="application/json; charset=utf-8" Cookie="ARRAffinity=b395127a00c1197e55b87193f83c028b7adb1b98644cb05cfe40e92296bc8c17;Path=/;HttpOnly;Secure;Domain=app-lamamedellin-backend-prod.scm.azurewebsites.net; ARRAffinitySameSite=b395127a00c1197e55b87193f83c028b7adb1b98644cb05cfe40e92296bc8c17;Path=/;HttpOnly;SameSite=None;Secure;Domain=app-lamamedellin-backend-prod.scm.azurewebsites.net" Content-Length="0" X-ARR-LOG-ID="e747e730-cf4f-44ab-a5c0-bd9412850ffe" CLIENT-IP="4.154.76.23:53305" X-SITE-DEPLOYMENT-ID="app-lamamedellin-backend-prod" WAS-DEFAULT-HOSTNAME="app-lamamedellin-backend-prod.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/deployments/latest?deployer=OneDeploy&amp;time=2026-03-12_03-17-43Z" X-Client-IP="4.154.76.23" X-Client-Port="53305" >
+  <step title="Cleanup Xml Logs" date="2026-03-12T03:17:49.777" >
+    <step title="Cleanup Infos" date="2026-03-12T03:17:49.805" totalFiles="249" totalCleanup="89" /><!-- duration: 5ms -->
+  </step><!-- duration: 37ms -->
+  <step title="DeploymentService.GetResult" date="2026-03-12T03:17:49.842" >
+    <step title="DeploymentService.GetLatestDeployment" date="2026-03-12T03:17:49.868" >
+      <step title="DeploymentManager.GetResults" date="2026-03-12T03:17:49.872" /><!-- duration: 2378ms -->
+    </step><!-- duration: 2399ms -->
+  </step><!-- duration: 2432ms -->
+  <step title="Outgoing response" date="2026-03-12T03:17:52.282" type="response" statusCode="202" statusText="Accepted" /><!-- duration: 12ms -->
+</step><!-- duration: 2544ms -->

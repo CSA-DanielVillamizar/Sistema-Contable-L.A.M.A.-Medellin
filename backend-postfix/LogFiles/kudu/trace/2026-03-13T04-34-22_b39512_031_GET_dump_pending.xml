@@ -1,0 +1,4 @@
+<step title="Incoming Request" date="2026-03-13T04:34:22.598" instance="b39512" url="/dump" method="GET" type="request" pid="833,1,33" Host="app-lamamedellin-backend-prod.scm.azurewebsites.net" User-Agent="AZURECLI/2.80.0 (MSI)" Accept-Encoding="identity" Authorization="Bas..." x-ms-client-request-id="e4be814c-1e95-11f1-830a-00e18cd78254" X-ARR-LOG-ID="e4be814c-1e95-11f1-830a-00e18cd78254" CLIENT-IP="181.49.190.184:61801" X-SITE-DEPLOYMENT-ID="app-lamamedellin-backend-prod" WAS-DEFAULT-HOSTNAME="app-lamamedellin-backend-prod.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/dump" X-Client-IP="181.49.190.184" X-Client-Port="61801" >
+  <step title="Cleanup Xml Logs" date="2026-03-13T04:34:22.607" >
+    <step title="Cleanup Infos" date="2026-03-13T04:34:22.634" totalFiles="268" totalCleanup="108" /><!-- duration: 22ms -->
+  </step><!-- duration: 54ms -->

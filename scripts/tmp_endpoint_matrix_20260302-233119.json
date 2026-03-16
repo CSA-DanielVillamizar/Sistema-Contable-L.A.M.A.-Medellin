@@ -1,0 +1,82 @@
+﻿[
+    {
+        "Endpoint":  "api/dashboard/bancos",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/dashboard/cartera",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/transacciones",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/transacciones/bancos",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/transacciones/centros-costo",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/cartera/pendiente",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/cartera/generar-mensual",
+        "SinToken":  405,
+        "ConToken":  405
+    },
+    {
+        "Endpoint":  "api/miembros",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/donaciones/donantes",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/donaciones",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/proyectos",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/beneficiarios",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/articulos",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/ventas",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/cuentas-contables",
+        "SinToken":  401,
+        "ConToken":  500
+    },
+    {
+        "Endpoint":  "api/comprobantes",
+        "SinToken":  405,
+        "ConToken":  405
+    }
+]

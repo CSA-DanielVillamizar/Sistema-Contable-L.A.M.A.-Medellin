@@ -1,0 +1,6 @@
+{
+    "properties": {
+        "linuxFxVersion": "NODE|24-lts",
+        "appCommandLine": "node server.js"
+    }
+}

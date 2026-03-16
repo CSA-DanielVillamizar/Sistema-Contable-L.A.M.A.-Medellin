@@ -1,0 +1,9 @@
+﻿{
+    "fecha":  "2026-03-13T00:00:00",
+    "monto":  150000,
+    "concepto":  "Pago alquiler sede reunion L.A.M.A.",
+    "terceroId":  null,
+    "cuentaContableId":  "cc46eae9-c8b2-4ba2-ae15-db292ce29435",
+    "cajaId":  "e9ab5e35-5360-4fc4-b957-405c0be26399",
+    "centroCostoId":  "827c4627-5e2f-4fb5-8ad7-9387ed9d1a0c"
+}

@@ -1,0 +1,16 @@
+<step title="Incoming Request" date="2026-03-13T04:02:26.776" instance="b39512" url="/api/publish?async=true&amp;deployer=GITHUB_ONE_DEPLOY&amp;type=zip&amp;message=%7B%22type%22%3A%22deployment%22%2C%22sha%22%3A%22c796bfa62ea475d3f2c9566770a673d2458391be%22%2C%22repoName%22%3A%22CSA-DanielVillamizar%2FSistema-Contable-L.A.M.A.-Medellin%22%2C%22actor%22%3A%22CSA-DanielVillamizar%22%2C%22slotName%22%3A%22production%22%2C%22commitMessage%22%3A%22feat(tesoreria)%3A%20creacion%20modulo%20de%20cajas%2C%20egresos%20e%20integracion%20contable%22%7D" method="POST" type="request" pid="833,1,15" Host="app-lamamedellin-backend-prod.scm.azurewebsites.net" User-Agent="GITHUBACTIONS_DeployWebAppToAzure_f9a48f0be84f1f32feb49cf11b05912b8921b6e775a8750ea5ca44b8eee7222a_v3.0.7" Authorization="Bas..." Content-Type="application/octet-stream" Cookie="ARRAffinity=b395127a00c1197e55b87193f83c028b7adb1b98644cb05cfe40e92296bc8c17;Path=/;HttpOnly;Secure;Domain=app-lamamedellin-backend-prod.scm.azurewebsites.net; ARRAffinitySameSite=b395127a00c1197e55b87193f83c028b7adb1b98644cb05cfe40e92296bc8c17;Path=/;HttpOnly;SameSite=None;Secure;Domain=app-lamamedellin-backend-prod.scm.azurewebsites.net" Transfer-Encoding="chunked" X-ARR-LOG-ID="bd401aa9-05ec-445c-89b3-5a1bb4060a1c" CLIENT-IP="135.232.201.67:52224" X-SITE-DEPLOYMENT-ID="app-lamamedellin-backend-prod" WAS-DEFAULT-HOSTNAME="app-lamamedellin-backend-prod.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/publish?async=true&amp;deployer=GITHUB_ONE_DEPLOY&amp;type=zip&amp;message=%7B%22type%22%3A%22deployment%22%2C%22sha%22%3A%22c796bfa62ea475d3f2c9566770a673d2458391be%22%2C%22repoName%22%3A%22CSA-DanielVillamizar%2FSistema-Contable-L.A.M.A.-Medellin%22%2C%22actor%22%3A%22CSA-DanielVillamizar%22%2C%22slotName%22%3A%22production%22%2C%22commitMessage%22%3A%22feat(tesoreria)%3A%20creacion%20modulo%20de%20cajas%2C%20egresos%20e%20integracion%20contable%22%7D" X-Client-IP="135.232.201.67" X-Client-Port="52224" >
+  <step title="Cleanup Xml Logs" date="2026-03-13T04:02:26.783" >
+    <step title="Cleanup Infos" date="2026-03-13T04:02:26.799" totalFiles="252" totalCleanup="92" /><!-- duration: 16ms -->
+  </step><!-- duration: 35ms -->
+  <step title="OneDeploy" date="2026-03-13T04:02:26.960" >
+    <step title="Starting PushDeployAsync" date="2026-03-13T04:02:27.040" /><!-- duration: 3ms -->
+    <step title="Writing artifact to /tmp/zipdeploy/9f8fb577-5d7a-4f99-bae3-4dbeed4d779d.zip" date="2026-03-13T04:02:27.063" >
+      <step title="Writing multipart request body to /tmp/zipdeploy/9f8fb577-5d7a-4f99-bae3-4dbeed4d779d.zip" date="2026-03-13T04:02:27.083" /><!-- duration: 9ms -->
+    </step><!-- duration: 1248ms -->
+    <step title="Start deployment in the background" date="2026-03-13T04:02:28.400" >
+      <step title="Acquiring Deployment Lock" date="2026-03-13T04:02:28.527" /><!-- duration: 29ms -->
+      <step title="Acquired Deployment Lock" date="2026-03-13T04:02:28.666" /><!-- duration: 4ms -->
+    </step><!-- duration: 458ms -->
+  </step><!-- duration: 1913ms -->
+  <step title="Outgoing response" date="2026-03-13T04:02:28.882" type="response" statusCode="202" statusText="Accepted" /><!-- duration: 4ms -->
+</step><!-- duration: 2114ms -->

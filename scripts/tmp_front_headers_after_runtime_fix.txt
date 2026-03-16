@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Content-Length: 7969
+Content-Type: text/html; charset=utf-8
+Date: Tue, 03 Mar 2026 03:55:54 GMT
+Cache-Control: s-maxage=31536000
+ETag: "10ch1vxygqh65c"
+Set-Cookie: ARRAffinity=279e2686d6d985a92f0e5544b67f0addb363f77898a222be35d50034f8dfe4ba;Path=/;HttpOnly;Secure;Domain=tesorerialamamedellin.azurewebsites.net
+Set-Cookie: ARRAffinitySameSite=279e2686d6d985a92f0e5544b67f0addb363f77898a222be35d50034f8dfe4ba;Path=/;HttpOnly;SameSite=None;Secure;Domain=tesorerialamamedellin.azurewebsites.net
+Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding
+x-nextjs-cache: HIT
+x-nextjs-prerender: 1
+x-nextjs-prerender: 1
+x-nextjs-stale-time: 300
+X-Powered-By: Next.js
+

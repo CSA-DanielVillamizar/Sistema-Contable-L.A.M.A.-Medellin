@@ -1,0 +1,9 @@
+<step title="Incoming Request" date="2026-03-09T18:46:57.833" instance="c6106c" url="/api/deployments/35e9b8f1-6283-402c-857f-95d81de2ef50/log" method="GET" type="request" pid="835,1,60" Accept="*/*" Host="app-lamamedellin-backend-prod.scm.azurewebsites.net" User-Agent="AZURECLI/2.80.0 (MSI)" Accept-Encoding="gzip, deflate" Authorization="Bas..." x-ms-client-request-id="5675fbeb-1be8-11f1-a116-00e18cd78254" X-ARR-LOG-ID="5675fbeb-1be8-11f1-a116-00e18cd78254" CLIENT-IP="181.49.190.184:49822" X-SITE-DEPLOYMENT-ID="app-lamamedellin-backend-prod" WAS-DEFAULT-HOSTNAME="app-lamamedellin-backend-prod.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/deployments/35e9b8f1-6283-402c-857f-95d81de2ef50/log" X-Client-IP="181.49.190.184" X-Client-Port="49822" >
+  <step title="Cleanup Xml Logs" date="2026-03-09T18:46:57.835" >
+    <step title="Cleanup Infos" date="2026-03-09T18:46:57.842" totalFiles="233" totalCleanup="73" /><!-- duration: 3ms -->
+  </step><!-- duration: 13ms -->
+  <step title="DeploymentService.GetLogEntry" date="2026-03-09T18:46:57.855" >
+    <step title="DeploymentManager.GetLogEntries(id:35e9b8f1-6283-402c-857f-95d81de2ef50)" date="2026-03-09T18:46:57.859" /><!-- duration: 28ms -->
+  </step><!-- duration: 38ms -->
+  <step title="Outgoing response" date="2026-03-09T18:46:57.896" type="response" statusCode="200" statusText="OK" /><!-- duration: 5ms -->
+</step><!-- duration: 71ms -->
