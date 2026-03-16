@@ -1,5 +1,7 @@
 using LAMAMedellin.Application.Features.Merchandising.Commands.CrearProducto;
 using LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarEntradaInventario;
+using LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarVentaProducto;
+using LAMAMedellin.Application.Features.Merchandising.Queries.GetProductos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,14 @@ namespace LAMAMedellin.API.Controllers;
 [Authorize(Roles = "Admin,Tesorero,Inventario")]
 public sealed class MerchandisingController(ISender sender) : ControllerBase
 {
+    [HttpGet("productos")]
+    [ProducesResponseType(typeof(List<ProductoDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProductos(CancellationToken cancellationToken)
+    {
+        var productos = await sender.Send(new GetProductosQuery(), cancellationToken);
+        return Ok(productos);
+    }
+
     /// <summary>
     /// Crea un nuevo producto en el catálogo.
     /// </summary>
@@ -49,5 +59,17 @@ public sealed class MerchandisingController(ISender sender) : ControllerBase
         var commandConProductoId = command with { ProductoId = productoId };
         var movimientoId = await sender.Send(commandConProductoId, cancellationToken);
         return Created($"/api/merchandising/productos/{productoId}/movimientos/{movimientoId}", new { id = movimientoId });
+    }
+
+    [HttpPost("productos/{productoId}/ventas")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+    public async Task<IActionResult> RegistrarVenta(
+        Guid productoId,
+        [FromBody] RegistrarVentaProductoCommand command,
+        CancellationToken cancellationToken)
+    {
+        var commandConProductoId = command with { ProductoId = productoId };
+        var comprobanteId = await sender.Send(commandConProductoId, cancellationToken);
+        return Created($"/api/merchandising/productos/{productoId}/ventas/{comprobanteId}", new { id = comprobanteId });
     }
 }

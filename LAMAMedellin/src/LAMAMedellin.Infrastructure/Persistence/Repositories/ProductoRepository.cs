@@ -12,6 +12,7 @@ public sealed class ProductoRepository(LamaDbContext context) : IProductoReposit
     public async Task<IReadOnlyList<Producto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await context.Productos
+            .Include(x => x.CuentaContableIngreso)
             .AsNoTracking()
             .OrderBy(x => x.Nombre)
             .ToListAsync(cancellationToken);
