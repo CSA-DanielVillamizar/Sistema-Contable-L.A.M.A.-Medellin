@@ -199,6 +199,13 @@ export default function Home() {
                     </Link>
 
                     <Link
+                        href="/tesoreria"
+                        className="rounded-xl border border-emerald-300 bg-emerald-50 px-6 py-8 text-center text-lg font-semibold text-emerald-700"
+                    >
+                        Tesorería
+                    </Link>
+
+                    <Link
                         href="/miembros"
                         className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
                     >
