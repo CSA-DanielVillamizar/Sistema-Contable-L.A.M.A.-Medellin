@@ -1,5 +1,6 @@
 using FluentValidation;
 using LAMAMedellin.Application.Common.Exceptions;
+using LAMAMedellin.Domain.Common;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,11 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
             ExcepcionNegocio => (
                 StatusCodes.Status422UnprocessableEntity,
+                "Regla de negocio no cumplida",
+                exception.Message),
+
+            ReglaNegocioException => (
+                StatusCodes.Status400BadRequest,
                 "Regla de negocio no cumplida",
                 exception.Message),
 

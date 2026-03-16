@@ -1,4 +1,5 @@
 using LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarEgreso;
+using LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarIngreso;
 using LAMAMedellin.Application.Features.Tesoreria.Queries.GetCajas;
 using LAMAMedellin.Application.Features.Tesoreria.Queries.GetEgresos;
 using MediatR;
@@ -34,5 +35,13 @@ public sealed class TesoreriaController(ISender sender) : ControllerBase
     {
         var egresoId = await sender.Send(command, cancellationToken);
         return Created($"/api/tesoreria/egresos/{egresoId}", new { id = egresoId });
+    }
+
+    [HttpPost("ingresos")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+    public async Task<IActionResult> RegistrarIngreso([FromBody] RegistrarIngresoCommand command, CancellationToken cancellationToken)
+    {
+        var comprobanteId = await sender.Send(command, cancellationToken);
+        return Created($"/api/tesoreria/ingresos/{comprobanteId}", new { id = comprobanteId });
     }
 }
