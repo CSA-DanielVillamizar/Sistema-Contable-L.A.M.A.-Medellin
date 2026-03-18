@@ -15,6 +15,18 @@ type ResumenCartera = {
     totalPendienteCOP: number;
 };
 
+type DashboardBancoDto = {
+    saldo?: number | string | null;
+    Saldo?: number | string | null;
+    nombre?: string | null;
+    Nombre?: string | null;
+};
+
+type DashboardCarteraDto = {
+    totalPendienteCOP?: number | string | null;
+    TotalPendienteCOP?: number | string | null;
+};
+
 function formatCOP(value: number): string {
     return new Intl.NumberFormat('es-CO', {
         style: 'currency',
@@ -64,7 +76,7 @@ export default function Home() {
     const bancosQuery = useQuery({
         queryKey: ['dashboard', 'bancos'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/dashboard/bancos');
+            const response = await apiClient.get<DashboardBancoDto[]>('/api/dashboard/bancos');
 
             return (response.data ?? []).map((item) => {
                 const saldoRaw = item?.saldo ?? item?.Saldo;
@@ -82,7 +94,7 @@ export default function Home() {
     const carteraQuery = useQuery({
         queryKey: ['dashboard', 'cartera'],
         queryFn: async () => {
-            const response = await apiClient.get<any>('/api/dashboard/cartera');
+            const response = await apiClient.get<DashboardCarteraDto>('/api/dashboard/cartera');
 
             return {
                 totalPendienteCOP: toNumber(response.data?.totalPendienteCOP ?? response.data?.TotalPendienteCOP),
@@ -241,10 +253,10 @@ export default function Home() {
                     </Link>
 
                     <Link
-                        href="/merchandising/inventario"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
+                        href="/merchandising"
+                        className="rounded-xl border border-indigo-300 bg-indigo-50 px-6 py-8 text-center text-lg font-semibold text-indigo-700"
                     >
-                        Inventario y Merchandising
+                        Merchandising / Tienda
                     </Link>
                 </section>
 
