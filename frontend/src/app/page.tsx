@@ -2,7 +2,6 @@
 
 import apiClient from '@/lib/apiClient';
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 type SaldoBanco = {
@@ -94,18 +93,18 @@ export default function Home() {
 
     if (!authReady) {
         return (
-            <main className="min-h-screen bg-slate-50 px-6 py-10">
-                <div className="mx-auto w-full max-w-6xl rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
+            <div className="px-6 py-10">
+                <div className="rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
                     Validando autenticación...
                 </div>
-            </main>
+            </div>
         );
     }
 
     if (!hasToken) {
         return (
-            <main className="min-h-screen bg-slate-50 px-6 py-10">
-                <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 rounded-xl border border-amber-200 bg-white p-6">
+            <div className="px-6 py-10">
+                <div className="flex flex-col gap-4 rounded-xl border border-amber-200 bg-white p-6">
                     <h1 className="text-xl font-semibold text-slate-900">Sesión no autenticada</h1>
                     <p className="text-slate-600">
                         No fue posible completar el inicio de sesión automáticamente. Intenta recargar la página para reintentar la autenticación.
@@ -121,94 +120,72 @@ export default function Home() {
                         Iniciar sesión nuevamente
                     </button>
                 </div>
-            </main>
+            </div>
         );
     }
 
     return (
-        <main className="min-h-screen bg-slate-50 px-6 py-10">
-            <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+        <div className="px-6 py-8">
+            <div className="flex flex-col gap-6">
                 <header>
-                    <h1 className="text-3xl font-bold text-slate-900">Dashboard financiero</h1>
-                    <p className="mt-1 text-slate-600">Resumen de bancos y cartera por cobrar</p>
+                    <h1 className="text-2xl font-bold text-slate-900">Resumen financiero</h1>
+                    <p className="mt-1 text-sm text-slate-500">Estado actual de bancos y cartera por cobrar</p>
                 </header>
 
-                <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    <article className="rounded-xl border border-slate-200 bg-white p-6 lg:col-span-2">
-                        <p className="text-sm text-slate-600">Saldo total en bancos</p>
-                        <p className="mt-2 text-4xl font-bold text-slate-900">
-                            {bancosQuery.isLoading || tieneSaldosBancariosValidos ? formatCOP(saldoTotalBancos) : 'Dato no disponible'}
-                        </p>
-                        <p className="mt-2 text-sm text-slate-500">
-                            {bancosQuery.isLoading ? 'Cargando bancos...' : `${bancosQuery.data?.length ?? 0} banco(s)`}
-                        </p>
-                        {!bancosQuery.isLoading && cantidadSaldosInvalidos > 0 ? (
-                            <p className="mt-0.5 text-xs text-slate-400">
-                                {cantidadSaldosInvalidos} banco(s) sin saldo válido no se incluyen en el total.
+                {/* ── KPIs ── */}
+                <section aria-labelledby="kpi-heading">
+                    <h2 id="kpi-heading" className="sr-only">Indicadores clave</h2>
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                        <article className="rounded-xl border border-slate-200 bg-white p-6 lg:col-span-2">
+                            <p className="text-sm font-medium text-slate-500">Saldo total en bancos</p>
+                            <p className="mt-2 text-4xl font-bold text-slate-900">
+                                {bancosQuery.isLoading || tieneSaldosBancariosValidos
+                                    ? formatCOP(saldoTotalBancos)
+                                    : 'Dato no disponible'}
                             </p>
-                        ) : null}
-                    </article>
+                            <p className="mt-2 text-sm text-slate-400">
+                                {bancosQuery.isLoading
+                                    ? 'Cargando bancos...'
+                                    : `${bancosQuery.data?.length ?? 0} banco(s) registrado(s)`}
+                            </p>
+                            {!bancosQuery.isLoading && cantidadSaldosInvalidos > 0 ? (
+                                <p className="mt-0.5 text-xs text-slate-400">
+                                    {cantidadSaldosInvalidos} banco(s) sin saldo válido no se incluyen en el total.
+                                </p>
+                            ) : null}
+                        </article>
 
-                    <article className="rounded-xl border border-slate-200 bg-white p-6">
-                        <p className="text-sm text-slate-600">Total de cartera por cobrar</p>
-                        <p className="mt-2 text-3xl font-bold text-slate-900">{formatCOP(totalPendienteCartera)}</p>
-                        <p className="mt-2 text-sm text-slate-500">
-                            {carteraQuery.isLoading ? 'Cargando cartera...' : 'Saldo pendiente en estado pendiente'}
-                        </p>
-                    </article>
+                        <article className="rounded-xl border border-slate-200 bg-white p-6">
+                            <p className="text-sm font-medium text-slate-500">Cartera por cobrar</p>
+                            <p className="mt-2 text-3xl font-bold text-slate-900">{formatCOP(totalPendienteCartera)}</p>
+                            <p className="mt-2 text-sm text-slate-400">
+                                {carteraQuery.isLoading ? 'Cargando cartera...' : 'Saldo pendiente de cobro'}
+                            </p>
+                        </article>
+                    </div>
                 </section>
 
-                <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <Link
-                        href="/transacciones/ingreso"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
-                    >
-                        Registrar ingreso
-                    </Link>
-
-                    <Link
-                        href="/transacciones/egreso"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
-                    >
-                        Registrar egreso
-                    </Link>
-
-                    <Link
-                        href="/cartera/listado"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
-                    >
-                        Generar cartera
-                    </Link>
-
-                    <Link
-                        href="/cartera/listado"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
-                    >
-                        Ver cartera pendiente
-                    </Link>
-
-                    <Link
-                        href="/transacciones/listado"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
-                    >
-                        Ver movimientos
-                    </Link>
-
-                    <Link
-                        href="/miembros"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
-                    >
-                        Directorio de Miembros
-                    </Link>
-
-                    <Link
-                        href="/contabilidad/cuentas"
-                        className="rounded-xl border border-slate-300 bg-white px-6 py-8 text-center text-lg font-semibold text-slate-800"
-                    >
-                        Catálogo de Cuentas
-                    </Link>
-                </section>
+                {/* ── Detalle de bancos ── */}
+                {!bancosQuery.isLoading && (bancosQuery.data?.length ?? 0) > 0 ? (
+                    <section aria-labelledby="bancos-heading">
+                        <h2 id="bancos-heading" className="mb-3 text-sm font-semibold text-slate-700">Bancos</h2>
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                            {(bancosQuery.data ?? []).map((banco) => (
+                                <div
+                                    key={banco.nombre}
+                                    className="rounded-lg border border-slate-200 bg-white px-4 py-3"
+                                >
+                                    <p className="text-xs text-slate-500">{banco.nombre}</p>
+                                    <p className="mt-1 text-lg font-semibold text-slate-900">
+                                        {banco.saldo !== null ? formatCOP(banco.saldo) : 'Sin dato'}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                ) : null}
             </div>
-        </main>
+        </div>
     );
 }
+
