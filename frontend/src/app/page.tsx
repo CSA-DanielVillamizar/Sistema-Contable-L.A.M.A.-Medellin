@@ -59,7 +59,7 @@ export default function Home() {
     const bancosQuery = useQuery({
         queryKey: ['dashboard', 'bancos'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/dashboard/bancos');
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/dashboard/bancos');
 
             return (response.data ?? []).map((item) => {
                 const saldoRaw = item?.saldo ?? item?.Saldo;
@@ -77,7 +77,7 @@ export default function Home() {
     const carteraQuery = useQuery({
         queryKey: ['dashboard', 'cartera'],
         queryFn: async () => {
-            const response = await apiClient.get<any>('/api/dashboard/cartera');
+            const response = await apiClient.get<Record<string, unknown>>('/api/dashboard/cartera');
 
             return {
                 totalPendienteCOP: toNumber(response.data?.totalPendienteCOP ?? response.data?.TotalPendienteCOP),

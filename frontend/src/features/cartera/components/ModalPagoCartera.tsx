@@ -39,7 +39,7 @@ export default function ModalPagoCartera({ open, carteraId, montoSugerido, onClo
     const bancosQuery = useQuery({
         queryKey: ['transacciones', 'catalogo', 'bancos'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/transacciones/bancos');
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/transacciones/bancos');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? item?.Id ?? ''),
@@ -52,7 +52,7 @@ export default function ModalPagoCartera({ open, carteraId, montoSugerido, onClo
     const centrosQuery = useQuery({
         queryKey: ['transacciones', 'catalogo', 'centros-costo'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/transacciones/centros-costo');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? item?.Id ?? ''),

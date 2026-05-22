@@ -13,7 +13,11 @@ export type CuentaContableItem = {
     cuentaPadreId: string | null;
 };
 
-function mapCuenta(item: any): CuentaContableItem {
+function toNullableString(value: unknown): string | null {
+    return typeof value === 'string' ? value : null;
+}
+
+function mapCuenta(item: Record<string, unknown>): CuentaContableItem {
     return {
         id: String(item?.id ?? item?.Id ?? ''),
         codigo: String(item?.codigo ?? item?.Codigo ?? ''),
@@ -23,7 +27,7 @@ function mapCuenta(item: any): CuentaContableItem {
         naturalezaNombre: String(item?.naturalezaNombre ?? item?.NaturalezaNombre ?? ''),
         permiteMovimiento: Boolean(item?.permiteMovimiento ?? item?.PermiteMovimiento ?? false),
         exigeTercero: Boolean(item?.exigeTercero ?? item?.ExigeTercero ?? false),
-        cuentaPadreId: item?.cuentaPadreId ?? item?.CuentaPadreId ?? null,
+        cuentaPadreId: toNullableString(item?.cuentaPadreId) ?? toNullableString(item?.CuentaPadreId),
     };
 }
 
@@ -31,7 +35,7 @@ export function useCuentasContables() {
     return useQuery<CuentaContableItem[]>({
         queryKey: ['contabilidad', 'cuentas'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/cuentas-contables');
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/cuentas-contables');
             return (response.data ?? []).map(mapCuenta).filter((c) => c.codigo.length > 0);
         },
     });
@@ -41,7 +45,7 @@ export function useCuentasAsentables() {
     return useQuery<CuentaContableItem[]>({
         queryKey: ['contabilidad', 'cuentas', 'asentables'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/cuentas-contables/asentables');
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/cuentas-contables/asentables');
             return (response.data ?? []).map(mapCuenta).filter((c) => c.codigo.length > 0);
         },
     });

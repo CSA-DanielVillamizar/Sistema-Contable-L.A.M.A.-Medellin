@@ -11,7 +11,7 @@ export type MiembroItem = {
     estado: string;
 };
 
-function mapMiembro(item: any): MiembroItem {
+function mapMiembro(item: Record<string, unknown>): MiembroItem {
     return {
         id: String(item?.id ?? item?.Id ?? ''),
         nombreCompleto: String(item?.nombreCompleto ?? item?.NombreCompleto ?? ''),
@@ -27,7 +27,7 @@ export const useMiembros = () => {
     return useQuery<MiembroItem[]>({
         queryKey: ['miembros', 'listado'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/miembros');
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/miembros');
             return (response.data ?? []).map(mapMiembro).filter((item) => item.id.length > 0);
         },
     });
@@ -41,7 +41,7 @@ export const useMiembroById = (id?: string) => {
                 return null;
             }
 
-            const response = await apiClient.get<any>(`/api/miembros/${id}`);
+            const response = await apiClient.get<Record<string, unknown>>(`/api/miembros/${id}`);
             return mapMiembro(response.data);
         },
         enabled: Boolean(id),

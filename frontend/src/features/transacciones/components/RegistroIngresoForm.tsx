@@ -34,8 +34,8 @@ export default function RegistroIngresoForm() {
 
     const bancosQuery = useQuery({
         queryKey: ['transacciones', 'catalogo', 'bancos'],
-        queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/transacciones/bancos');
+        queryFn: async (): Promise<BancoCatalogo[]> => {
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/transacciones/bancos');
 
             return (response.data ?? [])
                 .map((item) => ({
@@ -48,8 +48,8 @@ export default function RegistroIngresoForm() {
 
     const centrosCostoQuery = useQuery({
         queryKey: ['transacciones', 'catalogo', 'centros-costo'],
-        queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
+        queryFn: async (): Promise<CentroCostoCatalogo[]> => {
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/transacciones/centros-costo');
 
             return (response.data ?? [])
                 .map((item) => ({

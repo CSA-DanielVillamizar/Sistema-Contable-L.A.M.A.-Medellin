@@ -47,7 +47,7 @@ export function useCarteraPendiente() {
     return useQuery<CarteraPendienteItem[]>({
         queryKey: ['cartera', 'pendiente'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/cartera/pendiente');
+            const response = await apiClient.get<Record<string, unknown>[]>('/api/cartera/pendiente');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? item?.Id ?? ''),
