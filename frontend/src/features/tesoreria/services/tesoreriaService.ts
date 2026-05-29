@@ -18,6 +18,19 @@ export type RegistrarMovimientoTesoreriaPayload = {
     terceroId?: string | null;
 };
 
+export type EgresoTesoreria = {
+    id: string;
+    fecha: string;
+    monto: number;
+    concepto: string;
+    terceroId: string | null;
+    cuentaContableId: string;
+    cuentaContableNombre: string;
+    cajaId: string;
+    cajaNombre: string;
+    comprobanteContableId: string | null;
+};
+
 type RegistrarMovimientoTesoreriaResponse = {
     id: string;
 };
@@ -40,6 +53,29 @@ type RegistrarMovimientoTesoreriaResponseDto = {
     Id?: string;
 };
 
+type EgresoApiDto = {
+    id?: string;
+    Id?: string;
+    fecha?: string;
+    Fecha?: string;
+    monto?: number;
+    Monto?: number;
+    concepto?: string;
+    Concepto?: string;
+    terceroId?: string | null;
+    TerceroId?: string | null;
+    cuentaContableId?: string;
+    CuentaContableId?: string;
+    cuentaContableNombre?: string;
+    CuentaContableNombre?: string;
+    cajaId?: string;
+    CajaId?: string;
+    cajaNombre?: string;
+    CajaNombre?: string;
+    comprobanteContableId?: string | null;
+    ComprobanteContableId?: string | null;
+};
+
 export async function getCajas(): Promise<CajaTesoreria[]> {
     const response = await apiClient.get<CajaApiDto[]>('/api/tesoreria/cajas');
 
@@ -49,6 +85,23 @@ export async function getCajas(): Promise<CajaTesoreria[]> {
         tipoCaja: Number(item?.tipoCaja ?? item?.TipoCaja ?? 0),
         cuentaContable: String(item?.cuentaContable ?? item?.CuentaContable ?? ''),
         saldoActual: Number(item?.saldoActual ?? item?.SaldoActual ?? 0),
+    }));
+}
+
+export async function getEgresos(): Promise<EgresoTesoreria[]> {
+    const response = await apiClient.get<EgresoApiDto[]>('/api/tesoreria/egresos');
+
+    return (response.data ?? []).map((item) => ({
+        id: String(item?.id ?? item?.Id ?? ''),
+        fecha: String(item?.fecha ?? item?.Fecha ?? ''),
+        monto: Number(item?.monto ?? item?.Monto ?? 0),
+        concepto: String(item?.concepto ?? item?.Concepto ?? ''),
+        terceroId: item?.terceroId ?? item?.TerceroId ?? null,
+        cuentaContableId: String(item?.cuentaContableId ?? item?.CuentaContableId ?? ''),
+        cuentaContableNombre: String(item?.cuentaContableNombre ?? item?.CuentaContableNombre ?? ''),
+        cajaId: String(item?.cajaId ?? item?.CajaId ?? ''),
+        cajaNombre: String(item?.cajaNombre ?? item?.CajaNombre ?? ''),
+        comprobanteContableId: item?.comprobanteContableId ?? item?.ComprobanteContableId ?? null,
     }));
 }
 

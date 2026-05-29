@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type TesoreriaCatalogItem = {
     id: string;
@@ -62,6 +62,15 @@ export default function TesoreriaMovimientoModal({
         buildInitialValues(cajas, cuentasContables, centrosCosto),
     );
     const [validationError, setValidationError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!abierto) {
+            return;
+        }
+
+        setValues(buildInitialValues(cajas, cuentasContables, centrosCosto));
+        setValidationError(null);
+    }, [abierto, cajas, cuentasContables, centrosCosto, modo]);
 
     if (!abierto) {
         return null;

@@ -42,6 +42,8 @@ export function useRegistrarIngreso() {
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['tesoreria', 'cajas'] });
+            await queryClient.invalidateQueries({ queryKey: ['tesoreria', 'egresos'] });
+            await queryClient.invalidateQueries({ queryKey: ['transacciones', 'listado'] });
         },
     });
 }
