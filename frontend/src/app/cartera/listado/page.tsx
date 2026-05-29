@@ -1,7 +1,8 @@
 "use client";
 
-import TablaCartera from '@/features/cartera/components/TablaCartera';
+import ListaCuentasPorCobrar from '@/features/cartera/components/ListaCuentasPorCobrar';
 import { useGenerarCarteraMensual } from '@/features/cartera/hooks/useCartera';
+import { useGetCuentasPorCobrar } from '@/features/cartera/hooks/useGetCuentasPorCobrar';
 
 function getPeriodoActual() {
     const fecha = new Date();
@@ -11,6 +12,7 @@ function getPeriodoActual() {
 
 export default function ListadoCarteraPage() {
     const generarCarteraMutation = useGenerarCarteraMensual();
+    const { data: cuentas = [], isLoading, error } = useGetCuentasPorCobrar();
 
     const handleGenerarMesActual = async () => {
         await generarCarteraMutation.mutateAsync({ Periodo: getPeriodoActual() });
@@ -42,7 +44,11 @@ export default function ListadoCarteraPage() {
                 </div>
             ) : null}
 
-            <TablaCartera />
+            <ListaCuentasPorCobrar
+                cuentas={cuentas}
+                isLoading={isLoading}
+                error={error instanceof Error ? error : null}
+            />
         </main>
     );
 }
