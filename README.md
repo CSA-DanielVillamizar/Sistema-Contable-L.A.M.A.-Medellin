@@ -41,6 +41,13 @@ L.A.M.A. ERP es una plataforma integral para la gestion operativa, financiera y 
 - React Query (TanStack Query)
 - TailwindCSS
 
+## Actualizacion Frontend (2026-05-28)
+
+- HU-T02: Cliente API robustecido con normalizacion centralizada de errores ProblemDetails para manejo consistente en hooks y vistas.
+- HU-T03: App Shell global implementado con Sidebar y Navbar persistentes, manteniendo area de contenido con scroll independiente.
+- HU-T01: Home simplificada para enfoque ejecutivo sobre KPIs (ResumenKpis), removiendo la grilla masiva de accesos.
+- Validacion: build de produccion frontend ejecutado exitosamente.
+
 ## Ejecucion Local
 
 ### Backend (.NET 8)
