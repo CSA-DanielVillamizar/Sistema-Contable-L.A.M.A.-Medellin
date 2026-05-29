@@ -10,6 +10,20 @@
 				"build"
 			],
 			"isBackground": false
+		},
+		{
+			"label": "build-frontend",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build"
 		}
 	]
 }
