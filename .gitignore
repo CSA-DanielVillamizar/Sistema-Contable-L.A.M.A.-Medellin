@@ -201,3 +201,5 @@ secrets/
 # - Documentation (*.md)
 # - Git config (.gitignore, .github/)
 # - Project files (*.csproj, package.json)
+
+.fake

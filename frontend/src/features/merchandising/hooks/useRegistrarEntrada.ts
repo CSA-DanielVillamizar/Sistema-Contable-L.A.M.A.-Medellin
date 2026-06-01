@@ -15,8 +15,9 @@ export function useRegistrarEntrada() {
     return useMutation({
         mutationFn: ({ productoId, payload }: RegistrarEntradaParams) =>
             registrarEntrada(productoId, payload),
-        onSettled: async () => {
+        onSettled: async (_, __, variables) => {
             await queryClient.invalidateQueries({ queryKey: ['merchandising', 'productos'] });
+            await queryClient.invalidateQueries({ queryKey: ['merchandising', 'productos', variables.productoId, 'movimientos'] });
         },
     });
 }

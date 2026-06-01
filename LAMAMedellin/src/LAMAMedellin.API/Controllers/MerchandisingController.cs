@@ -2,6 +2,7 @@ using LAMAMedellin.Application.Features.Merchandising.Commands.ActualizarImagenP
 using LAMAMedellin.Application.Features.Merchandising.Commands.CrearProducto;
 using LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarEntradaInventario;
 using LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarVentaProducto;
+using LAMAMedellin.Application.Features.Merchandising.Queries.GetMovimientosProducto;
 using LAMAMedellin.Application.Features.Merchandising.Queries.GetProductos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,14 @@ public sealed class MerchandisingController(ISender sender) : ControllerBase
     {
         var productos = await sender.Send(new GetProductosQuery(), cancellationToken);
         return Ok(productos);
+    }
+
+    [HttpGet("productos/{productoId}/movimientos")]
+    [ProducesResponseType(typeof(List<MovimientoInventarioDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMovimientosProducto(Guid productoId, CancellationToken cancellationToken)
+    {
+        var movimientos = await sender.Send(new GetMovimientosProductoQuery(productoId), cancellationToken);
+        return Ok(movimientos);
     }
 
     /// <summary>

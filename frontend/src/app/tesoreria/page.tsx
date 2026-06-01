@@ -327,11 +327,10 @@ export default function TesoreriaPage() {
                                     key={tab.key}
                                     type="button"
                                     onClick={() => setTabActiva(tab.key)}
-                                    className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                                        tabActiva === tab.key
+                                    className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${tabActiva === tab.key
                                             ? 'bg-white text-slate-900 shadow-sm'
                                             : 'text-slate-600 hover:text-slate-900'
-                                    }`}
+                                        }`}
                                 >
                                     {tab.label}
                                 </button>

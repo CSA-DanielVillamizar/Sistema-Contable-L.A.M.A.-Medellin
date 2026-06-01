@@ -1,20 +1,16 @@
-import {
-    registrarVenta,
-    type RegistrarVentaPayload,
-} from '@/features/merchandising/services/merchandisingService';
+import { subirImagenProducto } from '@/features/merchandising/services/merchandisingService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-type RegistrarVentaParams = {
+type SubirImagenProductoParams = {
     productoId: string;
-    payload: RegistrarVentaPayload;
+    file: File;
 };
 
-export function useRegistrarVenta() {
+export function useSubirImagenProducto() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ productoId, payload }: RegistrarVentaParams) =>
-            registrarVenta(productoId, payload),
+        mutationFn: ({ productoId, file }: SubirImagenProductoParams) => subirImagenProducto(productoId, file),
         onSuccess: async (_, variables) => {
             await queryClient.invalidateQueries({ queryKey: ['merchandising', 'productos'] });
             await queryClient.invalidateQueries({ queryKey: ['merchandising', 'productos', variables.productoId, 'movimientos'] });
