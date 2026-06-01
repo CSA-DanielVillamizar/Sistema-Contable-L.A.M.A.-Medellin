@@ -32,7 +32,7 @@ export type CrearMiembroPayload = {
     cilindraje: number;
     placa: string;
     rango: number;
-    esActivo?: boolean;
+    esActivo: boolean;
 };
 
 export type ActualizarMiembroPayload = {
