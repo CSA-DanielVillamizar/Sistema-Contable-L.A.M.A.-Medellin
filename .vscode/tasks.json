@@ -543,6 +543,28 @@
 				"Set-Location \"c:/Users/DanielVillamizar/Sistema Contable L.A.M.A. Medellin\"; $out='scripts/tmp_publish_profile_app-lamamedellin-backend-prod.xml'; az webapp deployment list-publishing-profiles --name app-lamamedellin-backend-prod --resource-group rg-lamaregionnorte-prod --xml > $out; Write-Output \"PROFILE_PATH=$out\"; Write-Output \"PROFILE_BYTES=$((Get-Item $out).Length)\"; Get-Content $out -TotalCount 1"
 			],
 			"isBackground": false
+		},
+		{
+			"label": "build-frontend-hut09",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"build"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-frontend-hut09-prefix",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"--prefix",
+				"frontend",
+				"run",
+				"build"
+			],
+			"group": "build"
 		}
 	]
 }

@@ -1,10 +1,12 @@
 'use client';
 
-import ModalNuevoEvento from '@/features/eventos/components/ModalNuevoEvento';
+import EventoUpsertModal from '@/features/eventos/components/EventoUpsertModal';
 import { useGetEventos } from '@/features/eventos/hooks/useGetEventos';
 import type { EventoDto } from '@/features/eventos/services/eventosService';
 import Link from 'next/link';
 import { useState } from 'react';
+
+type VistaEventos = 'proximas-rodadas' | 'eventos-pasados';
 
 function estadoBadgeClass(estado: string): string {
     const normalized = estado.toLowerCase();
@@ -70,9 +72,38 @@ function sortByFechaDesc(a: EventoDto, b: EventoDto): number {
     return new Date(b.fechaProgramada).getTime() - new Date(a.fechaProgramada).getTime();
 }
 
+function sortByFechaAsc(a: EventoDto, b: EventoDto): number {
+    return new Date(a.fechaProgramada).getTime() - new Date(b.fechaProgramada).getTime();
+}
+
+function isRodada(tipoEvento: string): boolean {
+    return tipoEvento.trim().toLowerCase() === 'rodada';
+}
+
+function getVistaEventos(data: EventoDto[], vista: VistaEventos): EventoDto[] {
+    const now = Date.now();
+
+    if (vista === 'proximas-rodadas') {
+        return data
+            .filter((evento) => isRodada(evento.tipoEvento) && new Date(evento.fechaProgramada).getTime() >= now)
+            .sort(sortByFechaAsc);
+    }
+
+    return data
+        .filter((evento) => new Date(evento.fechaProgramada).getTime() < now)
+        .sort(sortByFechaDesc);
+}
+
+function tabClassName(isActive: boolean): string {
+    return isActive
+        ? 'rounded-lg border border-red-700 bg-red-700 px-3 py-2 text-sm font-semibold text-white'
+        : 'rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400 hover:bg-slate-50';
+}
+
 export default function ListaEventos() {
     const { data, isLoading, isError, error } = useGetEventos();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [vistaActiva, setVistaActiva] = useState<VistaEventos>('proximas-rodadas');
 
     if (isLoading) {
         return <p className="text-sm text-slate-600">Cargando agenda de eventos...</p>;
@@ -82,11 +113,30 @@ export default function ListaEventos() {
         return <p className="text-sm text-red-600">{(error as Error).message}</p>;
     }
 
-    const eventosOrdenados = [...(data ?? [])].sort(sortByFechaDesc);
+    const eventosFiltrados = getVistaEventos(data ?? [], vistaActiva);
+    const totalRodadasProximas = getVistaEventos(data ?? [], 'proximas-rodadas').length;
+    const totalEventosPasados = getVistaEventos(data ?? [], 'eventos-pasados').length;
 
     return (
         <>
-            <div className="mb-6 flex justify-end">
+            <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="inline-flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2">
+                    <button
+                        type="button"
+                        onClick={() => setVistaActiva('proximas-rodadas')}
+                        className={tabClassName(vistaActiva === 'proximas-rodadas')}
+                    >
+                        Próximas Rodadas ({totalRodadasProximas})
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setVistaActiva('eventos-pasados')}
+                        className={tabClassName(vistaActiva === 'eventos-pasados')}
+                    >
+                        Eventos Pasados ({totalEventosPasados})
+                    </button>
+                </div>
+
                 <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
@@ -96,11 +146,15 @@ export default function ListaEventos() {
                 </button>
             </div>
 
-            {eventosOrdenados.length === 0 ? (
-                <p className="text-sm text-slate-600">No hay eventos registrados.</p>
+            {eventosFiltrados.length === 0 ? (
+                <p className="text-sm text-slate-600">
+                    {vistaActiva === 'proximas-rodadas'
+                        ? 'No hay rodadas programadas próximamente.'
+                        : 'No hay eventos pasados registrados.'}
+                </p>
             ) : (
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-                    {eventosOrdenados.map((evento) => (
+                    {eventosFiltrados.map((evento) => (
                         <article
                             key={evento.id}
                             className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
@@ -139,7 +193,7 @@ export default function ListaEventos() {
                 </div>
             )}
 
-            <ModalNuevoEvento isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <EventoUpsertModal mode="create" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </>
     );
 }

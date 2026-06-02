@@ -1,6 +1,6 @@
 'use client';
 
-import { marcarAsistencia, type MarcarAsistenciaPayload } from '@/features/eventos/services/eventosService';
+import { actualizarEvento, type UpdateEventoPayload } from '@/features/eventos/services/eventosService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -28,20 +28,20 @@ function mapError(error: unknown, fallbackMessage: string): Error {
     return new Error(fallbackMessage);
 }
 
-export function useMarcarAsistencia(eventoId: string) {
+export function useActualizarEvento() {
     const queryClient = useQueryClient();
 
-    return useMutation<void, Error, MarcarAsistenciaPayload>({
-        mutationFn: async (payload) => {
+    return useMutation({
+        mutationFn: async ({ id, payload }: { id: string; payload: UpdateEventoPayload }) => {
             try {
-                await marcarAsistencia(eventoId, payload);
+                await actualizarEvento(id, payload);
             } catch (error) {
-                throw mapError(error, 'No fue posible marcar la asistencia.');
+                throw mapError(error, 'No fue posible actualizar el evento.');
             }
         },
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['evento', eventoId] });
+        onSuccess: async (_, variables: { id: string; payload: UpdateEventoPayload }) => {
             await queryClient.invalidateQueries({ queryKey: ['eventos'] });
+            await queryClient.invalidateQueries({ queryKey: ['evento', variables.id] });
         },
     });
 }

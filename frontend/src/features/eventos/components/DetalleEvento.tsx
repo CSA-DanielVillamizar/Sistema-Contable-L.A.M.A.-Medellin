@@ -1,5 +1,6 @@
 'use client';
 
+import EventoUpsertModal from '@/features/eventos/components/EventoUpsertModal';
 import { useGetEventoById } from '@/features/eventos/hooks/useGetEventoById';
 import { useMarcarAsistencia } from '@/features/eventos/hooks/useMarcarAsistencia';
 import { useGetMiembros } from '@/features/miembros/hooks/useGetMiembros';
@@ -75,6 +76,7 @@ export default function DetalleEvento({ eventoId }: DetalleEventoProps) {
     const miembrosQuery = useGetMiembros();
     const marcarAsistenciaMutation = useMarcarAsistencia(eventoId);
     const [updatingMiembroId, setUpdatingMiembroId] = useState<string | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const asistenciasPorMiembro = useMemo(() => {
         const source = eventoQuery.data?.asistencias ?? [];
@@ -121,9 +123,18 @@ export default function DetalleEvento({ eventoId }: DetalleEventoProps) {
                         <h1 className="text-2xl font-semibold text-slate-900">{evento.nombre}</h1>
                         <p className="mt-1 text-sm text-slate-600">{evento.descripcion}</p>
                     </div>
-                    <Link href="/eventos" className="text-sm text-slate-600 hover:text-slate-900">
-                        ← Volver a eventos
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setIsEditModalOpen(true)}
+                            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                        >
+                            Editar Evento
+                        </button>
+                        <Link href="/eventos" className="text-sm text-slate-600 hover:text-slate-900">
+                            ← Volver a eventos
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="mb-4 flex flex-wrap gap-2">
@@ -167,41 +178,71 @@ export default function DetalleEvento({ eventoId }: DetalleEventoProps) {
                 {miembros.length === 0 ? (
                     <p className="text-sm text-slate-600">No hay miembros registrados para marcar asistencia.</p>
                 ) : (
-                    <div className="space-y-3">
-                        {miembros.map((miembro) => {
-                            const asistencia = asistenciasPorMiembro.get(miembro.id);
-                            const asistio = asistencia?.asistio ?? false;
-                            const isUpdating = updatingMiembroId === miembro.id && marcarAsistenciaMutation.isPending;
+                    <div className="overflow-x-auto rounded-xl border border-slate-200">
+                        <div className="min-w-[640px] bg-slate-50 px-4 py-3">
+                            <div className="grid grid-cols-[2fr_1fr_1fr] items-center gap-4 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                <p>Miembro</p>
+                                <p>Estado</p>
+                                <p className="text-right">Acción</p>
+                            </div>
+                        </div>
 
-                            return (
-                                <article
-                                    key={miembro.id}
-                                    className="flex flex-col gap-3 rounded-xl border border-slate-200 p-4 md:flex-row md:items-center md:justify-between"
-                                >
-                                    <div>
-                                        <h3 className="text-sm font-semibold text-slate-900">
-                                            {miembro.nombres} {miembro.apellidos}
-                                        </h3>
-                                        <p className="text-xs text-slate-500">{miembro.apodo || 'Sin apodo'}</p>
-                                    </div>
+                        <div className="divide-y divide-slate-200 bg-white">
+                            {miembros.map((miembro) => {
+                                const asistencia = asistenciasPorMiembro.get(miembro.id);
+                                const asistio = asistencia?.asistio ?? false;
+                                const isUpdating = updatingMiembroId === miembro.id && marcarAsistenciaMutation.isPending;
 
-                                    <button
-                                        type="button"
-                                        onClick={() => onToggleAsistencia(miembro.id, asistio)}
-                                        disabled={isUpdating}
-                                        className={[
-                                            'rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-70',
-                                            asistio ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700',
-                                        ].join(' ')}
+                                return (
+                                    <article
+                                        key={miembro.id}
+                                        className="grid grid-cols-[2fr_1fr_1fr] items-center gap-4 px-4 py-3"
                                     >
-                                        {isUpdating ? 'Guardando...' : asistio ? 'Asistió' : 'No asistió'}
-                                    </button>
-                                </article>
-                            );
-                        })}
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-slate-900">
+                                                {miembro.nombres} {miembro.apellidos}
+                                            </h3>
+                                            <p className="text-xs text-slate-500">{miembro.apodo || 'Sin apodo'}</p>
+                                        </div>
+
+                                        <div>
+                                            <span
+                                                className={[
+                                                    'inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold',
+                                                    asistio
+                                                        ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                                                        : 'border-rose-300 bg-rose-50 text-rose-700',
+                                                ].join(' ')}
+                                            >
+                                                {asistio ? 'Asistió' : 'Pendiente'}
+                                            </span>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => onToggleAsistencia(miembro.id, asistio)}
+                                            disabled={isUpdating}
+                                            className={[
+                                                'justify-self-end rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-70',
+                                                asistio ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700',
+                                            ].join(' ')}
+                                        >
+                                            {isUpdating ? 'Guardando...' : asistio ? 'Marcar no asistió' : 'Marcar asistió'}
+                                        </button>
+                                    </article>
+                                );
+                            })}
+                        </div>
                     </div>
                 )}
             </section>
+
+            <EventoUpsertModal
+                mode="edit"
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                evento={evento}
+            />
         </div>
     );
 }

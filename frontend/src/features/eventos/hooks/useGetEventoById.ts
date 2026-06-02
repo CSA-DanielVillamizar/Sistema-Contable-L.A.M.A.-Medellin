@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export function useGetEventoById(id: string) {
     return useQuery<EventoDetalleDto>({
-        queryKey: ['eventos', 'detalle', id],
+        queryKey: ['evento', id],
         queryFn: () => getEventoById(id),
         enabled: Boolean(id),
     });

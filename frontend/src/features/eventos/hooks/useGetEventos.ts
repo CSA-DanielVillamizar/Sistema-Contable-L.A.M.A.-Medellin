@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export function useGetEventos() {
     return useQuery<EventoDto[]>({
-        queryKey: ['eventos', 'listado'],
+        queryKey: ['eventos'],
         queryFn: getEventos,
         staleTime: 1000 * 60,
     });

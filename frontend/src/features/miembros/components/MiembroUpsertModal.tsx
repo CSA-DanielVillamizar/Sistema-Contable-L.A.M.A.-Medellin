@@ -1,7 +1,7 @@
 'use client';
 
-import { useCrearMiembro } from '@/features/miembros/hooks/useCrearMiembro';
 import { useActualizarMiembro } from '@/features/miembros/hooks/useActualizarMiembro';
+import { useCrearMiembro } from '@/features/miembros/hooks/useCrearMiembro';
 import { gruposSanguineosOptions, rangosClubOptions } from '@/features/miembros/schemas/miembroSchema';
 import type { ActualizarMiembroPayload, CrearMiembroPayload, Miembro } from '@/features/miembros/services/miembrosService';
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -93,8 +93,8 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
                 type === 'checkbox'
                     ? (e.target as HTMLInputElement).checked
                     : numFields.includes(name)
-                      ? parseInt(value, 10)
-                      : value,
+                        ? parseInt(value, 10)
+                        : value,
         }));
     };
 

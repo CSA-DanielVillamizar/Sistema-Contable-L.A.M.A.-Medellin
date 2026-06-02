@@ -17,6 +17,15 @@ export type CreateEventoPayload = {
     tipoEvento: number;
 };
 
+export type UpdateEventoPayload = {
+    nombre: string;
+    descripcion: string;
+    fechaProgramada: string;
+    lugarEncuentro: string;
+    destino?: string | null;
+    tipoEvento: number;
+};
+
 export type AsistenciaEventoDto = {
     miembroId: string;
     nombreMiembro: string;
@@ -101,6 +110,10 @@ export async function getEventos(): Promise<EventoDto[]> {
 export async function crearEvento(payload: CreateEventoPayload): Promise<{ id: string }> {
     const response = await apiClient.post<IdResponseDto>('/api/eventos', payload);
     return { id: toStringValue(response.data?.id ?? response.data?.Id) };
+}
+
+export async function actualizarEvento(id: string, payload: UpdateEventoPayload): Promise<void> {
+    await apiClient.put(`/api/eventos/${id}`, payload);
 }
 
 export async function getEventoById(id: string): Promise<EventoDetalleDto> {
