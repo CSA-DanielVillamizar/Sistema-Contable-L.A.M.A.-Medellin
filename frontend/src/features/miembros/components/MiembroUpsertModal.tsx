@@ -2,9 +2,9 @@
 
 import { useActualizarMiembro } from '@/features/miembros/hooks/useActualizarMiembro';
 import { useCrearMiembro } from '@/features/miembros/hooks/useCrearMiembro';
-import { gruposSanguineosOptions, rangosClubOptions } from '@/features/miembros/schemas/miembroSchema';
+import { gruposSanguineosOptions, mapGrupoSanguineoToValue, mapRangoClubToValue, rangosClubOptions } from '@/features/miembros/schemas/miembroSchema';
 import type { ActualizarMiembroPayload, CrearMiembroPayload, Miembro } from '@/features/miembros/services/miembrosService';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 type MiembroUpsertModalProps = {
     mode: 'create' | 'edit';
@@ -57,14 +57,14 @@ function toFormState(miembro: Miembro): FormState {
         apellidos: miembro.apellidos,
         apodo: miembro.apodo,
         fechaIngreso: miembro.fechaIngreso,
-        tipoSangre: typeof miembro.tipoSangre === 'number' ? miembro.tipoSangre : parseInt(miembro.tipoSangre, 10),
-        nombreContactoEmergencia: miembro.nombreContactoEmergencia,
-        telefonoContactoEmergencia: miembro.telefonoContactoEmergencia,
-        marcaMoto: miembro.marcaMoto,
-        modeloMoto: miembro.modeloMoto,
-        cilindraje: miembro.cilindraje,
-        placa: miembro.placa,
-        rango: typeof miembro.rango === 'number' ? miembro.rango : parseInt(miembro.rango, 10),
+        tipoSangre: mapGrupoSanguineoToValue(miembro.tipoSangre),
+        nombreContactoEmergencia: miembro.contactoEmergenciaNombre,
+        telefonoContactoEmergencia: miembro.contactoEmergenciaTelefono,
+        marcaMoto: miembro.moto.marca,
+        modeloMoto: miembro.moto.modelo,
+        cilindraje: miembro.moto.cilindraje,
+        placa: miembro.moto.placa,
+        rango: mapRangoClubToValue(miembro.rango),
         esActivo: miembro.esActivo,
     };
 }
@@ -74,12 +74,22 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
     const actualizarMiembro = useActualizarMiembro();
     const [formData, setFormData] = useState<FormState>(defaultFormState);
 
+    useEffect(() => {
+        if (!isOpen) {
+            setFormData(defaultFormState);
+            return;
+        }
+
+        if (mode === 'edit' && miembro) {
+            setFormData(toFormState(miembro));
+            return;
+        }
+
+        setFormData(defaultFormState);
+    }, [isOpen, miembro, mode]);
+
     if (!isOpen) {
         return null;
-    }
-
-    if (mode === 'edit' && miembro && formData.documentoIdentidad === '') {
-        setFormData(toFormState(miembro));
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -178,6 +188,7 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
                             <div>
                                 <label className={labelClassName}>Nombres</label>
                                 <input
+                                    id="nombres"
                                     type="text"
                                     name="nombres"
                                     value={formData.nombres}
@@ -189,6 +200,7 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
                             <div>
                                 <label className={labelClassName}>Apellidos</label>
                                 <input
+                                    id="apellidos"
                                     type="text"
                                     name="apellidos"
                                     value={formData.apellidos}
@@ -283,6 +295,7 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
                             <div>
                                 <label className={labelClassName}>Contacto de emergencia</label>
                                 <input
+                                    id="nombreContactoEmergencia"
                                     type="text"
                                     name="nombreContactoEmergencia"
                                     value={formData.nombreContactoEmergencia}
@@ -293,6 +306,7 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
                             <div>
                                 <label className={labelClassName}>Telefono de emergencia</label>
                                 <input
+                                    id="telefonoContactoEmergencia"
                                     type="tel"
                                     name="telefonoContactoEmergencia"
                                     value={formData.telefonoContactoEmergencia}
@@ -311,6 +325,7 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
                             <div>
                                 <label className={labelClassName}>Marca</label>
                                 <input
+                                    id="marcaMoto"
                                     type="text"
                                     name="marcaMoto"
                                     value={formData.marcaMoto}
@@ -321,6 +336,7 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
                             <div>
                                 <label className={labelClassName}>Modelo</label>
                                 <input
+                                    id="modeloMoto"
                                     type="text"
                                     name="modeloMoto"
                                     value={formData.modeloMoto}

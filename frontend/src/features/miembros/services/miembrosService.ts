@@ -1,5 +1,12 @@
 import apiClient from '@/lib/apiClient';
 
+export type MiembroMoto = {
+    marca: string;
+    modelo: string;
+    cilindraje: number;
+    placa: string;
+};
+
 export type Miembro = {
     id: string;
     documentoIdentidad: string;
@@ -10,12 +17,9 @@ export type Miembro = {
     rango: string;
     esActivo: boolean;
     tipoSangre: string;
-    nombreContactoEmergencia: string;
-    telefonoContactoEmergencia: string;
-    marcaMoto: string;
-    modeloMoto: string;
-    cilindraje: number;
-    placa: string;
+    contactoEmergenciaNombre: string;
+    contactoEmergenciaTelefono: string;
+    moto: MiembroMoto;
 };
 
 export type CrearMiembroPayload = {
@@ -64,8 +68,14 @@ function toBooleanValue(value: unknown): boolean {
     return typeof value === 'boolean' ? value : Boolean(value ?? false);
 }
 
+function toRecord(value: unknown): Record<string, unknown> {
+    return value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+}
+
 function mapMiembro(item: unknown): Miembro {
     const dto = (item ?? {}) as Record<string, unknown>;
+    const contactoEmergencia = toRecord(dto.contactoEmergencia ?? dto.ContactoEmergencia);
+    const moto = toRecord(dto.moto ?? dto.Moto);
 
     return {
         id: toStringValue(dto.id ?? dto.Id),
@@ -77,12 +87,28 @@ function mapMiembro(item: unknown): Miembro {
         rango: toStringValue(dto.rango ?? dto.Rango),
         esActivo: toBooleanValue(dto.esActivo ?? dto.EsActivo),
         tipoSangre: toStringValue(dto.tipoSangre ?? dto.TipoSangre),
-        nombreContactoEmergencia: toStringValue(dto.nombreContactoEmergencia ?? dto.NombreContactoEmergencia),
-        telefonoContactoEmergencia: toStringValue(dto.telefonoContactoEmergencia ?? dto.TelefonoContactoEmergencia),
-        marcaMoto: toStringValue(dto.marcaMoto ?? dto.MarcaMoto),
-        modeloMoto: toStringValue(dto.modeloMoto ?? dto.ModeloMoto),
-        cilindraje: toNumberValue(dto.cilindraje ?? dto.Cilindraje),
-        placa: toStringValue(dto.placa ?? dto.Placa),
+        contactoEmergenciaNombre: toStringValue(
+            dto.contactoEmergenciaNombre
+            ?? dto.ContactoEmergenciaNombre
+            ?? dto.nombreContactoEmergencia
+            ?? dto.NombreContactoEmergencia
+            ?? contactoEmergencia.nombre
+            ?? contactoEmergencia.Nombre,
+        ),
+        contactoEmergenciaTelefono: toStringValue(
+            dto.contactoEmergenciaTelefono
+            ?? dto.ContactoEmergenciaTelefono
+            ?? dto.telefonoContactoEmergencia
+            ?? dto.TelefonoContactoEmergencia
+            ?? contactoEmergencia.telefono
+            ?? contactoEmergencia.Telefono,
+        ),
+        moto: {
+            marca: toStringValue(moto.marca ?? moto.Marca ?? dto.marcaMoto ?? dto.MarcaMoto),
+            modelo: toStringValue(moto.modelo ?? moto.Modelo ?? dto.modeloMoto ?? dto.ModeloMoto),
+            cilindraje: toNumberValue(moto.cilindraje ?? moto.Cilindraje ?? dto.cilindraje ?? dto.Cilindraje),
+            placa: toStringValue(moto.placa ?? moto.Placa ?? dto.placa ?? dto.Placa),
+        },
     };
 }
 

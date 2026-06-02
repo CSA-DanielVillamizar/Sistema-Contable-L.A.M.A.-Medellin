@@ -30,6 +30,10 @@ function formatFecha(fechaIso: string): string {
     });
 }
 
+function formatNombreCompleto(miembro: Miembro): string {
+    return `${miembro.nombres} ${miembro.apellidos}`.trim();
+}
+
 export default function MiembrosPage() {
     const { data: miembros = [], isLoading, isError, error } = useGetMiembros();
     const [miembroActivoId, setMiembroActivoId] = useState<string | null>(null);
@@ -104,7 +108,7 @@ export default function MiembrosPage() {
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm font-semibold text-slate-900">
-                                                        {miembro.nombres} {miembro.apellidos}
+                                                        {formatNombreCompleto(miembro)}
                                                     </p>
                                                     <p className="truncate text-xs italic text-slate-500">{miembro.apodo || 'Sin apodo'}</p>
                                                     <div className="mt-2 flex flex-wrap gap-2">
@@ -149,7 +153,7 @@ export default function MiembrosPage() {
                                     <div className="grid grid-cols-1 gap-4 text-sm text-slate-700 md:grid-cols-2">
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Nombre completo</p>
-                                            <p>{miembroActivo.nombres} {miembroActivo.apellidos}</p>
+                                            <p>{formatNombreCompleto(miembroActivo)}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Apodo</p>
@@ -183,7 +187,7 @@ export default function MiembrosPage() {
                                         </div>
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Contacto emergencia</p>
-                                            <p>{miembroActivo.nombreContactoEmergencia} - {miembroActivo.telefonoContactoEmergencia}</p>
+                                            <p>{miembroActivo.contactoEmergenciaNombre} - {miembroActivo.contactoEmergenciaTelefono}</p>
                                         </div>
                                     </div>
                                 </section>
@@ -193,19 +197,19 @@ export default function MiembrosPage() {
                                     <div className="grid grid-cols-1 gap-4 text-sm text-slate-700 md:grid-cols-2">
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Marca</p>
-                                            <p>{miembroActivo.marcaMoto}</p>
+                                            <p>{miembroActivo.moto.marca}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Modelo</p>
-                                            <p>{miembroActivo.modeloMoto}</p>
+                                            <p>{miembroActivo.moto.modelo}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Cilindraje</p>
-                                            <p>{miembroActivo.cilindraje} cc</p>
+                                            <p>{miembroActivo.moto.cilindraje} cc</p>
                                         </div>
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Placa</p>
-                                            <p>{miembroActivo.placa}</p>
+                                            <p>{miembroActivo.moto.placa}</p>
                                         </div>
                                     </div>
                                 </section>
