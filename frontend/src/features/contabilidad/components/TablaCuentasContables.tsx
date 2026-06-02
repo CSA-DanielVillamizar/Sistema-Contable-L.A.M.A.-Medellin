@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useCuentasContables } from '@/features/contabilidad/hooks/useCuentasContables';
+import { TriangleAlert } from 'lucide-react';
 
 export default function TablaCuentasContables() {
     const [soloAsentables, setSoloAsentables] = useState(false);
@@ -59,7 +60,7 @@ export default function TablaCuentasContables() {
                                         <td className="px-4 py-3 text-sm">
                                             {cuenta.exigeTercero ? (
                                                 <span className="inline-flex items-center gap-1">
-                                                    Sí <span title="Requiere tercero para exógena DIAN">⚠</span>
+                                                    Sí <TriangleAlert size={14} className="text-amber-600" aria-hidden="true" />
                                                 </span>
                                             ) : (
                                                 'No'
