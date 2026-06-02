@@ -6,6 +6,7 @@ import {
 } from '@/features/cartera/services/carteraService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 type ProblemDetails = {
     title?: string;
@@ -42,6 +43,7 @@ export function useRegistrarPago() {
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['cartera', 'cuentas-por-cobrar'] });
+            toast.success('Pago registrado exitosamente.');
         },
     });
 }

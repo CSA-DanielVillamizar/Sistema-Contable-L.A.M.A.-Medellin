@@ -3,6 +3,7 @@
 import { crearEvento, type CreateEventoPayload } from '@/features/eventos/services/eventosService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 type ProblemDetails = {
     title?: string;
@@ -41,6 +42,7 @@ export function useCrearEvento() {
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['eventos'] });
+            toast.success('Evento registrado exitosamente.');
         },
     });
 }

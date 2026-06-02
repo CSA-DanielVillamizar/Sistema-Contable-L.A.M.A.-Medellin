@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
+import GlobalToaster from "@/components/providers/GlobalToaster";
 import AuthProvider from "@/providers/AuthProvider";
 import QueryProvider from "@/providers/QueryProvider";
 import type { Metadata } from "next";
@@ -44,6 +45,7 @@ export default function RootLayout({
                 </main>
               </div>
             </div>
+            <GlobalToaster />
           </QueryProvider>
         </AuthProvider>
       </body>
