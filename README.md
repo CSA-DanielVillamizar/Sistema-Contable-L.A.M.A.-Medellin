@@ -1,64 +1,83 @@
-# L.A.M.A. ERP - Sistema de Gestion de Moto Clubs
+# Sistema Contable L.A.M.A. Medellin
 
-L.A.M.A. ERP es una plataforma integral para la gestion operativa, financiera y administrativa del Capitulo L.A.M.A. Medellin. Centraliza procesos criticos del club en una sola solucion, con enfoque en trazabilidad, control y escalabilidad empresarial.
+Plataforma integral para la gestion operativa, financiera y administrativa del Capitulo L.A.M.A. Medellin y su Fundacion. Centraliza procesos contables, tesoreria, cartera, donaciones y proyectos sociales bajo arquitectura empresarial escalable.
 
-## Modulos Principales
+## Estructura del Repositorio
 
-1. Cartera
+```
+Sistema-Contable-L.A.M.A.-Medellin/
+├── LAMAMedellin/          Backend .NET 8 (Clean Architecture)
+│   ├── src/
+│   │   ├── LAMAMedellin.Domain/           Entidades y contratos de dominio
+│   │   ├── LAMAMedellin.Application/      Casos de uso (CQRS + MediatR)
+│   │   ├── LAMAMedellin.Infrastructure/   EF Core, repositorios, servicios Azure
+│   │   └── LAMAMedellin.API/              Endpoints HTTP (Minimal APIs)
+│   └── tests/
+│       ├── LAMAMedellin.API.Tests/
+│       └── LAMAMedellin.Application.Tests/
+├── frontend/              Next.js 14 App Router (TypeScript + TailwindCSS)
+│   └── src/
+│       ├── app/           Paginas y rutas (Server Components)
+│       └── components/    Componentes reutilizables
+├── docs/                  Documentacion del proyecto
+│   ├── ESPECIFICACION_PUC_ESAL.md
+│   ├── BACKEND-SETUP.md
+│   ├── DESPLIEGUE_AZURE.md
+│   └── MANUAL_USUARIO.md
+├── scripts/               Scripts de infraestructura y base de datos
+│   └── sql/               Migraciones SQL idempotentes
+├── tools/
+│   └── qa-scripts/        Scripts de QA y pruebas E2E (uso local)
+├── backlog/               Templates de issues (historico)
+└── governance/            Estandares de codigo y proceso
+```
 
-- Gestion de conceptos de cobro, cuentas por cobrar, cuotas y seguimiento de recaudos pendientes.
+## Modulos del Sistema
 
-1. Tesoreria
-
-- Control de cajas, ingresos, egresos y saldos disponibles para operacion diaria.
-
-1. Merchandising
-
-- Administracion de inventario, ventas y movimiento de productos del club.
-
-1. Miembros
-
-- Directorio de miembros, perfil ampliado, datos de emergencia y estado activo del capitulo.
-
-1. Eventos
-
-- Agenda de eventos y rodadas, detalle por evento y control de asistencia.
+| Modulo | Descripcion | Fase |
+|--------|-------------|------|
+| IAM | Autenticacion Entra External ID + RBAC | Phase 0 |
+| Infra | Azure Key Vault, Blob Storage, Observabilidad | Phase 0 |
+| Contabilidad | PUC ESAL, comprobantes, libros, cierres | Phase 1 |
+| Tesoreria | Movimientos bancarios, recibos, anulaciones | Phase 1 |
+| Cartera | Cuotas, CxC, mora, recaudo miembros | Phase 1 |
+| CxP | Facturas proveedor, vencimientos, pagos | Phase 1 |
+| Multimoneda | USD informativo, diferencia en cambio, TRM | Phase 1 |
+| Donaciones | Campanas, certificados obligatorios (ESAL) | Phase 2 |
+| Proyectos Sociales | Beneficiarios, consentimiento, rendicion | Phase 3 |
+| Negocios | Inventario, compras/ventas, comprobante interno | Phase 4 |
+| Tributario | Exogena, beneficiarios finales | Phase 5 |
 
 ## Arquitectura
 
-### Backend
+### Backend (.NET 8)
 
-- .NET 8 Web API
-- Clean Architecture
-- CQRS con MediatR
-- Entity Framework Core
-- Azure SQL
+- **Patron:** Clean Architecture + CQRS con MediatR
+- **Validacion:** FluentValidation como Behavior en pipeline MediatR
+- **Persistencia:** Entity Framework Core sobre Azure SQL
+- **Seguridad:** Microsoft Entra External ID (sin tablas de usuarios locales)
+- **Secretos:** Azure Key Vault via Managed Identity (`IOptions<T>`)
+- **Errores:** Middleware global + `ProblemDetails` estandarizados
 
-### Frontend
+### Frontend (Next.js 14)
 
-- Next.js (App Router)
-- TypeScript
-- React Query (TanStack Query)
-- TailwindCSS
-
-## Actualizacion Frontend (2026-05-28)
-
-- HU-T02: Cliente API robustecido con normalizacion centralizada de errores ProblemDetails para manejo consistente en hooks y vistas.
-- HU-T03: App Shell global implementado con Sidebar y Navbar persistentes, manteniendo area de contenido con scroll independiente.
-- HU-T01: Home simplificada para enfoque ejecutivo sobre KPIs (ResumenKpis), removiendo la grilla masiva de accesos.
-- Validacion: build de produccion frontend ejecutado exitosamente.
+- **Router:** App Router con TypeScript estricto
+- **Estado servidor:** TanStack Query (React Query)
+- **Estilos:** TailwindCSS
+- **Componentes:** Server Components por defecto; `'use client'` solo para interactividad
 
 ## Ejecucion Local
 
-### Backend (.NET 8)
+### Backend
 
 ```bash
 cd LAMAMedellin
+dotnet restore
 dotnet build
 dotnet run --project src/LAMAMedellin.API
 ```
 
-### Frontend (Next.js)
+### Frontend
 
 ```bash
 cd frontend
@@ -66,6 +85,21 @@ npm install
 npm run dev
 ```
 
-## Construido con orgullo
+## Documentacion
+
+- [Especificacion PUC ESAL](docs/ESPECIFICACION_PUC_ESAL.md)
+- [Setup del Backend](docs/BACKEND-SETUP.md)
+- [Despliegue en Azure](docs/DESPLIEGUE_AZURE.md)
+- [Manual de Usuario](docs/MANUAL_USUARIO.md)
+- [Arquitectura Azure](docs/docs_ARCHITECTURE-AZURE.md)
+
+## Reglas de Negocio Centrales
+
+- Toda transaccion monetaria requiere `CentroCostosId` obligatorio.
+- Las entidades financieras nunca se borran fisicamente (soft-delete con `Anulado`/`IsDeleted`).
+- Moneda funcional: **COP**. USD es informativo; requiere TRM, fecha y fuente registrados.
+- Autenticacion 100% delegada a Entra External ID con MFA obligatorio.
+
+---
 
 Construido con orgullo para fortalecer la gestion institucional de L.A.M.A. Medellin.

@@ -126,8 +126,30 @@ Thumbs.db
 # Temporary scripts and utilities
 .tmp*
 *.tmp
+tmp_*
 temp/
 temporary/
+
+# QA test reports (auto-generated)
+qa-report-*.md
+qa-report-*.json
+test-report-*.json
+REPORTE_QA_*.md
+QA_FINAL_REPORT*.md
+
+# Azure App Service Kudu / deployment logs (never commit)
+backend-*/
+*/LogFiles/
+*/deployments/
+**/LogFiles/kudu/
+
+# Azure publish profiles (contain credentials)
+*.PublishSettings
+*publish-profile*.xml
+PublishProfiles/
+
+# Compiled publish output (not source code)
+artifacts/api-publish/
 
 # Backlog and documentation drafts (unless explicitly tracked)
 # Keep GitHub issue snapshots, sync them to git regularly
@@ -177,7 +199,6 @@ secrets/
 !.gitignore
 !.github/
 !.vscode/tasks.json
-!MIGRATION-NOTES.md
 
 # ============================================================================
 # Notes
