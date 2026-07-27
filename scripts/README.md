@@ -11,6 +11,7 @@
 
 - `scripts/create_github_backlog.ps1`
 - `scripts/create-foundation-backlog-extended.ps1`
+- `scripts/bootstrap-foundation-backlog.ps1`
 - `scripts/upsert_pr_comment.ps1`
 
 Este script:
@@ -30,6 +31,15 @@ powershell -ExecutionPolicy Bypass -File .\scripts\create-foundation-backlog-ext
 ```
 
 El script crea labels, 11 épicas y un backlog extendido con historias iniciales (incluye cuota capitular COP 25.000 y renovación internacional USD 20).
+
+## Bootstrap backlog + milestones Sprints
+
+```powershell
+gh auth login
+pwsh ./scripts/bootstrap-foundation-backlog.ps1
+```
+
+Este script crea labels, milestones Sprint 1..6, 11 épicas y las historias extendidas asociadas.
 
 ## Uso rápido
 
