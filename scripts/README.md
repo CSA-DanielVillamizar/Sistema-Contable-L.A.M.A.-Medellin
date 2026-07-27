@@ -10,6 +10,7 @@
 ## Scripts
 
 - `scripts/create_github_backlog.ps1`
+- `scripts/create-foundation-backlog-extended.ps1`
 - `scripts/upsert_pr_comment.ps1`
 
 Este script:
@@ -20,6 +21,15 @@ Este script:
 - Usa los `.md` del backlog como **body** y asigna labels/milestone exactos.
 - En modo normal, solo crea los faltantes (si el título ya está abierto, lo omite).
 - En modo reset, cierra todos los `epic/story` abiertos y reconstruye el catálogo completo.
+
+## Crear backlog fundación (11 épicas + 50 historias)
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\create-foundation-backlog-extended.ps1 `
+  -Repo "CSA-DanielVillamizar/Sistema-Contable-L.A.M.A.-Medellin"
+```
+
+El script crea labels, 11 épicas y un backlog extendido con historias iniciales (incluye cuota capitular COP 25.000 y renovación internacional USD 20).
 
 ## Uso rápido
 
