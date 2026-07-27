@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1200" viewBox="0 0 1920 1200">
+  <defs>
+    <linearGradient id="sheet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3f5f4"/>
+      <stop offset="100%" stop-color="#e9eeeb"/>
+    </linearGradient>
+    <pattern id="coordGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0 L0 0 0 48" fill="none" stroke="#d3dbd7" stroke-width="1"/>
+    </pattern>
+    <marker id="flowArrow" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#be1e2d"/>
+    </marker>
+    <style>
+      .title { font: 700 36px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .sub { font: 600 17px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .h { font: 700 21px 'Segoe UI', Arial, sans-serif; fill: #111827; }
+      .b { font: 500 15px 'Segoe UI', Arial, sans-serif; fill: #1f2937; }
+      .c { font: 500 13px 'Segoe UI', Arial, sans-serif; fill: #475569; }
+      .shield { font: 700 12px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .pt { font: 700 15px 'Segoe UI', Arial, sans-serif; fill: #111827; text-anchor: middle; dominant-baseline: middle; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="1200" fill="url(#sheet)"/>
+
+  <rect x="34" y="24" width="1852" height="124" rx="12" fill="#ffffff" stroke="#b9c6bf" stroke-width="1.5"/>
+  <text x="62" y="76" class="title">CROQUIS PMT - CARAVANA L.A.M.A. MEDELLIN</text>
+  <text x="62" y="108" class="sub">Sabaneta, Antioquia | Trazado operativo: Calle 77 → Cra 45 → Sector Exito → Betania → Glorieta La Vaquita (2 vueltas) → Cra 43A → Calle 60 → Av. Las Vegas (N-S) → Mis Dos Potrillos</text>
+
+  <rect x="34" y="162" width="1278" height="1002" rx="12" fill="#ffffff" stroke="#b9c6bf" stroke-width="1.5"/>
+  <rect x="1334" y="162" width="552" height="1002" rx="12" fill="#ffffff" stroke="#b9c6bf" stroke-width="1.5"/>
+
+  <rect x="58" y="206" width="1230" height="934" rx="10" fill="#eef3ef" stroke="#d4ddd7"/>
+  <rect x="58" y="206" width="1230" height="934" rx="10" fill="url(#coordGrid)" opacity="0.52"/>
+
+  <!-- Urban blocks to simulate professional basemap -->
+  <g fill="#d9e2dc" stroke="#c6d2ca">
+    <rect x="110" y="262" width="182" height="90" rx="6"/>
+    <rect x="354" y="250" width="164" height="126" rx="6"/>
+    <rect x="548" y="252" width="188" height="94" rx="6"/>
+    <rect x="796" y="274" width="214" height="96" rx="6"/>
+    <rect x="1128" y="270" width="128" height="102" rx="6"/>
+
+    <rect x="120" y="432" width="172" height="112" rx="6"/>
+    <rect x="378" y="434" width="152" height="94" rx="6"/>
+    <rect x="786" y="424" width="228" height="108" rx="6"/>
+    <rect x="1130" y="424" width="126" height="110" rx="6"/>
+
+    <rect x="124" y="620" width="166" height="104" rx="6"/>
+    <rect x="372" y="616" width="168" height="124" rx="6"/>
+    <rect x="790" y="618" width="220" height="94" rx="6"/>
+    <rect x="1128" y="616" width="128" height="118" rx="6"/>
+
+    <rect x="130" y="806" width="164" height="106" rx="6"/>
+    <rect x="372" y="798" width="164" height="108" rx="6"/>
+    <rect x="784" y="802" width="230" height="96" rx="6"/>
+    <rect x="1128" y="794" width="128" height="122" rx="6"/>
+  </g>
+
+  <!-- Green zone around roundabout for map realism -->
+  <circle cx="642" cy="556" r="116" fill="#dcead9" stroke="#bed2bd"/>
+  <circle cx="642" cy="556" r="68" fill="#ffffff" stroke="#8ea59b" stroke-width="4"/>
+
+  <!-- Primary roads with casing -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="108" y1="330" x2="1172" y2="330" stroke="#f8faf9" stroke-width="16"/>
+    <line x1="346" y1="252" x2="346" y2="676" stroke="#f8faf9" stroke-width="16"/>
+    <line x1="784" y1="352" x2="784" y2="724" stroke="#f8faf9" stroke-width="16"/>
+    <line x1="784" y1="724" x2="1084" y2="724" stroke="#f8faf9" stroke-width="16"/>
+    <line x1="1084" y1="238" x2="1084" y2="1056" stroke="#f8faf9" stroke-width="18"/>
+
+    <line x1="108" y1="330" x2="1172" y2="330" stroke="#6d7d76" stroke-width="8"/>
+    <line x1="346" y1="252" x2="346" y2="676" stroke="#6d7d76" stroke-width="8"/>
+    <line x1="784" y1="352" x2="784" y2="724" stroke="#6d7d76" stroke-width="8"/>
+    <line x1="784" y1="724" x2="1084" y2="724" stroke="#6d7d76" stroke-width="8"/>
+    <line x1="1084" y1="238" x2="1084" y2="1056" stroke="#627871" stroke-width="9"/>
+  </g>
+
+  <!-- Road shields -->
+  <rect x="86" y="286" width="84" height="28" rx="6" fill="#ffffff" stroke="#aebdb5"/>
+  <text x="96" y="305" class="shield">Calle 77</text>
+  <rect x="300" y="220" width="70" height="28" rx="6" fill="#ffffff" stroke="#aebdb5"/>
+  <text x="311" y="239" class="shield">Cra 45</text>
+  <rect x="744" y="320" width="74" height="28" rx="6" fill="#ffffff" stroke="#aebdb5"/>
+  <text x="752" y="339" class="shield">Cra 43A</text>
+  <rect x="902" y="742" width="76" height="28" rx="6" fill="#ffffff" stroke="#aebdb5"/>
+  <text x="914" y="761" class="shield">Calle 60</text>
+  <rect x="1104" y="486" width="112" height="42" rx="6" fill="#ffffff" stroke="#aebdb5"/>
+  <text x="1116" y="505" class="shield">Av. Las Vegas</text>
+  <text x="1116" y="520" class="c">Norte-Sur</text>
+
+  <!-- Route line with white casing for map readability -->
+  <polyline points="108,330 346,330 346,462 476,462 476,536 574,536"
+            fill="none" stroke="#fffefe" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="108,330 346,330 346,462 476,462 476,536 574,536"
+            fill="none" stroke="#be1e2d" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"
+            marker-mid="url(#flowArrow)" marker-end="url(#flowArrow)"/>
+
+  <path d="M 574 556 A 68 68 0 1 1 710 556 A 68 68 0 1 1 574 556"
+        fill="none" stroke="#fffefe" stroke-width="14"/>
+  <path d="M 574 556 A 68 68 0 1 1 710 556 A 68 68 0 1 1 574 556"
+        fill="none" stroke="#be1e2d" stroke-width="10" marker-mid="url(#flowArrow)"/>
+  <path d="M 588 556 A 54 54 0 1 1 696 556 A 54 54 0 1 1 588 556"
+        fill="none" stroke="#fffefe" stroke-width="12"/>
+  <path d="M 588 556 A 54 54 0 1 1 696 556 A 54 54 0 1 1 588 556"
+        fill="none" stroke="#be1e2d" stroke-width="8" marker-mid="url(#flowArrow)"/>
+
+  <polyline points="710,556 784,556 784,724 1084,724 1084,1032"
+            fill="none" stroke="#fffefe" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="710,556 784,556 784,724 1084,724 1084,1032"
+            fill="none" stroke="#be1e2d" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"
+            marker-mid="url(#flowArrow)" marker-end="url(#flowArrow)"/>
+
+  <!-- POI callouts -->
+  <rect x="118" y="366" width="188" height="54" rx="8" fill="#ffffff" stroke="#c4d0c8"/>
+  <text x="132" y="389" class="c">Salida Bodegas</text>
+  <text x="132" y="407" class="c">Punto de conformacion</text>
+
+  <rect x="390" y="434" width="152" height="40" rx="8" fill="#ffffff" stroke="#c4d0c8"/>
+  <text x="408" y="459" class="c">Sector Exito</text>
+  <rect x="390" y="492" width="152" height="40" rx="8" fill="#ffffff" stroke="#c4d0c8"/>
+  <text x="430" y="517" class="c">Betania</text>
+
+  <rect x="920" y="1032" width="304" height="80" rx="10" fill="#ffffff" stroke="#15803d" stroke-width="2.5"/>
+  <text x="944" y="1062" class="b" fill="#166534">Mis Dos Potrillos</text>
+  <text x="944" y="1084" class="c">Calle 76B Sur #48A-105 | Llegada/Dispersión</text>
+
+  <!-- Control points -->
+  <circle cx="346" cy="330" r="22" fill="#facc15" stroke="#8a5a11" stroke-width="3"/>
+  <text x="346" y="330" class="pt">A</text>
+  <circle cx="642" cy="556" r="23" fill="#facc15" stroke="#8a5a11" stroke-width="3"/>
+  <text x="642" y="556" class="pt">B</text>
+  <circle cx="1084" cy="724" r="22" fill="#facc15" stroke="#8a5a11" stroke-width="3"/>
+  <text x="1084" y="724" class="pt">C</text>
+  <circle cx="1084" cy="1032" r="22" fill="#facc15" stroke="#8a5a11" stroke-width="3"/>
+  <text x="1084" y="1032" class="pt">D</text>
+
+  <!-- Map cartographic elements -->
+  <g>
+    <rect x="80" y="1046" width="190" height="70" rx="8" fill="#ffffff" stroke="#c3cfc8"/>
+    <text x="98" y="1070" class="c">Escala grafica aprox.</text>
+    <rect x="98" y="1082" width="48" height="10" fill="#111827"/>
+    <rect x="146" y="1082" width="48" height="10" fill="#ffffff" stroke="#111827"/>
+    <rect x="194" y="1082" width="48" height="10" fill="#111827"/>
+    <text x="98" y="1108" class="c">0      100      200 m</text>
+  </g>
+
+  <g>
+    <rect x="1148" y="238" width="106" height="126" rx="8" fill="#ffffff" stroke="#c3cfc8"/>
+    <text x="1195" y="266" class="c" text-anchor="middle">NORTE</text>
+    <line x1="1195" y1="340" x2="1195" y2="286" stroke="#111827" stroke-width="3"/>
+    <polygon points="1195,274 1188,288 1202,288" fill="#111827"/>
+    <line x1="1172" y1="318" x2="1218" y2="318" stroke="#64748b" stroke-width="2"/>
+  </g>
+
+  <text x="62" y="188" class="c">Base urbana referencial para lectura operativa PMT (no georreferenciada).</text>
+
+  <!-- Right panel content -->
+  <rect x="1358" y="190" width="504" height="332" rx="10" fill="#f7faf8" stroke="#cfd9d3"/>
+  <text x="1384" y="230" class="h">LEYENDA Y SIMBOLOGIA</text>
+  <line x1="1384" y1="272" x2="1454" y2="272" stroke="#be1e2d" stroke-width="8" marker-end="url(#flowArrow)"/>
+  <text x="1474" y="277" class="b">Ruta de circulacion de la caravana.</text>
+
+  <circle cx="1398" cy="326" r="10" fill="#facc15" stroke="#8a5a11" stroke-width="2"/>
+  <text x="1420" y="331" class="b">Puntos de control con agentes y capitanes.</text>
+
+  <circle cx="1398" cy="380" r="13" fill="none" stroke="#be1e2d" stroke-width="4"/>
+  <text x="1420" y="385" class="b">Zona de exhibicion: glorieta La Vaquita.</text>
+
+  <rect x="1384" y="408" width="456" height="90" rx="8" fill="#ffffff" stroke="#d5dfd9"/>
+  <text x="1400" y="434" class="c">A: Cra 45 con Calle 77 (inicio desplazamiento)</text>
+  <text x="1400" y="454" class="c">B: Glorieta La Vaquita (2 vueltas controladas)</text>
+  <text x="1400" y="474" class="c">C: Av. Las Vegas con Calle 60 (alto flujo)</text>
+  <text x="1400" y="494" class="c">D: Ingreso Mis Dos Potrillos (cierre)</text>
+
+  <rect x="1358" y="542" width="504" height="278" rx="10" fill="#f7faf8" stroke="#cfd9d3"/>
+  <text x="1384" y="582" class="h">CUADRO TECNICO PMT</text>
+  <line x1="1384" y1="602" x2="1840" y2="602" stroke="#d6e0da"/>
+  <text x="1384" y="640" class="b">Tiempo de exposicion por interseccion:</text>
+  <text x="1678" y="640" class="b">Max. 2 minutos</text>
+  <line x1="1384" y1="656" x2="1840" y2="656" stroke="#d6e0da"/>
+  <text x="1384" y="694" class="b">Velocidad operativa:</text>
+  <text x="1678" y="694" class="b">20 km/h</text>
+  <line x1="1384" y1="710" x2="1840" y2="710" stroke="#d6e0da"/>
+  <text x="1384" y="748" class="b">Comunicacion interna:</text>
+  <text x="1678" y="748" class="b">Radio L.A.M.A.</text>
+  <line x1="1384" y1="764" x2="1840" y2="764" stroke="#d6e0da"/>
+  <text x="1384" y="802" class="b">Bloque movil:</text>
+  <text x="1678" y="802" class="b">300 motocicletas</text>
+
+  <rect x="1358" y="840" width="504" height="300" rx="10" fill="#f7faf8" stroke="#cfd9d3"/>
+  <text x="1384" y="880" class="h">NOTAS DE RADICACION</text>
+  <text x="1384" y="914" class="b">Documento: Croquis operativo para PMT.</text>
+  <text x="1384" y="942" class="b">Cobertura: jurisdiccion exclusiva de Sabaneta.</text>
+  <text x="1384" y="970" class="b">Finalidad: acompanamiento y seguridad vial.</text>
+  <text x="1384" y="998" class="b">Validez cartografica: referencial no catastral.</text>
+  <text x="1384" y="1026" class="b">Fecha de emision: ____ / ____ / ______</text>
+  <text x="1384" y="1054" class="b">Responsable PMT: _____________________</text>
+
+  <text x="1334" y="1178" class="c">Jurisdiccion exclusiva: Municipio de Sabaneta, Antioquia.</text>
+</svg>

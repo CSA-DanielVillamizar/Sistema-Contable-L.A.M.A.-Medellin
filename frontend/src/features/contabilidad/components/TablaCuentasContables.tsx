@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import { useCuentasContables } from '@/features/contabilidad/hooks/useCuentasContables';
 import { TriangleAlert } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 export default function TablaCuentasContables() {
     const [soloAsentables, setSoloAsentables] = useState(false);
