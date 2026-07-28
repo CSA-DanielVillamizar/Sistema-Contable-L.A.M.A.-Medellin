@@ -16,14 +16,34 @@ const defaultValues: CrearMiembroFormInput = {
   apellidos: '',
   apodo: '',
   fechaIngreso: '',
-  tipoMiembro: 2,
+  tipoSangre: 1,
+  nombreContactoEmergencia: '',
+  telefonoContactoEmergencia: '',
+  marcaMoto: '',
+  modeloMoto: '',
+  cilindraje: 0,
+  placa: '',
+  rango: 1,
 };
 
-const tiposMiembro = [
-  { value: 1, label: 'Prospecto' },
-  { value: 2, label: 'Activo' },
-  { value: 3, label: 'Rodando' },
-  { value: 4, label: 'Retirado' },
+// Valores tomados de RangoClub.cs
+const rangosClub = [
+  { value: 1, label: 'Aspirante' },
+  { value: 2, label: 'Prospecto' },
+  { value: 3, label: 'Miembro activo' },
+  { value: 4, label: 'Directivo' },
+];
+
+// Valores tomados de GrupoSanguineo.cs
+const gruposSanguineos = [
+  { value: 1, label: 'O+' },
+  { value: 2, label: 'O-' },
+  { value: 3, label: 'A+' },
+  { value: 4, label: 'A-' },
+  { value: 5, label: 'B+' },
+  { value: 6, label: 'B-' },
+  { value: 7, label: 'AB+' },
+  { value: 8, label: 'AB-' },
 ];
 
 export default function CrearMiembroForm() {
@@ -58,12 +78,19 @@ export default function CrearMiembroForm() {
       apellidos: values.apellidos,
       apodo: values.apodo,
       fechaIngreso: values.fechaIngreso,
-      tipoMiembro: values.tipoMiembro,
+      tipoSangre: values.tipoSangre,
+      nombreContactoEmergencia: values.nombreContactoEmergencia,
+      telefonoContactoEmergencia: values.telefonoContactoEmergencia,
+      marcaMoto: values.marcaMoto,
+      modeloMoto: values.modeloMoto,
+      cilindraje: values.cilindraje,
+      placa: values.placa,
+      rango: values.rango,
     });
 
     reset({
       ...defaultValues,
-      tipoMiembro: values.tipoMiembro,
+      rango: values.rango,
     });
   };
 
@@ -125,19 +152,113 @@ export default function CrearMiembroForm() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">Tipo de miembro</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">Rango en el club</label>
           <select
-            {...register('tipoMiembro')}
+            {...register('rango')}
             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
           >
-            {tiposMiembro.map((tipo) => (
-              <option key={tipo.value} value={tipo.value}>
-                {tipo.label}
+            {rangosClub.map((rango) => (
+              <option key={rango.value} value={rango.value}>
+                {rango.label}
               </option>
             ))}
           </select>
-          {errors.tipoMiembro && <p className="mt-1 text-sm text-red-600">{errors.tipoMiembro.message}</p>}
+          {errors.rango && <p className="mt-1 text-sm text-red-600">{errors.rango.message}</p>}
         </div>
+
+        <fieldset className="space-y-5 border-t border-slate-200 pt-5">
+          <legend className="text-sm font-semibold text-slate-900">Datos de emergencia</legend>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Tipo de sangre</label>
+            <select
+              {...register('tipoSangre')}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
+            >
+              {gruposSanguineos.map((grupo) => (
+                <option key={grupo.value} value={grupo.value}>
+                  {grupo.label}
+                </option>
+              ))}
+            </select>
+            {errors.tipoSangre && <p className="mt-1 text-sm text-red-600">{errors.tipoSangre.message}</p>}
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Nombre del contacto de emergencia</label>
+            <input
+              type="text"
+              {...register('nombreContactoEmergencia')}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
+              placeholder="Ej: Maria Gonzalez"
+            />
+            {errors.nombreContactoEmergencia && (
+              <p className="mt-1 text-sm text-red-600">{errors.nombreContactoEmergencia.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Teléfono del contacto de emergencia</label>
+            <input
+              type="tel"
+              {...register('telefonoContactoEmergencia')}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
+              placeholder="Ej: 3104363831"
+            />
+            {errors.telefonoContactoEmergencia && (
+              <p className="mt-1 text-sm text-red-600">{errors.telefonoContactoEmergencia.message}</p>
+            )}
+          </div>
+        </fieldset>
+
+        <fieldset className="space-y-5 border-t border-slate-200 pt-5">
+          <legend className="text-sm font-semibold text-slate-900">Motocicleta</legend>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Marca</label>
+            <input
+              type="text"
+              {...register('marcaMoto')}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
+              placeholder="Ej: Harley-Davidson"
+            />
+            {errors.marcaMoto && <p className="mt-1 text-sm text-red-600">{errors.marcaMoto.message}</p>}
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Modelo</label>
+            <input
+              type="text"
+              {...register('modeloMoto')}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
+              placeholder="Ej: Softail"
+            />
+            {errors.modeloMoto && <p className="mt-1 text-sm text-red-600">{errors.modeloMoto.message}</p>}
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Cilindraje (cc)</label>
+            <input
+              type="number"
+              min={1}
+              {...register('cilindraje')}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
+              placeholder="Ej: 883"
+            />
+            {errors.cilindraje && <p className="mt-1 text-sm text-red-600">{errors.cilindraje.message}</p>}
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Placa</label>
+            <input
+              type="text"
+              {...register('placa')}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
+              placeholder="Ej: ABC12D"
+            />
+            {errors.placa && <p className="mt-1 text-sm text-red-600">{errors.placa.message}</p>}
+          </div>
+        </fieldset>
 
         {mensajeError && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{mensajeError}</div>

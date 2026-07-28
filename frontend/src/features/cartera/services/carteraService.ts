@@ -1,12 +1,20 @@
 import apiClient from '@/lib/apiClient';
 
+/** Espeja CrearMiembroRequest en CarteraController.cs. Todos los campos son obligatorios. */
 export type CrearMiembroPayload = {
     documentoIdentidad: string;
     nombres: string;
     apellidos: string;
     apodo: string;
     fechaIngreso: string;
-    tipoMiembro: number;
+    tipoSangre: number;
+    nombreContactoEmergencia: string;
+    telefonoContactoEmergencia: string;
+    marcaMoto: string;
+    modeloMoto: string;
+    cilindraje: number;
+    placa: string;
+    rango: number;
 };
 
 export type CrearConceptoCobroPayload = {
