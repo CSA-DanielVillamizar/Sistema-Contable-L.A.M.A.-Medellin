@@ -69,19 +69,23 @@ public sealed class CuentaPorCobrar : BaseEntity
 
     public void AplicarPago(decimal monto)
     {
+        // Estas tres son reglas de negocio, no fallas del servidor: se lanzan como
+        // ReglaNegocioException para que la API responda 400 con el mensaje real.
+        // Con InvalidOperationException/ArgumentOutOfRangeException el
+        // GlobalExceptionHandler las tomaba como error inesperado y devolvia 500.
         if (Estado == EstadoCuentaPorCobrar.Anulada)
         {
-            throw new InvalidOperationException("No se pueden aplicar pagos a una cuenta anulada.");
+            throw new ReglaNegocioException("No se pueden aplicar pagos a una cuenta anulada.");
         }
 
         if (monto <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(monto), "El monto debe ser mayor a cero.");
+            throw new ReglaNegocioException("El monto debe ser mayor a cero.");
         }
 
         if (monto > SaldoPendiente)
         {
-            throw new InvalidOperationException("El pago no puede ser mayor al saldo pendiente.");
+            throw new ReglaNegocioException("El pago no puede ser mayor al saldo pendiente.");
         }
 
         SaldoPendiente -= monto;
@@ -93,44 +97,5 @@ public sealed class CuentaPorCobrar : BaseEntity
         }
 
         Estado = EstadoCuentaPorCobrar.PagadaParcial;
-    }
-
-    private static bool EsPeriodoValido(string? periodo)
-    {
-        if (string.IsNullOrWhiteSpace(periodo) || periodo.Length != 7)
-        {
-            return false;
-        }
-
-        if (periodo[4] != '-')
-        {
-            return false;
-        }
-
-        if (!int.TryParse(periodo[..4], out var anio))
-        {
-            return false;
-        }
-
-        if (!int.TryParse(periodo[5..], out var mes))
-        {
-            return false;
-        }
-
-        return anio >= 1900 && mes is >= 1 and <= 12;
-    }
-
-    private static DateOnly ParsearFechaPeriodoInicio(string periodo)
-    {
-        var anio = int.Parse(periodo[..4]);
-        var mes = int.Parse(periodo[5..]);
-        return new DateOnly(anio, mes, 1);
-    }
-
-    private static DateOnly ParsearFechaPeriodoFin(string periodo)
-    {
-        var inicio = ParsearFechaPeriodoInicio(periodo);
-        var fin = inicio.AddMonths(1).AddDays(-1);
-        return fin;
     }
 }

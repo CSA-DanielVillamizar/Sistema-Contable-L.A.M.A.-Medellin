@@ -87,6 +87,8 @@ public sealed class CarteraController(ISender sender) : ControllerBase
 
         return Ok(new
         {
+            periodo = request.Periodo,
+            cuotasGeneradas = resultado,
             mensaje = $"Se han generado {resultado} obligaciones para el periodo {request.Periodo}"
         });
     }

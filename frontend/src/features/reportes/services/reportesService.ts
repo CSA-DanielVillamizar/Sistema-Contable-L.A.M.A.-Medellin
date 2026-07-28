@@ -27,40 +27,27 @@ export type CarteraMora = {
 
 type EstadoResultadosApiDto = {
     totalIngresos?: number | string;
-    TotalIngresos?: number | string;
     totalEgresos?: number | string;
-    TotalEgresos?: number | string;
     balanceNeto?: number | string;
-    BalanceNeto?: number | string;
     totalesPorConcepto?: EstadoResultadosDetalleApiDto[];
-    TotalesPorConcepto?: EstadoResultadosDetalleApiDto[];
 };
 
 type EstadoResultadosDetalleApiDto = {
     tipoMovimiento?: string;
-    TipoMovimiento?: string;
     concepto?: string;
-    Concepto?: string;
     total?: number | string;
-    Total?: number | string;
 };
 
 type CarteraMoraApiDto = {
     totalEnMora?: number | string;
-    TotalEnMora?: number | string;
     detalleMora?: CarteraMoraDetalleApiDto[];
-    DetalleMora?: CarteraMoraDetalleApiDto[];
 };
 
 type CarteraMoraDetalleApiDto = {
     nombreMiembro?: string;
-    NombreMiembro?: string;
     concepto?: string;
-    Concepto?: string;
     fechaVencimiento?: string;
-    FechaVencimiento?: string;
     saldoPendiente?: number | string;
-    SaldoPendiente?: number | string;
 };
 
 function toNumber(value: unknown): number {
@@ -77,16 +64,16 @@ export async function getEstadoResultados(fechaInicio: string, fechaFin: string)
     });
 
     const item = response.data ?? {};
-    const detalle = (item.totalesPorConcepto ?? item.TotalesPorConcepto ?? []).map((d) => ({
-        tipoMovimiento: String(d?.tipoMovimiento ?? d?.TipoMovimiento ?? ''),
-        concepto: String(d?.concepto ?? d?.Concepto ?? ''),
-        total: toNumber(d?.total ?? d?.Total ?? 0),
+    const detalle = (item.totalesPorConcepto ?? []).map((d) => ({
+        tipoMovimiento: String(d?.tipoMovimiento ?? ''),
+        concepto: String(d?.concepto ?? ''),
+        total: toNumber(d?.total ?? 0),
     }));
 
     return {
-        totalIngresos: toNumber(item.totalIngresos ?? item.TotalIngresos ?? 0),
-        totalEgresos: toNumber(item.totalEgresos ?? item.TotalEgresos ?? 0),
-        balanceNeto: toNumber(item.balanceNeto ?? item.BalanceNeto ?? 0),
+        totalIngresos: toNumber(item.totalIngresos ?? 0),
+        totalEgresos: toNumber(item.totalEgresos ?? 0),
+        balanceNeto: toNumber(item.balanceNeto ?? 0),
         totalesPorConcepto: detalle,
     };
 }
@@ -95,15 +82,15 @@ export async function getCarteraMora(): Promise<CarteraMora> {
     const response = await apiClient.get<CarteraMoraApiDto>('/api/reportes/cartera-mora');
 
     const item = response.data ?? {};
-    const detalle = (item.detalleMora ?? item.DetalleMora ?? []).map((d) => ({
-        nombreMiembro: String(d?.nombreMiembro ?? d?.NombreMiembro ?? ''),
-        concepto: String(d?.concepto ?? d?.Concepto ?? ''),
-        fechaVencimiento: String(d?.fechaVencimiento ?? d?.FechaVencimiento ?? ''),
-        saldoPendiente: toNumber(d?.saldoPendiente ?? d?.SaldoPendiente ?? 0),
+    const detalle = (item.detalleMora ?? []).map((d) => ({
+        nombreMiembro: String(d?.nombreMiembro ?? ''),
+        concepto: String(d?.concepto ?? ''),
+        fechaVencimiento: String(d?.fechaVencimiento ?? ''),
+        saldoPendiente: toNumber(d?.saldoPendiente ?? 0),
     }));
 
     return {
-        totalEnMora: toNumber(item.totalEnMora ?? item.TotalEnMora ?? 0),
+        totalEnMora: toNumber(item.totalEnMora ?? 0),
         detalleMora: detalle,
     };
 }

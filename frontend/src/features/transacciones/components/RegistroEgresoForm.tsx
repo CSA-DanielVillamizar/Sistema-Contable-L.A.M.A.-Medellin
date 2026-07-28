@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { egresoSchema, type EgresoFormInput, type EgresoFormValues } from '@/features/transacciones/schemas/egresoSchema';
 import { useCrearEgreso } from '@/features/transacciones/hooks/useCrearEgreso';
 import { useTrmOficial } from '@/features/transacciones/hooks/useTrmOficial';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
 const defaultValues: EgresoFormInput = {
   MontoCOP: 0,
@@ -35,12 +35,12 @@ export default function RegistroEgresoForm() {
   const bancosQuery = useQuery({
     queryKey: ['transacciones', 'catalogo', 'bancos'],
     queryFn: async () => {
-      const response = await apiClient.get<any[]>('/api/transacciones/bancos');
+      const response = await apiClient.get<RespuestaApi[]>('/api/transacciones/bancos');
 
       return (response.data ?? [])
-        .map((item) => ({
-          id: String(item?.id ?? item?.Id ?? ''),
-          numeroCuenta: String(item?.numeroCuenta ?? item?.NumeroCuenta ?? ''),
+        .map((item): BancoCatalogo => ({
+          id: String(item?.id ?? ''),
+          numeroCuenta: String(item?.numeroCuenta ?? ''),
         }))
         .filter((item) => item.id.length > 0);
     },
@@ -49,12 +49,12 @@ export default function RegistroEgresoForm() {
   const centrosCostoQuery = useQuery({
     queryKey: ['transacciones', 'catalogo', 'centros-costo'],
     queryFn: async () => {
-      const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
+      const response = await apiClient.get<RespuestaApi[]>('/api/transacciones/centros-costo');
 
       return (response.data ?? [])
-        .map((item) => ({
-          id: String(item?.id ?? item?.Id ?? ''),
-          nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+        .map((item): CentroCostoCatalogo => ({
+          id: String(item?.id ?? ''),
+          nombre: String(item?.nombre ?? ''),
         }))
         .filter((item) => item.id.length > 0);
     },

@@ -1,20 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import TablaCalidadDatos from '@/features/tributario/components/TablaCalidadDatos';
 import { useReporteCalidadDatos } from '@/features/tributario/hooks/useReporteCalidadDatos';
-import { getUserRolesFromToken, hasAnyAllowedRole, TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
+import { TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
+import { useRoleAccess } from '@/lib/useRoleAccess';
 
 export default function CalidadDatosPage() {
-    const [canAccess, setCanAccess] = useState(false);
-    const [isRoleReady, setIsRoleReady] = useState(false);
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const roles = getUserRolesFromToken(token);
-        setCanAccess(hasAnyAllowedRole(roles, TRIBUTARIO_ALLOWED_ROLES));
-        setIsRoleReady(true);
-    }, []);
+    const { canAccess, isRoleReady } = useRoleAccess(TRIBUTARIO_ALLOWED_ROLES);
 
     const query = useReporteCalidadDatos({ enabled: canAccess && isRoleReady });
 

@@ -54,7 +54,11 @@ public sealed class RegistrarPagoCuotaCommandHandlerTests
         await act.Should().ThrowAsync<ExcepcionNegocio>()
             .WithMessage("No hay bancos configurados para registrar el pago.");
 
-        cxc.SaldoPendienteCOP.Should().Be(50_000m);
+        // Comportamiento actual: el handler aplica el pago sobre la entidad ANTES de
+        // verificar que exista banco, por lo que la CxC queda mutada pese al fallo.
+        // No se persiste porque no se llama SaveChanges, pero la entidad rastreada
+        // queda inconsistente. Ver pendiente de reordenar el handler.
+        cxc.SaldoPendiente.Should().Be(50_000m);
         _cuentaPorCobrarRepositoryMock.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
@@ -77,8 +81,8 @@ public sealed class RegistrarPagoCuotaCommandHandlerTests
         var result = await sut.Handle(command, CancellationToken.None);
 
         result.Should().Be(Unit.Value);
-        cxc.SaldoPendienteCOP.Should().Be(0m);
-        cxc.Estado.Should().Be(EstadoCuentaPorCobrar.Pagado);
+        cxc.SaldoPendiente.Should().Be(0m);
+        cxc.Estado.Should().Be(EstadoCuentaPorCobrar.Pagada);
         banco.SaldoActual.Should().Be(1_100_000m);
 
         _cuentaPorCobrarRepositoryMock.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -93,7 +97,14 @@ public sealed class RegistrarPagoCuotaCommandHandlerTests
 
     private static CuentaPorCobrar CrearCuentaPorCobrarConSaldo(Guid id, decimal saldoPendiente)
     {
-        var cxc = new CuentaPorCobrar(Guid.NewGuid(), "2026-02", saldoPendiente)
+        var fechaEmision = new DateOnly(2026, 2, 1);
+
+        var cxc = new CuentaPorCobrar(
+            miembroId: Guid.NewGuid(),
+            conceptoCobroId: Guid.NewGuid(),
+            fechaEmision: fechaEmision,
+            fechaVencimiento: fechaEmision.AddMonths(1).AddDays(-1),
+            valorTotal: saldoPendiente)
         {
             Id = id
         };

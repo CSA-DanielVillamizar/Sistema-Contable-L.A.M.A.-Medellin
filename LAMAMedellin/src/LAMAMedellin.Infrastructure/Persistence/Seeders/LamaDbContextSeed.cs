@@ -7,7 +7,9 @@ public static class LamaDbContextSeed
 {
     public static async Task SeedAsync(this LamaDbContext context)
     {
+        await context.SeedConsecutivosComprobanteAsync();
         await context.SeedCuentasContablesAsync();
+        await context.SeedCentrosCostoAsync();
         await context.SeedBancoAsync();
         await context.SeedCajasAsync();
         await context.SeedCuotasAsambleaAsync();

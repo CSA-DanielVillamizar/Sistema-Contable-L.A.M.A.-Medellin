@@ -37,54 +37,38 @@ type RegistrarMovimientoTesoreriaResponse = {
 
 type CajaApiDto = {
     id?: string;
-    Id?: string;
     nombre?: string;
-    Nombre?: string;
     tipoCaja?: number;
-    TipoCaja?: number;
     cuentaContable?: string;
-    CuentaContable?: string;
     saldoActual?: number;
-    SaldoActual?: number;
 };
 
 type RegistrarMovimientoTesoreriaResponseDto = {
     id?: string;
-    Id?: string;
 };
 
 type EgresoApiDto = {
     id?: string;
-    Id?: string;
     fecha?: string;
-    Fecha?: string;
     monto?: number;
-    Monto?: number;
     concepto?: string;
-    Concepto?: string;
     terceroId?: string | null;
-    TerceroId?: string | null;
     cuentaContableId?: string;
-    CuentaContableId?: string;
     cuentaContableNombre?: string;
-    CuentaContableNombre?: string;
     cajaId?: string;
-    CajaId?: string;
     cajaNombre?: string;
-    CajaNombre?: string;
     comprobanteContableId?: string | null;
-    ComprobanteContableId?: string | null;
 };
 
 export async function getCajas(): Promise<CajaTesoreria[]> {
     const response = await apiClient.get<CajaApiDto[]>('/api/tesoreria/cajas');
 
     return (response.data ?? []).map((item) => ({
-        id: String(item?.id ?? item?.Id ?? ''),
-        nombre: String(item?.nombre ?? item?.Nombre ?? ''),
-        tipoCaja: Number(item?.tipoCaja ?? item?.TipoCaja ?? 0),
-        cuentaContable: String(item?.cuentaContable ?? item?.CuentaContable ?? ''),
-        saldoActual: Number(item?.saldoActual ?? item?.SaldoActual ?? 0),
+        id: String(item?.id ?? ''),
+        nombre: String(item?.nombre ?? ''),
+        tipoCaja: Number(item?.tipoCaja ?? 0),
+        cuentaContable: String(item?.cuentaContable ?? ''),
+        saldoActual: Number(item?.saldoActual ?? 0),
     }));
 }
 
@@ -92,16 +76,16 @@ export async function getEgresos(): Promise<EgresoTesoreria[]> {
     const response = await apiClient.get<EgresoApiDto[]>('/api/tesoreria/egresos');
 
     return (response.data ?? []).map((item) => ({
-        id: String(item?.id ?? item?.Id ?? ''),
-        fecha: String(item?.fecha ?? item?.Fecha ?? ''),
-        monto: Number(item?.monto ?? item?.Monto ?? 0),
-        concepto: String(item?.concepto ?? item?.Concepto ?? ''),
-        terceroId: item?.terceroId ?? item?.TerceroId ?? null,
-        cuentaContableId: String(item?.cuentaContableId ?? item?.CuentaContableId ?? ''),
-        cuentaContableNombre: String(item?.cuentaContableNombre ?? item?.CuentaContableNombre ?? ''),
-        cajaId: String(item?.cajaId ?? item?.CajaId ?? ''),
-        cajaNombre: String(item?.cajaNombre ?? item?.CajaNombre ?? ''),
-        comprobanteContableId: item?.comprobanteContableId ?? item?.ComprobanteContableId ?? null,
+        id: String(item?.id ?? ''),
+        fecha: String(item?.fecha ?? ''),
+        monto: Number(item?.monto ?? 0),
+        concepto: String(item?.concepto ?? ''),
+        terceroId: item?.terceroId ?? null,
+        cuentaContableId: String(item?.cuentaContableId ?? ''),
+        cuentaContableNombre: String(item?.cuentaContableNombre ?? ''),
+        cajaId: String(item?.cajaId ?? ''),
+        cajaNombre: String(item?.cajaNombre ?? ''),
+        comprobanteContableId: item?.comprobanteContableId ?? null,
     }));
 }
 
@@ -109,7 +93,7 @@ export async function registrarIngreso(payload: RegistrarMovimientoTesoreriaPayl
     const response = await apiClient.post<RegistrarMovimientoTesoreriaResponseDto>('/api/tesoreria/ingresos', payload);
 
     return {
-        id: String(response.data?.id ?? response.data?.Id ?? ''),
+        id: String(response.data?.id ?? ''),
     };
 }
 
@@ -117,6 +101,6 @@ export async function registrarEgreso(payload: RegistrarMovimientoTesoreriaPaylo
     const response = await apiClient.post<RegistrarMovimientoTesoreriaResponseDto>('/api/tesoreria/egresos', payload);
 
     return {
-        id: String(response.data?.id ?? response.data?.Id ?? ''),
+        id: String(response.data?.id ?? ''),
     };
 }

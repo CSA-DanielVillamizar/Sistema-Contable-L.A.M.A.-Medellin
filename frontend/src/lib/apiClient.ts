@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, { type InternalAxiosRequestConfig } from 'axios';
+import { getAccessToken } from '@/lib/msalClient';
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:5006';
 
@@ -10,9 +11,12 @@ const apiClient = axios.create({
     },
 });
 
+// El token se pide a MSAL en cada request en vez de leerlo de localStorage.
+// MSAL lo mantiene en cache y lo renueva solo cuando esta por expirar, asi que
+// esto no genera trafico extra y elimina el token persistido en disco.
 apiClient.interceptors.request.use(
-    (config) => {
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    async (config) => {
+        const accessToken = await getAccessToken();
 
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -24,6 +28,17 @@ apiClient.interceptors.request.use(
 );
 
 export default apiClient;
+
+/**
+ * Cuerpo crudo de una respuesta del API, antes de normalizarlo a un tipo del
+ * dominio del frontend.
+ *
+ * `unknown` es el tipo honesto para estos campos: vienen de la red y todavia no
+ * estan validados. Los consumidores los pasan por String/Number/Boolean con un
+ * valor por defecto, que es justamente lo que convierte un `unknown` en un dato
+ * utilizable. Usar `any` aqui apagaba el chequeo de tipos sin ganar nada.
+ */
+export type RespuestaApi = Record<string, unknown>;
 
 // ---------------------------------------------------------------------------
 // Tipos para ProblemDetails (RFC 7807) — el backend retorna este contrato
@@ -57,9 +72,12 @@ export class ApiError extends Error {
 // ---------------------------------------------------------------------------
 // Interceptor de RESPUESTA — normaliza errores ProblemDetails del backend
 // ---------------------------------------------------------------------------
+/** Marca interna para no reintentar en bucle una request que ya se reintento. */
+type RequestConfigConReintento = InternalAxiosRequestConfig & { _reintentoAuth?: boolean };
+
 apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
         if (!axios.isAxiosError(error) || !error.response) {
             // Error de red o timeout — relanzamos tal cual
             return Promise.reject(error);
@@ -67,21 +85,36 @@ apiClient.interceptors.response.use(
 
         const { status, data } = error.response;
 
+        // Un 401 suele ser un token vencido. Se pide uno nuevo saltando la cache y
+        // se reintenta la request una sola vez. Antes el usuario quedaba viendo
+        // errores hasta que recargara la pagina a mano.
+        const originalConfig = error.config as RequestConfigConReintento | undefined;
+
+        if (status === 401 && originalConfig && !originalConfig._reintentoAuth) {
+            originalConfig._reintentoAuth = true;
+
+            const tokenRenovado = await getAccessToken({ forceRefresh: true });
+
+            if (tokenRenovado) {
+                originalConfig.headers.Authorization = `Bearer ${tokenRenovado}`;
+                return apiClient(originalConfig);
+            }
+        }
+
         // El backend (.NET ProblemDetails) siempre envía un objeto con `title`
-        // o `detail`. Aceptamos tanto camelCase como PascalCase por defensividad.
+        // o `detail`, en camelCase.
         const isProblemDetails =
             typeof data === 'object' &&
             data !== null &&
-            ('title' in data || 'Title' in data || 'detail' in data || 'Detail' in data);
+            ('title' in data || 'detail' in data);
 
         if (isProblemDetails) {
-            // Normalizar camelCase y PascalCase en un solo objeto
             const normalized: ProblemDetails = {
-                type: data.type ?? data.Type,
-                title: data.title ?? data.Title,
-                status: data.status ?? data.Status ?? status,
-                detail: data.detail ?? data.Detail,
-                errors: data.errors ?? data.Errors,
+                type: data.type,
+                title: data.title,
+                status: data.status ?? status,
+                detail: data.detail,
+                errors: data.errors,
             };
 
             return Promise.reject(new ApiError(normalized, status));

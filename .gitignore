@@ -63,6 +63,38 @@ PublishProfiles/
 ServiceDefinition.*.csdef
 ServiceConfiguration.*.cscfg
 
+# Publish profiles: contienen userPWD (credencial de despliegue en texto plano).
+# Nunca deben entrar al repositorio bajo ningun nombre.
+*.pubxml
+*.pubxml.user
+*publish_profile*
+*publishsettings
+*.PublishSettings
+
+# ============================================================================
+# Artefactos generados que no deben versionarse
+# ============================================================================
+
+# Volcados de logs descargados de Azure App Service
+backend-logs/
+backend-logs-*/
+backend-bancos-only/
+backend-mi-check/
+backend-postfix/
+**/prod-webapp-logs*/
+**/LogFiles/
+
+# Salidas de publicacion
+LAMAMedellin/artifacts/
+**/api-publish/
+
+# Archivos de trabajo temporales y reportes generados por corridas de QA
+tmp_*
+**/tmp_*
+qa-report-*.md
+test-report-*.json
+frontend_live_home.html
+
 # ============================================================================
 # JavaScript / TypeScript / Node.js (Next.js Frontend)
 # ============================================================================

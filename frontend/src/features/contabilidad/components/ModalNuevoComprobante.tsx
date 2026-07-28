@@ -1,6 +1,6 @@
 'use client';
 
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
@@ -64,10 +64,10 @@ export default function ModalNuevoComprobante({ open, onClose }: ModalNuevoCompr
         queryKey: ['transacciones', 'catalogo', 'centros-costo'],
         enabled: open,
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
+            const response = await apiClient.get<RespuestaApi[]>('/api/transacciones/centros-costo');
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                id: String(item?.id ?? ''),
+                nombre: String(item?.nombre ?? ''),
             }));
         },
     });

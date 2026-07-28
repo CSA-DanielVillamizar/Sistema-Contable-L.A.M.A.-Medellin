@@ -13,11 +13,11 @@ public sealed class CuentaPorCobrarRepository(LamaDbContext dbContext) : ICuenta
             .AnyAsync(c => c.MiembroId == miembroId, cancellationToken);
     }
 
-    public async Task<List<CuentaPorCobrar>> GetByEstadoAsync(EstadoCuentaPorCobrar estado, CancellationToken cancellationToken = default)
+    public async Task<List<CuentaPorCobrar>> GetPendientesAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.CuentasPorCobrar
             .Include(c => c.Miembro)
-            .Where(c => c.Estado == estado)
+            .Where(c => c.SaldoPendiente > 0 && c.Estado != EstadoCuentaPorCobrar.Anulada)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }

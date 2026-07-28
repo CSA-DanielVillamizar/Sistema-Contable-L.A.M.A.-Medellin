@@ -9,6 +9,7 @@ namespace LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarIngreso;
 
 public sealed class RegistrarIngresoCommandHandler(
     ICajaRepository cajaRepository,
+    IGeneradorConsecutivos generadorConsecutivos,
     IIngresoRepository ingresoRepository,
     IComprobanteRepository comprobanteRepository,
     ICentroCostoRepository centroCostoRepository,
@@ -66,7 +67,7 @@ public sealed class RegistrarIngresoCommandHandler(
             caja.AplicarIngreso(request.Monto);
 
             var comprobante = new Comprobante(
-                GenerarNumeroConsecutivo(),
+                await generadorConsecutivos.SiguienteAsync(TipoComprobante.Ingreso, ct),
                 DateTime.UtcNow,
                 TipoComprobante.Ingreso,
                 $"Ingreso - {request.Concepto.Trim()}",
@@ -99,7 +100,4 @@ public sealed class RegistrarIngresoCommandHandler(
             return ingreso.Id;
         }, cancellationToken);
     }
-
-    private static string GenerarNumeroConsecutivo() =>
-        $"ING-{DateTime.UtcNow:yyyyMMddHHmmssfff}";
 }

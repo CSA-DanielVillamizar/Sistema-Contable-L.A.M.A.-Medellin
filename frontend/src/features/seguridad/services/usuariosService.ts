@@ -16,13 +16,9 @@ export type UsuarioDto = {
 
 type UsuarioApiDto = {
     id?: string;
-    Id?: string;
     email?: string;
-    Email?: string;
     rol?: string | number;
-    Rol?: string | number;
     esActivo?: boolean;
-    EsActivo?: boolean;
 };
 
 export type AsignarRolPayload = {
@@ -67,10 +63,10 @@ function mapUsuario(item: unknown): UsuarioDto {
     const dto = (item ?? {}) as UsuarioApiDto;
 
     return {
-        id: toStringValue(dto.id ?? dto.Id),
-        email: toStringValue(dto.email ?? dto.Email),
-        rol: mapRolSistema(dto.rol ?? dto.Rol),
-        esActivo: toBooleanValue(dto.esActivo ?? dto.EsActivo),
+        id: toStringValue(dto.id),
+        email: toStringValue(dto.email),
+        rol: mapRolSistema(dto.rol),
+        esActivo: toBooleanValue(dto.esActivo),
     };
 }
 

@@ -1,7 +1,7 @@
 'use client';
 
 import type { ProyectoFormValues } from '@/features/proyectos/schemas/proyectoSchema';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -43,18 +43,18 @@ export function useProyectos() {
     return useQuery<ProyectoItem[]>({
         queryKey: ['proyectos', 'listado'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/proyectos');
+            const response = await apiClient.get<RespuestaApi[]>('/api/proyectos');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                centroCostoId: String(item?.centroCostoId ?? item?.CentroCostoId ?? ''),
-                centroCosto: String(item?.centroCosto ?? item?.CentroCosto ?? ''),
-                nombre: String(item?.nombre ?? item?.Nombre ?? ''),
-                descripcion: String(item?.descripcion ?? item?.Descripcion ?? ''),
-                fechaInicio: String(item?.fechaInicio ?? item?.FechaInicio ?? ''),
-                fechaFin: item?.fechaFin ?? item?.FechaFin ?? null,
-                presupuestoEstimado: Number(item?.presupuestoEstimado ?? item?.PresupuestoEstimado ?? 0),
-                estado: String(item?.estado ?? item?.Estado ?? ''),
+                id: String(item?.id ?? ''),
+                centroCostoId: String(item?.centroCostoId ?? ''),
+                centroCosto: String(item?.centroCosto ?? ''),
+                nombre: String(item?.nombre ?? ''),
+                descripcion: String(item?.descripcion ?? ''),
+                fechaInicio: String(item?.fechaInicio ?? ''),
+                fechaFin: item?.fechaFin ? String(item.fechaFin) : null,
+                presupuestoEstimado: Number(item?.presupuestoEstimado ?? 0),
+                estado: String(item?.estado ?? ''),
             }));
         },
     });

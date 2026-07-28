@@ -1,5 +1,4 @@
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
-using LAMAMedellin.Domain.Enums;
 using MediatR;
 
 namespace LAMAMedellin.Application.Features.Cartera.Queries.GetCarteraPendiente;
@@ -13,7 +12,7 @@ public sealed class GetCarteraPendienteQueryHandler(
         CancellationToken cancellationToken)
     {
         var cuentasPendientes = await cuentaPorCobrarRepository
-            .GetByEstadoAsync(EstadoCuentaPorCobrar.Pendiente, cancellationToken);
+            .GetPendientesAsync(cancellationToken);
 
         return cuentasPendientes
             .OrderByDescending(c => c.FechaVencimiento)
