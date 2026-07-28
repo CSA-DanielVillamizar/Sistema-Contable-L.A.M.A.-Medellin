@@ -2,6 +2,7 @@
 
 import ResumenKpis from '@/features/dashboard/components/ResumenKpis';
 import apiClient from '@/lib/apiClient';
+import { hasValidSession } from '@/lib/msalClient';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
@@ -19,14 +20,11 @@ type ResumenCartera = {
 
 type DashboardBancoDto = {
     saldo?: number | string | null;
-    Saldo?: number | string | null;
     nombre?: string | null;
-    Nombre?: string | null;
 };
 
 type DashboardCarteraDto = {
     totalPendienteCOP?: number | string | null;
-    TotalPendienteCOP?: number | string | null;
 };
 
 function formatCOP(value: number): string {
@@ -52,26 +50,30 @@ export default function Home() {
     const [authError, setAuthError] = useState<string | null>(null);
 
     useEffect(() => {
-        const syncAuthState = () => {
-            const token = localStorage.getItem('token');
+        const syncAuthState = async () => {
+            // El token ya no vive en localStorage: se le pregunta a MSAL si hay
+            // sesion utilizable, sin traer el token a este componente.
+            const sesionValida = await hasValidSession();
             const authWasResolved = sessionStorage.getItem('auth_ready') === '1';
             const lastAuthError = sessionStorage.getItem('msal_auth_last_error');
 
-            setHasToken(Boolean(token));
-            setAuthReady(Boolean(token) || authWasResolved);
+            setHasToken(sesionValida);
+            setAuthReady(sesionValida || authWasResolved);
             setAuthError(lastAuthError);
         };
 
-        syncAuthState();
+        const onAuthStateChanged = () => void syncAuthState();
 
-        window.addEventListener('auth-token-updated', syncAuthState);
-        window.addEventListener('auth-status-updated', syncAuthState);
-        window.addEventListener('storage', syncAuthState);
+        onAuthStateChanged();
+
+        // Se retiro el listener de 'storage': existia para detectar cambios del
+        // token en localStorage, que ya no se persiste ahi.
+        window.addEventListener('auth-token-updated', onAuthStateChanged);
+        window.addEventListener('auth-status-updated', onAuthStateChanged);
 
         return () => {
-            window.removeEventListener('auth-token-updated', syncAuthState);
-            window.removeEventListener('auth-status-updated', syncAuthState);
-            window.removeEventListener('storage', syncAuthState);
+            window.removeEventListener('auth-token-updated', onAuthStateChanged);
+            window.removeEventListener('auth-status-updated', onAuthStateChanged);
         };
     }, []);
 
@@ -80,10 +82,10 @@ export default function Home() {
         queryFn: async () => {
             const response = await apiClient.get<DashboardBancoDto[]>('/api/dashboard/bancos');
             return (response.data ?? []).map((item) => {
-                const saldoRaw = item?.saldo ?? item?.Saldo;
+                const saldoRaw = item?.saldo;
                 const saldoParsed = typeof saldoRaw === 'number' ? saldoRaw : Number(saldoRaw);
                 return {
-                    nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                    nombre: String(item?.nombre ?? ''),
                     saldo: Number.isFinite(saldoParsed) ? saldoParsed : null,
                 } satisfies SaldoBanco;
             });
@@ -97,7 +99,7 @@ export default function Home() {
             const response = await apiClient.get<DashboardCarteraDto>('/api/dashboard/cartera');
             return {
                 totalPendienteCOP: toNumber(
-                    response.data?.totalPendienteCOP ?? response.data?.TotalPendienteCOP,
+                    response.data?.totalPendienteCOP,
                 ),
             } satisfies ResumenCartera;
         },

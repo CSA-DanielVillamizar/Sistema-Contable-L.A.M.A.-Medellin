@@ -1,2 +1,12 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LAMAMedellin.API/LAMAMedellin.API.csproj" />
+    <Project Path="src/LAMAMedellin.Application/LAMAMedellin.Application.csproj" />
+    <Project Path="src/LAMAMedellin.Domain/LAMAMedellin.Domain.csproj" />
+    <Project Path="src/LAMAMedellin.Infrastructure/LAMAMedellin.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LAMAMedellin.API.Tests/LAMAMedellin.API.Tests.csproj" />
+    <Project Path="tests/LAMAMedellin.Application.Tests/LAMAMedellin.Application.Tests.csproj" />
+  </Folder>
 </Solution>

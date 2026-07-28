@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import TablaExogena from '@/features/tributario/components/TablaExogena';
 import { useReporteExogena } from '@/features/tributario/hooks/useReporteExogena';
 import { exportExogenaCsv } from '@/features/tributario/utils/exportExogenaCsv';
-import { getUserRolesFromToken, hasAnyAllowedRole, TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
+import { TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
+import { useRoleAccess } from '@/lib/useRoleAccess';
 
 const MONTH_OPTIONS = [
     { value: '', label: 'Todos los meses' },
@@ -25,15 +26,7 @@ const MONTH_OPTIONS = [
 export default function ExogenaPage() {
     const [anio, setAnio] = useState(new Date().getFullYear());
     const [mesValue, setMesValue] = useState('');
-    const [canAccess, setCanAccess] = useState(false);
-    const [isRoleReady, setIsRoleReady] = useState(false);
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const roles = getUserRolesFromToken(token);
-        setCanAccess(hasAnyAllowedRole(roles, TRIBUTARIO_ALLOWED_ROLES));
-        setIsRoleReady(true);
-    }, []);
+    const { canAccess, isRoleReady } = useRoleAccess(TRIBUTARIO_ALLOWED_ROLES);
 
     const mes = mesValue ? Number(mesValue) : undefined;
     const query = useReporteExogena({ anio, mes, enabled: canAccess && isRoleReady });

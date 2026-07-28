@@ -94,8 +94,10 @@ public static class MiembroSeeder
             ? "0000000000"
             : celular;
 
+        var documentoNormalizado = NormalizarDocumento(documento, nombre, apellidos);
+
         return new Miembro(
-            documento,
+            documentoNormalizado,
             nombre,
             apellidos,
             nombre.Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? nombre,
@@ -108,6 +110,28 @@ public static class MiembroSeeder
             883,
             GenerarPlacaTemporal(documento),
             rango);
+    }
+
+    /// <summary>
+    /// Varios registros historicos llegaron sin numero de documento y quedaron
+    /// cargados como "0". DocumentoIdentidad tiene indice unico, asi que repetir
+    /// "0" hace fallar el seed completo. Se genera un marcador unico y evidente
+    /// por persona en vez de duplicar el valor.
+    /// </summary>
+    private static string NormalizarDocumento(string documento, string nombre, string apellidos)
+    {
+        var limpio = (documento ?? string.Empty).Trim();
+
+        if (limpio.Length > 0 && limpio != "0")
+        {
+            return limpio;
+        }
+
+        var iniciales = $"{nombre}{apellidos}"
+            .Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .ToUpperInvariant();
+
+        return $"SIN-DOC-{iniciales}";
     }
 
     private static string GenerarPlacaTemporal(string documento)

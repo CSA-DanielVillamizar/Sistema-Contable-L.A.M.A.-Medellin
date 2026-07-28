@@ -52,7 +52,6 @@ export type MarcarAsistenciaPayload = {
 
 type IdResponseDto = {
     id?: string;
-    Id?: string;
 };
 
 function toStringValue(value: unknown): string {
@@ -67,11 +66,11 @@ function mapEvento(item: unknown): EventoDto {
     const dto = (item ?? {}) as Record<string, unknown>;
 
     return {
-        id: toStringValue(dto.id ?? dto.Id),
-        nombre: toStringValue(dto.nombre ?? dto.Nombre),
-        fechaProgramada: toStringValue(dto.fechaProgramada ?? dto.FechaProgramada),
-        tipoEvento: toStringValue(dto.tipoEvento ?? dto.TipoEvento),
-        estado: toStringValue(dto.estado ?? dto.Estado),
+        id: toStringValue(dto.id),
+        nombre: toStringValue(dto.nombre),
+        fechaProgramada: toStringValue(dto.fechaProgramada),
+        tipoEvento: toStringValue(dto.tipoEvento),
+        estado: toStringValue(dto.estado),
     };
 }
 
@@ -79,25 +78,25 @@ function mapAsistencia(item: unknown): AsistenciaEventoDto {
     const dto = (item ?? {}) as Record<string, unknown>;
 
     return {
-        miembroId: toStringValue(dto.miembroId ?? dto.MiembroId),
-        nombreMiembro: toStringValue(dto.nombreMiembro ?? dto.NombreMiembro),
-        asistio: toBooleanValue(dto.asistio ?? dto.Asistio),
+        miembroId: toStringValue(dto.miembroId),
+        nombreMiembro: toStringValue(dto.nombreMiembro),
+        asistio: toBooleanValue(dto.asistio),
     };
 }
 
 function mapEventoDetalle(item: unknown): EventoDetalleDto {
     const dto = (item ?? {}) as Record<string, unknown>;
-    const asistenciasRaw = (dto.asistencias ?? dto.Asistencias ?? []) as unknown[];
+    const asistenciasRaw = (dto.asistencias ?? []) as unknown[];
 
     return {
-        id: toStringValue(dto.id ?? dto.Id),
-        nombre: toStringValue(dto.nombre ?? dto.Nombre),
-        descripcion: toStringValue(dto.descripcion ?? dto.Descripcion),
-        fechaProgramada: toStringValue(dto.fechaProgramada ?? dto.FechaProgramada),
-        lugarEncuentro: toStringValue(dto.lugarEncuentro ?? dto.LugarEncuentro),
-        destino: toStringValue(dto.destino ?? dto.Destino),
-        tipoEvento: toStringValue(dto.tipoEvento ?? dto.TipoEvento),
-        estado: toStringValue(dto.estado ?? dto.Estado),
+        id: toStringValue(dto.id),
+        nombre: toStringValue(dto.nombre),
+        descripcion: toStringValue(dto.descripcion),
+        fechaProgramada: toStringValue(dto.fechaProgramada),
+        lugarEncuentro: toStringValue(dto.lugarEncuentro),
+        destino: toStringValue(dto.destino),
+        tipoEvento: toStringValue(dto.tipoEvento),
+        estado: toStringValue(dto.estado),
         asistencias: asistenciasRaw.map(mapAsistencia),
     };
 }
@@ -109,7 +108,7 @@ export async function getEventos(): Promise<EventoDto[]> {
 
 export async function crearEvento(payload: CreateEventoPayload): Promise<{ id: string }> {
     const response = await apiClient.post<IdResponseDto>('/api/eventos', payload);
-    return { id: toStringValue(response.data?.id ?? response.data?.Id) };
+    return { id: toStringValue(response.data?.id) };
 }
 
 export async function actualizarEvento(id: string, payload: UpdateEventoPayload): Promise<void> {

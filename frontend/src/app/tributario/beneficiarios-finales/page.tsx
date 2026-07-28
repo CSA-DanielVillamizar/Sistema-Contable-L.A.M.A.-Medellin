@@ -1,21 +1,14 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import TablaBeneficiariosFinales from '@/features/tributario/components/TablaBeneficiariosFinales';
 import { useReporteBeneficiariosFinales } from '@/features/tributario/hooks/useReporteBeneficiariosFinales';
 import { exportBeneficiariosFinalesCsv } from '@/features/tributario/utils/exportBeneficiariosFinalesCsv';
-import { getUserRolesFromToken, hasAnyAllowedRole, TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
+import { TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
+import { useRoleAccess } from '@/lib/useRoleAccess';
 
 export default function BeneficiariosFinalesPage() {
-    const [canAccess, setCanAccess] = useState(false);
-    const [isRoleReady, setIsRoleReady] = useState(false);
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const roles = getUserRolesFromToken(token);
-        setCanAccess(hasAnyAllowedRole(roles, TRIBUTARIO_ALLOWED_ROLES));
-        setIsRoleReady(true);
-    }, []);
+    const { canAccess, isRoleReady } = useRoleAccess(TRIBUTARIO_ALLOWED_ROLES);
 
     const query = useReporteBeneficiariosFinales({ enabled: canAccess && isRoleReady });
     const isExportDisabled = query.isLoading || (query.data?.length ?? 0) === 0;

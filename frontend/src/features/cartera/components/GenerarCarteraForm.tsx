@@ -31,7 +31,7 @@ export default function GenerarCarteraForm() {
     const { mutateAsync, isPending, error, data } = useMutation<GenerarObligacionesResponse, Error, GenerarObligacionesRequest>({
         mutationFn: async (request) => {
             try {
-                const response = await apiClient.post<GenerarObligacionesResponse>('/api/cartera/generar-obligaciones', request);
+                const response = await apiClient.post<GenerarObligacionesResponse>('/api/cartera/generar-mensual', request);
                 return response.data;
             } catch (err) {
                 if (axios.isAxiosError<ProblemDetails>(err)) {

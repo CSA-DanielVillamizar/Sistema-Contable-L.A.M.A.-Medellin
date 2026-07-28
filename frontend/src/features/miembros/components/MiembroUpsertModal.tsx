@@ -76,6 +76,7 @@ export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: M
 
     useEffect(() => {
         if (!isOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
             setFormData(defaultFormState);
             return;
         }

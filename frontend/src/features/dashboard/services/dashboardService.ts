@@ -9,13 +9,9 @@ export type DashboardResumenDto = {
 
 type DashboardResumenApiDto = {
     totalMiembrosActivos?: number | string | null;
-    TotalMiembrosActivos?: number | string | null;
     totalDineroCajas?: number | string | null;
-    TotalDineroCajas?: number | string | null;
     proximoEventoNombre?: string | null;
-    ProximoEventoNombre?: string | null;
     proximaFechaEvento?: string | null;
-    ProximaFechaEvento?: string | null;
 };
 
 function toNumberValue(value: unknown): number {
@@ -34,10 +30,10 @@ function toNullableStringValue(value: unknown): string | null {
 
 function mapResumen(item: DashboardResumenApiDto | null | undefined): DashboardResumenDto {
     return {
-        totalMiembrosActivos: toNumberValue(item?.totalMiembrosActivos ?? item?.TotalMiembrosActivos),
-        totalDineroCajas: toNumberValue(item?.totalDineroCajas ?? item?.TotalDineroCajas),
-        proximoEventoNombre: toNullableStringValue(item?.proximoEventoNombre ?? item?.ProximoEventoNombre),
-        proximaFechaEvento: toNullableStringValue(item?.proximaFechaEvento ?? item?.ProximaFechaEvento),
+        totalMiembrosActivos: toNumberValue(item?.totalMiembrosActivos),
+        totalDineroCajas: toNumberValue(item?.totalDineroCajas),
+        proximoEventoNombre: toNullableStringValue(item?.proximoEventoNombre),
+        proximaFechaEvento: toNullableStringValue(item?.proximaFechaEvento),
     };
 }
 

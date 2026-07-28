@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
 export type BeneficiarioFinalItem = {
     tipoDocumento: string;
@@ -20,15 +20,15 @@ export function useReporteBeneficiariosFinales({ enabled = true }: UseReporteBen
     return useQuery<BeneficiarioFinalItem[]>({
         queryKey: ['tributario', 'beneficiarios-finales'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/tributario/beneficiarios-finales');
+            const response = await apiClient.get<RespuestaApi[]>('/api/tributario/beneficiarios-finales');
 
             return (response.data ?? []).map((item) => ({
-                tipoDocumento: String(item?.tipoDocumento ?? item?.TipoDocumento ?? ''),
-                numeroDocumento: String(item?.numeroDocumento ?? item?.NumeroDocumento ?? ''),
-                nombres: String(item?.nombres ?? item?.Nombres ?? ''),
-                apellidos: String(item?.apellidos ?? item?.Apellidos ?? ''),
-                paisResidencia: String(item?.paisResidencia ?? item?.PaisResidencia ?? ''),
-                cargoORol: String(item?.cargoORol ?? item?.CargoORol ?? ''),
+                tipoDocumento: String(item?.tipoDocumento ?? ''),
+                numeroDocumento: String(item?.numeroDocumento ?? ''),
+                nombres: String(item?.nombres ?? ''),
+                apellidos: String(item?.apellidos ?? ''),
+                paisResidencia: String(item?.paisResidencia ?? ''),
+                cargoORol: String(item?.cargoORol ?? ''),
             }));
         },
         enabled,

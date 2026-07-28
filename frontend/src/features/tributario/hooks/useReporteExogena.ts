@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
 export type ReporteExogenaItem = {
     terceroId: string;
@@ -28,16 +28,16 @@ export function useReporteExogena({ anio, mes, enabled = true }: UseReporteExoge
                 params.mes = mes;
             }
 
-            const response = await apiClient.get<any[]>('/api/tributario/exogena', { params });
+            const response = await apiClient.get<RespuestaApi[]>('/api/tributario/exogena', { params });
 
             return (response.data ?? []).map((item) => ({
-                terceroId: String(item?.terceroId ?? item?.TerceroId ?? ''),
-                nombreTercero: String(item?.nombreTercero ?? item?.NombreTercero ?? ''),
-                cuentaContableCodigo: String(item?.cuentaContableCodigo ?? item?.CuentaContableCodigo ?? ''),
-                cuentaContableNombre: String(item?.cuentaContableNombre ?? item?.CuentaContableNombre ?? ''),
-                totalDebito: Number(item?.totalDebito ?? item?.TotalDebito ?? 0),
-                totalCredito: Number(item?.totalCredito ?? item?.TotalCredito ?? 0),
-                saldoMovimiento: Number(item?.saldoMovimiento ?? item?.SaldoMovimiento ?? 0),
+                terceroId: String(item?.terceroId ?? ''),
+                nombreTercero: String(item?.nombreTercero ?? ''),
+                cuentaContableCodigo: String(item?.cuentaContableCodigo ?? ''),
+                cuentaContableNombre: String(item?.cuentaContableNombre ?? ''),
+                totalDebito: Number(item?.totalDebito ?? 0),
+                totalCredito: Number(item?.totalCredito ?? 0),
+                saldoMovimiento: Number(item?.saldoMovimiento ?? 0),
             }));
         },
         enabled: enabled && Number.isInteger(anio) && anio > 0,

@@ -68,16 +68,49 @@ Sistema-Contable-L.A.M.A.-Medellin/
 
 ## Ejecucion Local
 
-### Backend
+Requisitos: .NET 8 SDK, Node.js 24 y Docker Desktop. No hacen falta credenciales de
+Azure ni conexion a internet.
+
+### 1. Base de datos
+
+Levanta un SQL Server local (mismo motor que produccion) en el puerto 14330:
+
+```bash
+docker compose up -d
+```
+
+El puerto 14330 evita chocar con una instancia de SQL Server ya instalada en la
+maquina. Para empezar de cero en cualquier momento: `docker compose down -v`.
+
+### 2. Backend (.NET 8)
+
+Copia la plantilla de configuracion local (esta en .gitignore, no se commitea):
+
+```bash
+cp LAMAMedellin/src/LAMAMedellin.API/appsettings.Development.example.json LAMAMedellin/src/LAMAMedellin.API/appsettings.Development.json
+```
+
+Compila y ejecuta:
 
 ```bash
 cd LAMAMedellin
-dotnet restore
-dotnet build
-dotnet run --project src/LAMAMedellin.API
+dotnet build LAMAMedellin.slnx
+dotnet run --project src/LAMAMedellin.API --no-launch-profile
 ```
 
-### Frontend
+En el primer arranque crea el esquema y siembra los datos base (52 cuentas del PUC,
+38 miembros, cajas, banco y tarifas). Queda escuchando en `http://localhost:5006`;
+`GET /` responde el estado del servicio. Todos los demas endpoints exigen token, asi
+que sin login responden `401`.
+
+Pruebas:
+
+```bash
+cd LAMAMedellin
+dotnet test LAMAMedellin.slnx
+```
+
+### 3. Frontend (Next.js)
 
 ```bash
 cd frontend
@@ -85,21 +118,21 @@ npm install
 npm run dev
 ```
 
-## Documentacion
+Queda en `http://localhost:3000` y apunta por defecto a `http://localhost:5006`.
+El login usa Entra ID: requiere que el app registration tenga `http://localhost:3000`
+como redirect URI de tipo SPA.
 
-- [Especificacion PUC ESAL](docs/ESPECIFICACION_PUC_ESAL.md)
-- [Setup del Backend](docs/BACKEND-SETUP.md)
-- [Despliegue en Azure](docs/DESPLIEGUE_AZURE.md)
-- [Manual de Usuario](docs/MANUAL_USUARIO.md)
-- [Arquitectura Azure](docs/docs_ARCHITECTURE-AZURE.md)
+### Notas importantes
 
-## Reglas de Negocio Centrales
+- **Nunca apuntes el entorno Development a la base de produccion.** Al arrancar en
+  Development el API inicializa el esquema y siembra datos automaticamente.
+- El esquema local se crea aplicando la migracion base `20260727233255_Baseline`.
+  El historial anterior estaba roto y se colapso en esa unica migracion; el detalle
+  y el procedimiento para registrarla en produccion estan en
+  [docs/BACKEND-SETUP.md](docs/BACKEND-SETUP.md#historial-de-migraciones).
+- Para correr el API sin base de datos (solo verificar que compila y arranca):
+  `ASPNETCORE_ENVIRONMENT=Staging dotnet run --project src/LAMAMedellin.API --no-launch-profile`
 
-- Toda transaccion monetaria requiere `CentroCostosId` obligatorio.
-- Las entidades financieras nunca se borran fisicamente (soft-delete con `Anulado`/`IsDeleted`).
-- Moneda funcional: **COP**. USD es informativo; requiere TRM, fecha y fuente registrados.
-- Autenticacion 100% delegada a Entra External ID con MFA obligatorio.
-
----
+## Construido con orgullo
 
 Construido con orgullo para fortalecer la gestion institucional de L.A.M.A. Medellin.

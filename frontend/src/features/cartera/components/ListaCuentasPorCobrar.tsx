@@ -83,6 +83,7 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
 
         const sigueVisible = cuentas.some((cuenta) => cuenta.id === cuentaActivaId);
         if (!sigueVisible) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
             cerrarPago();
         }
     }, [cuentaActivaId, cuentas]);

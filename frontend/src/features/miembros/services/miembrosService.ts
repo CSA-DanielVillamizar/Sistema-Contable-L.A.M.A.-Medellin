@@ -53,7 +53,6 @@ export type ActualizarMiembroPayload = {
 
 type IdResponseDto = {
     id?: string;
-    Id?: string;
 };
 
 function toStringValue(value: unknown): string {
@@ -74,40 +73,34 @@ function toRecord(value: unknown): Record<string, unknown> {
 
 function mapMiembro(item: unknown): Miembro {
     const dto = (item ?? {}) as Record<string, unknown>;
-    const contactoEmergencia = toRecord(dto.contactoEmergencia ?? dto.ContactoEmergencia);
-    const moto = toRecord(dto.moto ?? dto.Moto);
+    const contactoEmergencia = toRecord(dto.contactoEmergencia);
+    const moto = toRecord(dto.moto);
 
     return {
-        id: toStringValue(dto.id ?? dto.Id),
-        documentoIdentidad: toStringValue(dto.documentoIdentidad ?? dto.DocumentoIdentidad),
-        nombres: toStringValue(dto.nombres ?? dto.Nombres),
-        apellidos: toStringValue(dto.apellidos ?? dto.Apellidos),
-        apodo: toStringValue(dto.apodo ?? dto.Apodo),
-        fechaIngreso: toStringValue(dto.fechaIngreso ?? dto.FechaIngreso),
-        rango: toStringValue(dto.rango ?? dto.Rango),
-        esActivo: toBooleanValue(dto.esActivo ?? dto.EsActivo),
-        tipoSangre: toStringValue(dto.tipoSangre ?? dto.TipoSangre),
+        id: toStringValue(dto.id),
+        documentoIdentidad: toStringValue(dto.documentoIdentidad),
+        nombres: toStringValue(dto.nombres),
+        apellidos: toStringValue(dto.apellidos),
+        apodo: toStringValue(dto.apodo),
+        fechaIngreso: toStringValue(dto.fechaIngreso),
+        rango: toStringValue(dto.rango),
+        esActivo: toBooleanValue(dto.esActivo),
+        tipoSangre: toStringValue(dto.tipoSangre),
         contactoEmergenciaNombre: toStringValue(
             dto.contactoEmergenciaNombre
-            ?? dto.ContactoEmergenciaNombre
             ?? dto.nombreContactoEmergencia
-            ?? dto.NombreContactoEmergencia
-            ?? contactoEmergencia.nombre
-            ?? contactoEmergencia.Nombre,
+            ?? contactoEmergencia.nombre,
         ),
         contactoEmergenciaTelefono: toStringValue(
             dto.contactoEmergenciaTelefono
-            ?? dto.ContactoEmergenciaTelefono
             ?? dto.telefonoContactoEmergencia
-            ?? dto.TelefonoContactoEmergencia
-            ?? contactoEmergencia.telefono
-            ?? contactoEmergencia.Telefono,
+            ?? contactoEmergencia.telefono,
         ),
         moto: {
-            marca: toStringValue(moto.marca ?? moto.Marca ?? dto.marcaMoto ?? dto.MarcaMoto),
-            modelo: toStringValue(moto.modelo ?? moto.Modelo ?? dto.modeloMoto ?? dto.ModeloMoto),
-            cilindraje: toNumberValue(moto.cilindraje ?? moto.Cilindraje ?? dto.cilindraje ?? dto.Cilindraje),
-            placa: toStringValue(moto.placa ?? moto.Placa ?? dto.placa ?? dto.Placa),
+            marca: toStringValue(moto.marca ?? dto.marcaMoto),
+            modelo: toStringValue(moto.modelo ?? dto.modeloMoto),
+            cilindraje: toNumberValue(moto.cilindraje ?? dto.cilindraje),
+            placa: toStringValue(moto.placa ?? dto.placa),
         },
     };
 }
@@ -119,7 +112,7 @@ export async function getMiembros(): Promise<Miembro[]> {
 
 export async function crearMiembro(payload: CrearMiembroPayload): Promise<{ id: string }> {
     const response = await apiClient.post<IdResponseDto>('/api/miembros', payload);
-    return { id: toStringValue(response.data?.id ?? response.data?.Id) };
+    return { id: toStringValue(response.data?.id) };
 }
 
 export async function actualizarMiembro(id: string, payload: ActualizarMiembroPayload): Promise<void> {
