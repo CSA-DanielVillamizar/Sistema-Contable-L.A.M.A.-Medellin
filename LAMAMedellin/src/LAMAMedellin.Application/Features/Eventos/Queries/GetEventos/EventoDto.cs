@@ -5,4 +5,5 @@ public sealed record EventoDto(
     string Nombre,
     DateTime FechaProgramada,
     string TipoEvento,
-    string Estado);
+    string Estado,
+    decimal? CuotaLogisticaCOP);

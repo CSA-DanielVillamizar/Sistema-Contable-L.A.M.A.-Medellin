@@ -9,4 +9,5 @@ public sealed record CreateEventoCommand(
     DateTime FechaProgramada,
     string LugarEncuentro,
     TipoEvento TipoEvento,
-    string? Destino) : IRequest<Guid>;
+    string? Destino,
+    decimal? CuotaLogisticaCOP) : IRequest<Guid>;

@@ -25,6 +25,10 @@ public sealed class CuotaAsambleaConfiguration : IEntityTypeConfiguration<CuotaA
         builder.Property(c => c.ActaSoporte)
             .HasMaxLength(500);
 
+        builder.Property(c => c.RenovacionMembresiaUSD)
+            .HasColumnType("decimal(18,4)")
+            .IsRequired(false);
+
         builder.HasQueryFilter(c => !c.IsDeleted);
     }
 }

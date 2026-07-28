@@ -100,6 +100,8 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<decimal?>("CuotaAplicadaCOP")
+                        .HasColumnType("decimal(18,2)");
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -659,6 +661,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<decimal>("ValorMensualCOP")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal?>("RenovacionMembresiaUSD")
+                        .HasColumnType("decimal(18,4)");
+
                     b.HasKey("Id");
 
                     b.ToTable("CuotasAsamblea", (string)null);
@@ -921,6 +926,8 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<int>("TipoEvento")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("CuotaLogisticaCOP")
+                        .HasColumnType("decimal(18,2)");
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
