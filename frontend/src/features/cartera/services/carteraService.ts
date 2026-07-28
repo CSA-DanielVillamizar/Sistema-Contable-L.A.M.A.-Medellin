@@ -1,4 +1,4 @@
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
 /** Espeja CrearMiembroRequest en CarteraController.cs. Todos los campos son obligatorios. */
 export type CrearMiembroPayload = {
@@ -88,7 +88,7 @@ export async function crearCuentaPorCobrar(payload: CrearCuentaPorCobrarPayload)
 }
 
 export async function getMiembrosLookup(): Promise<MiembroLookupItem[]> {
-    const response = await apiClient.get<any[]>('/api/cartera/miembros/lookup');
+    const response = await apiClient.get<RespuestaApi[]>('/api/cartera/miembros/lookup');
 
     return (response.data ?? []).map((item) => ({
         id: String(item?.id ?? ''),
@@ -97,7 +97,7 @@ export async function getMiembrosLookup(): Promise<MiembroLookupItem[]> {
 }
 
 export async function getConceptosCobroLookup(): Promise<ConceptoCobroLookupItem[]> {
-    const response = await apiClient.get<any[]>('/api/cartera/conceptos-cobro/lookup');
+    const response = await apiClient.get<RespuestaApi[]>('/api/cartera/conceptos-cobro/lookup');
 
     return (response.data ?? []).map((item) => ({
         id: String(item?.id ?? ''),
@@ -106,7 +106,7 @@ export async function getConceptosCobroLookup(): Promise<ConceptoCobroLookupItem
 }
 
 export async function getCuentasPorCobrar(params?: GetCuentasPorCobrarParams): Promise<CuentaPorCobrarItem[]> {
-    const response = await apiClient.get<any[]>('/api/cartera/cuentas-por-cobrar', {
+    const response = await apiClient.get<RespuestaApi[]>('/api/cartera/cuentas-por-cobrar', {
         params: {
             estado: params?.estado,
             miembroId: params?.miembroId,

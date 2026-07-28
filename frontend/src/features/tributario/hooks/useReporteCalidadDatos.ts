@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
 export type InconsistenciaTributariaItem = {
     terceroId: string;
@@ -18,7 +18,7 @@ export function useReporteCalidadDatos({ enabled = true }: UseReporteCalidadDato
     return useQuery<InconsistenciaTributariaItem[]>({
         queryKey: ['tributario', 'calidad-datos'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/tributario/calidad-datos');
+            const response = await apiClient.get<RespuestaApi[]>('/api/tributario/calidad-datos');
 
             return (response.data ?? []).map((item) => ({
                 terceroId: String(item?.terceroId ?? ''),

@@ -1,5 +1,30 @@
 # Estado de Implementación - Módulo Cartera
 
+> **Nota de revisión — 28 de julio de 2026**
+>
+> La matriz de abajo declara todas las fases COMPLETADAS y el núcleo "100%
+> operativo". Una revisión del código no sostiene esa afirmación. Se conserva el
+> texto original como registro histórico, pero debe leerse con estas salvedades:
+>
+> - **Cartera no genera obligaciones.** `POST /api/cartera/generar-mensual` falla
+>   siempre: el manejador construye la cuenta por cobrar con un `Guid` aleatorio
+>   como `ConceptoCobroId`, contra una clave foránea requerida. El propio código
+>   lo advierte con `// TODO` y `// NOTA: Este código fallará hasta que...`.
+> - **El control de idempotencia no existe.** `ExistePorMiembroYPeriodoAsync`
+>   ignora el parámetro `periodo`.
+> - **Las pruebas no compilaban.** Ninguno de los dos proyectos de prueba
+>   compilaba, y la solución estaba vacía, de modo que `dotnet test` no
+>   ejecutaba nada. Corregido; ver el historial de la rama.
+> - **El esquema no se construía con migraciones.** 22 de 23 migraciones
+>   carecían del atributo `[Migration]`; producción se levantó con scripts SQL
+>   manuales. Ver [BACKEND-SETUP.md](BACKEND-SETUP.md#historial-de-migraciones).
+> - **Los reportes de QA de este directorio validan contratos que ya no
+>   existen.** Por ejemplo usan `"tipoMiembro": 2` al crear miembros, campo que
+>   el API actual no acepta.
+>
+> El inventario completo de defectos y su estado están en el historial de la
+> rama de saneamiento.
+
 ## Actualización Ejecutiva — 04 de Marzo 2026
 
 ### Matriz de Definition of Done (Fase 0 a Fase 5)

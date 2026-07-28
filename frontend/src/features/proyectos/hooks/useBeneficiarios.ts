@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import type { BeneficiarioFormValues } from '@/features/proyectos/schemas/beneficiarioSchema';
 
 type ProblemDetails = {
@@ -42,7 +42,7 @@ export function useBeneficiarios() {
     return useQuery<BeneficiarioItem[]>({
         queryKey: ['beneficiarios', 'listado'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/beneficiarios');
+            const response = await apiClient.get<RespuestaApi[]>('/api/beneficiarios');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),

@@ -1,6 +1,6 @@
 'use client';
 
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -48,7 +48,7 @@ export function useCarteraPendiente() {
     return useQuery<CarteraPendienteItem[]>({
         queryKey: ['cartera', 'pendiente'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/cartera/pendiente');
+            const response = await apiClient.get<RespuestaApi[]>('/api/cartera/pendiente');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),

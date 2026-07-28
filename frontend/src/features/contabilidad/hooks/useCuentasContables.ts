@@ -1,4 +1,4 @@
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import { useQuery } from '@tanstack/react-query';
 
 export type CuentaContableItem = {
@@ -14,7 +14,7 @@ export function useCuentasContables() {
     return useQuery<CuentaContableItem[]>({
         queryKey: ['contabilidad', 'cuentas-contables'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/cuentas-contables');
+            const response = await apiClient.get<RespuestaApi[]>('/api/cuentas-contables');
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),
                 codigo: String(item?.codigo ?? ''),

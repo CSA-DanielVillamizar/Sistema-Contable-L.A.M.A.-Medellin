@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import type { DonacionFormValues, DonanteFormValues } from '@/features/donaciones/schemas/donacionSchema';
 
 type ProblemDetails = {
@@ -79,7 +79,7 @@ export function useDonantes() {
     return useQuery<DonanteItem[]>({
         queryKey: ['donaciones', 'donantes'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/donaciones/donantes');
+            const response = await apiClient.get<RespuestaApi[]>('/api/donaciones/donantes');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),
@@ -97,7 +97,7 @@ export function useDonaciones() {
     return useQuery<DonacionItem[]>({
         queryKey: ['donaciones', 'listado'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/donaciones');
+            const response = await apiClient.get<RespuestaApi[]>('/api/donaciones');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),
@@ -134,6 +134,21 @@ export function useCrearDonante() {
     });
 }
 
+/**
+ * Cuerpo crudo del certificado. Es anidado, asi que no basta con RespuestaApi:
+ * se declaran los objetos internos para poder navegarlos con seguridad.
+ */
+type CertificadoApiDto = {
+    fundacion?: RespuestaApi;
+    donante?: RespuestaApi;
+    monto?: RespuestaApi;
+    formaDonacion?: unknown;
+    medioPagoODescripcion?: unknown;
+    anioGravable?: unknown;
+    fecha?: unknown;
+    codigoVerificacion?: unknown;
+};
+
 export function useCertificadoDonacion(id?: string) {
     return useQuery<CertificadoDonacionItem | null>({
         queryKey: ['donaciones', 'certificado', id],
@@ -143,7 +158,7 @@ export function useCertificadoDonacion(id?: string) {
                 return null;
             }
 
-            const response = await apiClient.get<any>(`/api/donaciones/${id}/certificado`);
+            const response = await apiClient.get<CertificadoApiDto>(`/api/donaciones/${id}/certificado`);
             const item = response.data ?? {};
 
             return {

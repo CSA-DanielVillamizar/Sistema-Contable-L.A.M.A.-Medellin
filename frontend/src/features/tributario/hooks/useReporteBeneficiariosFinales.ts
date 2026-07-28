@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
 export type BeneficiarioFinalItem = {
     tipoDocumento: string;
@@ -20,7 +20,7 @@ export function useReporteBeneficiariosFinales({ enabled = true }: UseReporteBen
     return useQuery<BeneficiarioFinalItem[]>({
         queryKey: ['tributario', 'beneficiarios-finales'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/tributario/beneficiarios-finales');
+            const response = await apiClient.get<RespuestaApi[]>('/api/tributario/beneficiarios-finales');
 
             return (response.data ?? []).map((item) => ({
                 tipoDocumento: String(item?.tipoDocumento ?? ''),

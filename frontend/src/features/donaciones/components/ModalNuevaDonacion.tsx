@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import {
     donacionSchema,
     formasDonacionOptions,
@@ -47,7 +47,7 @@ export default function ModalNuevaDonacion({ open, onClose }: ModalNuevaDonacion
     const bancosQuery = useQuery<BancoCatalogo[]>({
         queryKey: ['transacciones', 'catalogo', 'bancos'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/transacciones/bancos');
+            const response = await apiClient.get<RespuestaApi[]>('/api/transacciones/bancos');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),
@@ -60,7 +60,7 @@ export default function ModalNuevaDonacion({ open, onClose }: ModalNuevaDonacion
     const centrosQuery = useQuery<CentroCostoCatalogo[]>({
         queryKey: ['transacciones', 'catalogo', 'centros-costo'],
         queryFn: async () => {
-            const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
+            const response = await apiClient.get<RespuestaApi[]>('/api/transacciones/centros-costo');
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),

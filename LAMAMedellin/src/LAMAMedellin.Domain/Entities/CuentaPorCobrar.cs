@@ -98,43 +98,4 @@ public sealed class CuentaPorCobrar : BaseEntity
 
         Estado = EstadoCuentaPorCobrar.PagadaParcial;
     }
-
-    private static bool EsPeriodoValido(string? periodo)
-    {
-        if (string.IsNullOrWhiteSpace(periodo) || periodo.Length != 7)
-        {
-            return false;
-        }
-
-        if (periodo[4] != '-')
-        {
-            return false;
-        }
-
-        if (!int.TryParse(periodo[..4], out var anio))
-        {
-            return false;
-        }
-
-        if (!int.TryParse(periodo[5..], out var mes))
-        {
-            return false;
-        }
-
-        return anio >= 1900 && mes is >= 1 and <= 12;
-    }
-
-    private static DateOnly ParsearFechaPeriodoInicio(string periodo)
-    {
-        var anio = int.Parse(periodo[..4]);
-        var mes = int.Parse(periodo[5..]);
-        return new DateOnly(anio, mes, 1);
-    }
-
-    private static DateOnly ParsearFechaPeriodoFin(string periodo)
-    {
-        var inicio = ParsearFechaPeriodoInicio(periodo);
-        var fin = inicio.AddMonths(1).AddDays(-1);
-        return fin;
-    }
 }

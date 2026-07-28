@@ -71,13 +71,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Informativo por ahora, no bloqueante: el repositorio arrastra 31 errores de
-      # lint preexistentes (mayormente `no-explicit-any` y un `set-state-in-effect`)
-      # repartidos en tributario, transacciones, donaciones, eventos y merchandising.
-      # Volver a hacerlo bloqueante — quitando continue-on-error — en cuanto se salden.
       - name: Lint
         run: npm run lint
-        continue-on-error: true
 
       - name: Build
         run: npm run build

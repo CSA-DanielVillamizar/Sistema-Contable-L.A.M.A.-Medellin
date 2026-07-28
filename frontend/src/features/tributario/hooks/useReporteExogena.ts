@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
 export type ReporteExogenaItem = {
     terceroId: string;
@@ -28,7 +28,7 @@ export function useReporteExogena({ anio, mes, enabled = true }: UseReporteExoge
                 params.mes = mes;
             }
 
-            const response = await apiClient.get<any[]>('/api/tributario/exogena', { params });
+            const response = await apiClient.get<RespuestaApi[]>('/api/tributario/exogena', { params });
 
             return (response.data ?? []).map((item) => ({
                 terceroId: String(item?.terceroId ?? ''),

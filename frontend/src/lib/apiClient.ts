@@ -29,6 +29,17 @@ apiClient.interceptors.request.use(
 
 export default apiClient;
 
+/**
+ * Cuerpo crudo de una respuesta del API, antes de normalizarlo a un tipo del
+ * dominio del frontend.
+ *
+ * `unknown` es el tipo honesto para estos campos: vienen de la red y todavia no
+ * estan validados. Los consumidores los pasan por String/Number/Boolean con un
+ * valor por defecto, que es justamente lo que convierte un `unknown` en un dato
+ * utilizable. Usar `any` aqui apagaba el chequeo de tipos sin ganar nada.
+ */
+export type RespuestaApi = Record<string, unknown>;
+
 // ---------------------------------------------------------------------------
 // Tipos para ProblemDetails (RFC 7807) — el backend retorna este contrato
 // ---------------------------------------------------------------------------

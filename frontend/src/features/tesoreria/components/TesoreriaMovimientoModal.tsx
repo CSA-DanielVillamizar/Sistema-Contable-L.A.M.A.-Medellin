@@ -68,6 +68,7 @@ export default function TesoreriaMovimientoModal({
             return;
         }
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
         setValues(buildInitialValues(cajas, cuentasContables, centrosCosto));
         setValidationError(null);
     }, [abierto, cajas, cuentasContables, centrosCosto, modo]);
