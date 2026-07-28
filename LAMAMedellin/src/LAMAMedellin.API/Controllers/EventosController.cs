@@ -1,4 +1,5 @@
 using LAMAMedellin.Application.Features.Eventos.Commands.CreateEvento;
+using LAMAMedellin.Application.Features.Eventos.Commands.EstablecerCuotaLogistica;
 using LAMAMedellin.Application.Features.Eventos.Commands.MarcarAsistencia;
 using LAMAMedellin.Application.Features.Eventos.Queries.GetEventoById;
 using LAMAMedellin.Application.Features.Eventos.Queries.GetEventos;
@@ -69,6 +70,17 @@ public sealed class EventosController(ISender sender) : ControllerBase
         return Ok(evento);
     }
 
+    [HttpPatch("{id:guid}/cuota-logistica")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> EstablecerCuotaLogistica(Guid id, [FromBody] EstablecerCuotaLogisticaRequest request, CancellationToken cancellationToken)
+    {
+        await sender.Send(
+            new EstablecerCuotaLogisticaCommand(id, request.CuotaLogisticaCOP),
+            cancellationToken);
+
+        return NoContent();
+    }
+
     public sealed record CreateEventoRequest(
         string Nombre,
         string Descripcion,
@@ -82,4 +94,6 @@ public sealed class EventosController(ISender sender) : ControllerBase
         Guid MiembroId,
         bool Asistio,
         string? Observaciones);
+
+    public sealed record EstablecerCuotaLogisticaRequest(decimal? CuotaLogisticaCOP);
 }

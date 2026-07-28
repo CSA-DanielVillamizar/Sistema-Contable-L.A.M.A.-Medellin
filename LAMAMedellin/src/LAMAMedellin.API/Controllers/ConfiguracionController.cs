@@ -1,3 +1,4 @@
+using LAMAMedellin.Application.Features.Configuracion.CuotasAsamblea.Commands.ActualizarRenovacionMembresia;
 using LAMAMedellin.Application.Features.Configuracion.Tarifas.Commands.ActualizarTarifasCuota;
 using LAMAMedellin.Application.Features.Configuracion.Tarifas.Queries.GetTarifasCuota;
 using LAMAMedellin.Domain.Enums;
@@ -48,8 +49,23 @@ public sealed class ConfiguracionController(ISender sender) : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPatch("cuotas-asamblea/{anio:int}/renovacion-membresia")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> PatchRenovacionMembresia(
+        int anio,
+        [FromBody] ActualizarRenovacionMembresiaRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(
+            new ActualizarRenovacionMembresiaCommand(anio, request.RenovacionMembresiaUSD),
+            cancellationToken);
+
+        return NoContent();
+    }
 }
 
 public sealed record ActualizarTarifasRequest(List<TarifaCuotaRequest> Tarifas);
 public sealed record TarifaCuotaRequest(TipoAfiliacion TipoAfiliacion, decimal ValorMensualCOP);
 public sealed record TarifaCuotaResponse(TipoAfiliacion TipoAfiliacion, decimal ValorMensualCOP);
+public sealed record ActualizarRenovacionMembresiaRequest(decimal? RenovacionMembresiaUSD);
