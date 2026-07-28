@@ -16,7 +16,8 @@ public sealed class GetEventosQueryHandler(IEventoRepository eventoRepository)
                 evento.Nombre,
                 evento.FechaProgramada,
                 evento.TipoEvento.ToString(),
-                evento.Estado.ToString()))
+                evento.Estado.ToString(),
+                evento.CuotaLogisticaCOP))
             .ToList();
     }
 }

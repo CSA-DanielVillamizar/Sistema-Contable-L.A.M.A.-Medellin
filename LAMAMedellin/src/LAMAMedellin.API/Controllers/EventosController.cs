@@ -25,7 +25,8 @@ public sealed class EventosController(ISender sender) : ControllerBase
                 request.FechaProgramada,
                 request.LugarEncuentro,
                 request.TipoEvento,
-                request.Destino),
+                request.Destino,
+                request.CuotaLogisticaCOP),
             cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { id }, new { id });
@@ -74,7 +75,8 @@ public sealed class EventosController(ISender sender) : ControllerBase
         DateTime FechaProgramada,
         string LugarEncuentro,
         TipoEvento TipoEvento,
-        string? Destino);
+        string? Destino,
+        decimal? CuotaLogisticaCOP);
 
     public sealed record MarcarAsistenciaRequest(
         Guid MiembroId,

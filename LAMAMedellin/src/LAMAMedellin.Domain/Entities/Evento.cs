@@ -14,6 +14,14 @@ public sealed class Evento : BaseEntity
     public string? Destino { get; private set; }
     public TipoEvento TipoEvento { get; private set; }
     public EstadoEvento Estado { get; private set; }
+
+    /// <summary>
+    /// Cuota logística en COP que cada miembro asistente debe aportar para cubrir
+    /// gastos de alimentación, hospedaje, etc. en eventos fuera de la ciudad.
+    /// Nulo si el evento no tiene cuota logística asociada.
+    /// </summary>
+    public decimal? CuotaLogisticaCOP { get; private set; }
+
     public IReadOnlyCollection<AsistenciaEvento> Asistencias => _asistencias.AsReadOnly();
 
 #pragma warning disable CS8618
@@ -26,7 +34,8 @@ public sealed class Evento : BaseEntity
         DateTime fechaProgramadaUtc,
         string lugarEncuentro,
         TipoEvento tipoEvento,
-        string? destino = null)
+        string? destino = null,
+        decimal? cuotaLogisticaCop = null)
     {
         Nombre = ValidarTextoRequerido(nombre, nameof(nombre), 150);
         Descripcion = ValidarTextoRequerido(descripcion, nameof(descripcion), 1000);
@@ -43,9 +52,34 @@ public sealed class Evento : BaseEntity
             throw new ArgumentException("FechaProgramada debe estar en UTC.", nameof(fechaProgramadaUtc));
         }
 
+        if (cuotaLogisticaCop.HasValue && cuotaLogisticaCop.Value <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(cuotaLogisticaCop), "CuotaLogisticaCOP debe ser mayor a cero.");
+        }
+
         FechaProgramada = fechaProgramadaUtc;
         TipoEvento = tipoEvento;
         Estado = EstadoEvento.Programado;
+        CuotaLogisticaCOP = cuotaLogisticaCop;
+    }
+
+    /// <summary>
+    /// Establece o actualiza la cuota logística del evento. Solo se puede modificar
+    /// mientras el evento no haya finalizado o sido cancelado.
+    /// </summary>
+    public void EstablecerCuotaLogistica(decimal? cuotaCop)
+    {
+        if (Estado == EstadoEvento.Finalizado || Estado == EstadoEvento.Cancelado)
+        {
+            throw new ReglaNegocioException("No se puede modificar la cuota logística de un evento finalizado o cancelado.");
+        }
+
+        if (cuotaCop.HasValue && cuotaCop.Value <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(cuotaCop), "CuotaLogisticaCOP debe ser mayor a cero.");
+        }
+
+        CuotaLogisticaCOP = cuotaCop;
     }
 
     public void IniciarEvento(DateTime fechaInicioUtc)

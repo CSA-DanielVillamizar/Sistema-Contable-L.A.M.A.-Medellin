@@ -26,6 +26,10 @@ public sealed class AsistenciaEventoConfiguration : IEntityTypeConfiguration<Asi
             .HasMaxLength(500)
             .IsRequired(false);
 
+        builder.Property(a => a.CuotaAplicadaCOP)
+            .HasColumnType("decimal(18,2)")
+            .IsRequired(false);
+
         builder.HasIndex(a => new { a.EventoId, a.MiembroId })
             .IsUnique();
 

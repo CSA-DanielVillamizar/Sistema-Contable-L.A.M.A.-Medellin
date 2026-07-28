@@ -15,7 +15,8 @@ public sealed class CreateEventoCommandHandler(IEventoRepository eventoRepositor
             request.FechaProgramada,
             request.LugarEncuentro,
             request.TipoEvento,
-            request.Destino);
+            request.Destino,
+            request.CuotaLogisticaCOP);
 
         await eventoRepository.AddAsync(evento, cancellationToken);
         await eventoRepository.SaveChangesAsync(cancellationToken);
