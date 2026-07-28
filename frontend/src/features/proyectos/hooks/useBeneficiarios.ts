@@ -45,14 +45,14 @@ export function useBeneficiarios() {
             const response = await apiClient.get<any[]>('/api/beneficiarios');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                proyectoSocialId: String(item?.proyectoSocialId ?? item?.ProyectoSocialId ?? ''),
-                nombreCompleto: String(item?.nombreCompleto ?? item?.NombreCompleto ?? ''),
-                tipoDocumento: String(item?.tipoDocumento ?? item?.TipoDocumento ?? ''),
-                numeroDocumento: String(item?.numeroDocumento ?? item?.NumeroDocumento ?? ''),
-                email: String(item?.email ?? item?.Email ?? ''),
-                telefono: String(item?.telefono ?? item?.Telefono ?? ''),
-                tieneConsentimientoHabeasData: Boolean(item?.tieneConsentimientoHabeasData ?? item?.TieneConsentimientoHabeasData ?? false),
+                id: String(item?.id ?? ''),
+                proyectoSocialId: String(item?.proyectoSocialId ?? ''),
+                nombreCompleto: String(item?.nombreCompleto ?? ''),
+                tipoDocumento: String(item?.tipoDocumento ?? ''),
+                numeroDocumento: String(item?.numeroDocumento ?? ''),
+                email: String(item?.email ?? ''),
+                telefono: String(item?.telefono ?? ''),
+                tieneConsentimientoHabeasData: Boolean(item?.tieneConsentimientoHabeasData ?? false),
             }));
         },
     });

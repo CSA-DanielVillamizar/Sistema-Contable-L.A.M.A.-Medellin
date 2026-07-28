@@ -91,20 +91,19 @@ apiClient.interceptors.response.use(
         }
 
         // El backend (.NET ProblemDetails) siempre envía un objeto con `title`
-        // o `detail`. Aceptamos tanto camelCase como PascalCase por defensividad.
+        // o `detail`, en camelCase.
         const isProblemDetails =
             typeof data === 'object' &&
             data !== null &&
-            ('title' in data || 'Title' in data || 'detail' in data || 'Detail' in data);
+            ('title' in data || 'detail' in data);
 
         if (isProblemDetails) {
-            // Normalizar camelCase y PascalCase en un solo objeto
             const normalized: ProblemDetails = {
-                type: data.type ?? data.Type,
-                title: data.title ?? data.Title,
-                status: data.status ?? data.Status ?? status,
-                detail: data.detail ?? data.Detail,
-                errors: data.errors ?? data.Errors,
+                type: data.type,
+                title: data.title,
+                status: data.status ?? status,
+                detail: data.detail,
+                errors: data.errors,
             };
 
             return Promise.reject(new ApiError(normalized, status));

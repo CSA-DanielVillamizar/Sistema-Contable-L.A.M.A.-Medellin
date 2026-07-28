@@ -39,8 +39,8 @@ export default function RegistroIngresoForm() {
 
             return (response.data ?? [])
                 .map((item) => ({
-                    id: String(item?.id ?? item?.Id ?? ''),
-                    numeroCuenta: String(item?.numeroCuenta ?? item?.NumeroCuenta ?? ''),
+                    id: String(item?.id ?? ''),
+                    numeroCuenta: String(item?.numeroCuenta ?? ''),
                 }))
                 .filter((item) => item.id.length > 0);
         },
@@ -53,8 +53,8 @@ export default function RegistroIngresoForm() {
 
             return (response.data ?? [])
                 .map((item) => ({
-                    id: String(item?.id ?? item?.Id ?? ''),
-                    nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                    id: String(item?.id ?? ''),
+                    nombre: String(item?.nombre ?? ''),
                 }))
                 .filter((item) => item.id.length > 0);
         },

@@ -66,11 +66,10 @@ export type RegistrarPagoCarteraPayload = {
 
 type IdResponseDto = {
     id?: string;
-    Id?: string;
 };
 
 function toId(response: IdResponseDto | undefined): string {
-    return String(response?.id ?? response?.Id ?? '');
+    return String(response?.id ?? '');
 }
 
 export async function crearMiembro(payload: CrearMiembroPayload): Promise<{ id: string }> {
@@ -92,8 +91,8 @@ export async function getMiembrosLookup(): Promise<MiembroLookupItem[]> {
     const response = await apiClient.get<any[]>('/api/cartera/miembros/lookup');
 
     return (response.data ?? []).map((item) => ({
-        id: String(item?.id ?? item?.Id ?? ''),
-        nombreCompleto: String(item?.nombreCompleto ?? item?.NombreCompleto ?? ''),
+        id: String(item?.id ?? ''),
+        nombreCompleto: String(item?.nombreCompleto ?? ''),
     }));
 }
 
@@ -101,8 +100,8 @@ export async function getConceptosCobroLookup(): Promise<ConceptoCobroLookupItem
     const response = await apiClient.get<any[]>('/api/cartera/conceptos-cobro/lookup');
 
     return (response.data ?? []).map((item) => ({
-        id: String(item?.id ?? item?.Id ?? ''),
-        nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+        id: String(item?.id ?? ''),
+        nombre: String(item?.nombre ?? ''),
     }));
 }
 
@@ -115,14 +114,14 @@ export async function getCuentasPorCobrar(params?: GetCuentasPorCobrarParams): P
     });
 
     return (response.data ?? []).map((item) => ({
-        id: String(item?.id ?? item?.Id ?? ''),
-        nombreCompletoMiembro: String(item?.nombreCompletoMiembro ?? item?.NombreCompletoMiembro ?? ''),
-        nombreConcepto: String(item?.nombreConcepto ?? item?.NombreConcepto ?? ''),
-        fechaEmision: String(item?.fechaEmision ?? item?.FechaEmision ?? ''),
-        fechaVencimiento: String(item?.fechaVencimiento ?? item?.FechaVencimiento ?? ''),
-        valorTotal: Number(item?.valorTotal ?? item?.ValorTotal ?? 0),
-        saldoPendiente: Number(item?.saldoPendiente ?? item?.SaldoPendiente ?? 0),
-        estado: Number(item?.estado ?? item?.Estado ?? 0),
+        id: String(item?.id ?? ''),
+        nombreCompletoMiembro: String(item?.nombreCompletoMiembro ?? ''),
+        nombreConcepto: String(item?.nombreConcepto ?? ''),
+        fechaEmision: String(item?.fechaEmision ?? ''),
+        fechaVencimiento: String(item?.fechaVencimiento ?? ''),
+        valorTotal: Number(item?.valorTotal ?? 0),
+        saldoPendiente: Number(item?.saldoPendiente ?? 0),
+        estado: Number(item?.estado ?? 0),
     }));
 }
 

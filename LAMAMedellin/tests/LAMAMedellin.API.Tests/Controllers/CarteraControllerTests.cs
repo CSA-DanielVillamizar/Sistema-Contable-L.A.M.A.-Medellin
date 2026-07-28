@@ -64,6 +64,29 @@ public sealed class CarteraControllerTests
     }
 
     [Fact]
+    public async Task GetPendiente_DebeSerializarEnCamelCase()
+    {
+        // El contrato JSON es camelCase, la convencion por defecto de ASP.NET Core.
+        // Emitir PascalCase obliga al frontend a leer cada campo dos veces.
+        await using var factory = new CarteraApiFactory();
+        factory.Sender.CarteraPendienteResponse =
+        [
+            new CarteraPendienteDto(Guid.NewGuid(), Guid.NewGuid(), "Ana Zapata", new DateOnly(2026, 2, 1), 100000m, 25000m)
+        ];
+
+        using var client = factory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TestAuthHandler.SchemeName, "ok");
+
+        var response = await client.GetAsync("/api/cartera/pendiente");
+        response.EnsureSuccessStatusCode();
+
+        var payload = await response.Content.ReadAsStringAsync();
+
+        payload.Should().Contain("\"nombreMiembro\"").And.Contain("\"saldoPendiente\"");
+        payload.Should().NotContain("\"NombreMiembro\"").And.NotContain("\"SaldoPendiente\"");
+    }
+
+    [Fact]
     public async Task PostPago_SinAutenticacion_DebeRetornarUnauthorized()
     {
         await using var factory = new CarteraApiFactory();

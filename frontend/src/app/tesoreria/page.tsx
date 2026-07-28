@@ -18,22 +18,15 @@ type TabLibro = 'consolidado' | 'ingresos' | 'egresos';
 
 type CentroCostoApiDto = {
     id?: string;
-    Id?: string;
     nombre?: string;
-    Nombre?: string;
 };
 
 type CuentaContableApiDto = {
     id?: string;
-    Id?: string;
     codigo?: string;
-    Codigo?: string;
     descripcion?: string;
-    Descripcion?: string;
     naturaleza?: number;
-    Naturaleza?: number;
     permiteMovimiento?: boolean;
-    PermiteMovimiento?: boolean;
 };
 
 type CuentaContableMov = {
@@ -107,8 +100,8 @@ export default function TesoreriaPage() {
             const response = await apiClient.get<CentroCostoApiDto[]>('/api/transacciones/centros-costo');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                id: String(item?.id ?? ''),
+                nombre: String(item?.nombre ?? ''),
             }));
         },
     });
@@ -120,11 +113,11 @@ export default function TesoreriaPage() {
 
             return (response.data ?? [])
                 .map((item) => ({
-                    id: String(item?.id ?? item?.Id ?? ''),
-                    codigo: String(item?.codigo ?? item?.Codigo ?? ''),
-                    descripcion: String(item?.descripcion ?? item?.Descripcion ?? ''),
-                    naturaleza: Number(item?.naturaleza ?? item?.Naturaleza ?? 0),
-                    permiteMovimiento: Boolean(item?.permiteMovimiento ?? item?.PermiteMovimiento ?? false),
+                    id: String(item?.id ?? ''),
+                    codigo: String(item?.codigo ?? ''),
+                    descripcion: String(item?.descripcion ?? ''),
+                    naturaleza: Number(item?.naturaleza ?? 0),
+                    permiteMovimiento: Boolean(item?.permiteMovimiento ?? false),
                 }))
                 .filter((item) => item.permiteMovimiento) as CuentaContableMov[];
         },

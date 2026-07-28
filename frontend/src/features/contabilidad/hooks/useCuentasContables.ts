@@ -16,12 +16,12 @@ export function useCuentasContables() {
         queryFn: async () => {
             const response = await apiClient.get<any[]>('/api/cuentas-contables');
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                codigo: String(item?.codigo ?? item?.Codigo ?? ''),
-                descripcion: String(item?.descripcion ?? item?.Descripcion ?? ''),
-                naturaleza: String(item?.naturaleza ?? item?.Naturaleza ?? ''),
-                permiteMovimiento: Boolean(item?.permiteMovimiento ?? item?.PermiteMovimiento ?? false),
-                exigeTercero: Boolean(item?.exigeTercero ?? item?.ExigeTercero ?? false),
+                id: String(item?.id ?? ''),
+                codigo: String(item?.codigo ?? ''),
+                descripcion: String(item?.descripcion ?? ''),
+                naturaleza: String(item?.naturaleza ?? ''),
+                permiteMovimiento: Boolean(item?.permiteMovimiento ?? false),
+                exigeTercero: Boolean(item?.exigeTercero ?? false),
             }));
         },
     });

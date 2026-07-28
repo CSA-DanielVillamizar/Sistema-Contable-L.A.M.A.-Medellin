@@ -51,12 +51,12 @@ export function useCarteraPendiente() {
             const response = await apiClient.get<any[]>('/api/cartera/pendiente');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                miembroId: String(item?.miembroId ?? item?.MiembroId ?? ''),
-                nombreMiembro: String(item?.nombreMiembro ?? item?.NombreMiembro ?? ''),
-                periodo: String(item?.periodo ?? item?.Periodo ?? ''),
-                valorEsperadoCOP: Number(item?.valorEsperadoCOP ?? item?.ValorEsperadoCOP ?? 0),
-                saldoPendienteCOP: Number(item?.saldoPendienteCOP ?? item?.SaldoPendienteCOP ?? 0),
+                id: String(item?.id ?? ''),
+                miembroId: String(item?.miembroId ?? ''),
+                nombreMiembro: String(item?.nombreMiembro ?? ''),
+                periodo: String(item?.periodo ?? ''),
+                valorEsperadoCOP: Number(item?.valorEsperadoCOP ?? 0),
+                saldoPendienteCOP: Number(item?.saldoPendienteCOP ?? 0),
             }));
         },
     });

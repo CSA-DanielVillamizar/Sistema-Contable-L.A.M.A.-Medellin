@@ -8,12 +8,11 @@ using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        // Mantener los nombres de propiedades sin conversión a camelCase
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-    });
+// Se usa la convencion por defecto de ASP.NET Core: camelCase al serializar y
+// binding insensible a mayusculas al deserializar. Antes se anulaba la politica
+// de nombres para emitir PascalCase, lo que obligaba al frontend a leer cada
+// campo dos veces (`item.saldo ?? item.Saldo`) en todos sus DTOs.
+builder.Services.AddControllers();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration, builder.Environment);

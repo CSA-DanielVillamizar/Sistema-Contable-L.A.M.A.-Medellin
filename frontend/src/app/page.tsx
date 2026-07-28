@@ -20,14 +20,11 @@ type ResumenCartera = {
 
 type DashboardBancoDto = {
     saldo?: number | string | null;
-    Saldo?: number | string | null;
     nombre?: string | null;
-    Nombre?: string | null;
 };
 
 type DashboardCarteraDto = {
     totalPendienteCOP?: number | string | null;
-    TotalPendienteCOP?: number | string | null;
 };
 
 function formatCOP(value: number): string {
@@ -85,10 +82,10 @@ export default function Home() {
         queryFn: async () => {
             const response = await apiClient.get<DashboardBancoDto[]>('/api/dashboard/bancos');
             return (response.data ?? []).map((item) => {
-                const saldoRaw = item?.saldo ?? item?.Saldo;
+                const saldoRaw = item?.saldo;
                 const saldoParsed = typeof saldoRaw === 'number' ? saldoRaw : Number(saldoRaw);
                 return {
-                    nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                    nombre: String(item?.nombre ?? ''),
                     saldo: Number.isFinite(saldoParsed) ? saldoParsed : null,
                 } satisfies SaldoBanco;
             });
@@ -102,7 +99,7 @@ export default function Home() {
             const response = await apiClient.get<DashboardCarteraDto>('/api/dashboard/cartera');
             return {
                 totalPendienteCOP: toNumber(
-                    response.data?.totalPendienteCOP ?? response.data?.TotalPendienteCOP,
+                    response.data?.totalPendienteCOP,
                 ),
             } satisfies ResumenCartera;
         },

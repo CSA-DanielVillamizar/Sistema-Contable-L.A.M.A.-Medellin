@@ -66,8 +66,8 @@ export default function ModalNuevoComprobante({ open, onClose }: ModalNuevoCompr
         queryFn: async () => {
             const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                id: String(item?.id ?? ''),
+                nombre: String(item?.nombre ?? ''),
             }));
         },
     });

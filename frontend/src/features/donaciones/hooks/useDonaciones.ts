@@ -82,12 +82,12 @@ export function useDonantes() {
             const response = await apiClient.get<any[]>('/api/donaciones/donantes');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                nombreORazonSocial: String(item?.nombreORazonSocial ?? item?.NombreORazonSocial ?? ''),
-                tipoDocumento: String(item?.tipoDocumento ?? item?.TipoDocumento ?? ''),
-                numeroDocumento: String(item?.numeroDocumento ?? item?.NumeroDocumento ?? ''),
-                email: String(item?.email ?? item?.Email ?? ''),
-                tipoPersona: String(item?.tipoPersona ?? item?.TipoPersona ?? ''),
+                id: String(item?.id ?? ''),
+                nombreORazonSocial: String(item?.nombreORazonSocial ?? ''),
+                tipoDocumento: String(item?.tipoDocumento ?? ''),
+                numeroDocumento: String(item?.numeroDocumento ?? ''),
+                email: String(item?.email ?? ''),
+                tipoPersona: String(item?.tipoPersona ?? ''),
             }));
         },
     });
@@ -100,17 +100,17 @@ export function useDonaciones() {
             const response = await apiClient.get<any[]>('/api/donaciones');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                donanteId: String(item?.donanteId ?? item?.DonanteId ?? ''),
-                nombreDonante: String(item?.nombreDonante ?? item?.NombreDonante ?? ''),
-                montoCOP: Number(item?.montoCOP ?? item?.MontoCOP ?? 0),
-                fecha: String(item?.fecha ?? item?.Fecha ?? ''),
-                banco: String(item?.banco ?? item?.Banco ?? ''),
-                centroCosto: String(item?.centroCosto ?? item?.CentroCosto ?? ''),
-                certificadoEmitido: Boolean(item?.certificadoEmitido ?? item?.CertificadoEmitido ?? false),
-                codigoVerificacion: String(item?.codigoVerificacion ?? item?.CodigoVerificacion ?? ''),
-                formaDonacion: String(item?.formaDonacion ?? item?.FormaDonacion ?? ''),
-                medioPagoODescripcion: String(item?.medioPagoODescripcion ?? item?.MedioPagoODescripcion ?? ''),
+                id: String(item?.id ?? ''),
+                donanteId: String(item?.donanteId ?? ''),
+                nombreDonante: String(item?.nombreDonante ?? ''),
+                montoCOP: Number(item?.montoCOP ?? 0),
+                fecha: String(item?.fecha ?? ''),
+                banco: String(item?.banco ?? ''),
+                centroCosto: String(item?.centroCosto ?? ''),
+                certificadoEmitido: Boolean(item?.certificadoEmitido ?? false),
+                codigoVerificacion: String(item?.codigoVerificacion ?? ''),
+                formaDonacion: String(item?.formaDonacion ?? ''),
+                medioPagoODescripcion: String(item?.medioPagoODescripcion ?? ''),
             }));
         },
     });
@@ -148,27 +148,27 @@ export function useCertificadoDonacion(id?: string) {
 
             return {
                 fundacion: {
-                    nombre: String(item?.fundacion?.nombre ?? item?.Fundacion?.Nombre ?? ''),
-                    nit: String(item?.fundacion?.nit ?? item?.Fundacion?.Nit ?? ''),
-                    direccion: String(item?.fundacion?.direccion ?? item?.Fundacion?.Direccion ?? ''),
-                    ciudad: String(item?.fundacion?.ciudad ?? item?.Fundacion?.Ciudad ?? ''),
+                    nombre: String(item?.fundacion?.nombre ?? ''),
+                    nit: String(item?.fundacion?.nit ?? ''),
+                    direccion: String(item?.fundacion?.direccion ?? ''),
+                    ciudad: String(item?.fundacion?.ciudad ?? ''),
                 },
                 donante: {
-                    donanteId: String(item?.donante?.donanteId ?? item?.Donante?.DonanteId ?? ''),
-                    nombreDonante: String(item?.donante?.nombreDonante ?? item?.Donante?.NombreDonante ?? ''),
-                    tipoDocumento: String(item?.donante?.tipoDocumento ?? item?.Donante?.TipoDocumento ?? ''),
-                    numeroDocumento: String(item?.donante?.numeroDocumento ?? item?.Donante?.NumeroDocumento ?? ''),
-                    email: String(item?.donante?.email ?? item?.Donante?.Email ?? ''),
+                    donanteId: String(item?.donante?.donanteId ?? ''),
+                    nombreDonante: String(item?.donante?.nombreDonante ?? ''),
+                    tipoDocumento: String(item?.donante?.tipoDocumento ?? ''),
+                    numeroDocumento: String(item?.donante?.numeroDocumento ?? ''),
+                    email: String(item?.donante?.email ?? ''),
                 },
                 monto: {
-                    valorCOP: Number(item?.monto?.valorCOP ?? item?.Monto?.ValorCOP ?? 0),
-                    enLetras: String(item?.monto?.enLetras ?? item?.Monto?.EnLetras ?? ''),
+                    valorCOP: Number(item?.monto?.valorCOP ?? 0),
+                    enLetras: String(item?.monto?.enLetras ?? ''),
                 },
-                formaDonacion: String(item?.formaDonacion ?? item?.FormaDonacion ?? ''),
-                medioPagoODescripcion: String(item?.medioPagoODescripcion ?? item?.MedioPagoODescripcion ?? ''),
-                anioGravable: Number(item?.anioGravable ?? item?.AnioGravable ?? 2026),
-                fecha: String(item?.fecha ?? item?.Fecha ?? ''),
-                codigoVerificacion: String(item?.codigoVerificacion ?? item?.CodigoVerificacion ?? ''),
+                formaDonacion: String(item?.formaDonacion ?? ''),
+                medioPagoODescripcion: String(item?.medioPagoODescripcion ?? ''),
+                anioGravable: Number(item?.anioGravable ?? 2026),
+                fecha: String(item?.fecha ?? ''),
+                codigoVerificacion: String(item?.codigoVerificacion ?? ''),
             };
         },
     });

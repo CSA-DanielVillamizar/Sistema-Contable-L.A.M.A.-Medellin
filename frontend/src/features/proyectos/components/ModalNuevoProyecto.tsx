@@ -42,8 +42,8 @@ export default function ModalNuevoProyecto({ open, onClose }: ModalNuevoProyecto
             const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                id: String(item?.id ?? ''),
+                nombre: String(item?.nombre ?? ''),
             }));
         },
         enabled: open,

@@ -21,10 +21,10 @@ export function useReporteCalidadDatos({ enabled = true }: UseReporteCalidadDato
             const response = await apiClient.get<any[]>('/api/tributario/calidad-datos');
 
             return (response.data ?? []).map((item) => ({
-                terceroId: String(item?.terceroId ?? item?.TerceroId ?? ''),
-                nombreObtenido: String(item?.nombreObtenido ?? item?.NombreObtenido ?? ''),
-                tipoRelacion: String(item?.tipoRelacion ?? item?.TipoRelacion ?? ''),
-                descripcionInconsistencia: String(item?.descripcionInconsistencia ?? item?.DescripcionInconsistencia ?? ''),
+                terceroId: String(item?.terceroId ?? ''),
+                nombreObtenido: String(item?.nombreObtenido ?? ''),
+                tipoRelacion: String(item?.tipoRelacion ?? ''),
+                descripcionInconsistencia: String(item?.descripcionInconsistencia ?? ''),
             }));
         },
         enabled,

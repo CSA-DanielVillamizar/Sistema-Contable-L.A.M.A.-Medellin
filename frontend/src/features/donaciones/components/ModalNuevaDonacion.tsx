@@ -50,8 +50,8 @@ export default function ModalNuevaDonacion({ open, onClose }: ModalNuevaDonacion
             const response = await apiClient.get<any[]>('/api/transacciones/bancos');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                numeroCuenta: String(item?.numeroCuenta ?? item?.NumeroCuenta ?? ''),
+                id: String(item?.id ?? ''),
+                numeroCuenta: String(item?.numeroCuenta ?? ''),
             }));
         },
         enabled: open,
@@ -63,8 +63,8 @@ export default function ModalNuevaDonacion({ open, onClose }: ModalNuevaDonacion
             const response = await apiClient.get<any[]>('/api/transacciones/centros-costo');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                nombre: String(item?.nombre ?? item?.Nombre ?? ''),
+                id: String(item?.id ?? ''),
+                nombre: String(item?.nombre ?? ''),
             }));
         },
         enabled: open,

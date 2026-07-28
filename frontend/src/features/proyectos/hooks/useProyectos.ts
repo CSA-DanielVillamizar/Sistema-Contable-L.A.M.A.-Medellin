@@ -46,15 +46,15 @@ export function useProyectos() {
             const response = await apiClient.get<any[]>('/api/proyectos');
 
             return (response.data ?? []).map((item) => ({
-                id: String(item?.id ?? item?.Id ?? ''),
-                centroCostoId: String(item?.centroCostoId ?? item?.CentroCostoId ?? ''),
-                centroCosto: String(item?.centroCosto ?? item?.CentroCosto ?? ''),
-                nombre: String(item?.nombre ?? item?.Nombre ?? ''),
-                descripcion: String(item?.descripcion ?? item?.Descripcion ?? ''),
-                fechaInicio: String(item?.fechaInicio ?? item?.FechaInicio ?? ''),
-                fechaFin: item?.fechaFin ?? item?.FechaFin ?? null,
-                presupuestoEstimado: Number(item?.presupuestoEstimado ?? item?.PresupuestoEstimado ?? 0),
-                estado: String(item?.estado ?? item?.Estado ?? ''),
+                id: String(item?.id ?? ''),
+                centroCostoId: String(item?.centroCostoId ?? ''),
+                centroCosto: String(item?.centroCosto ?? ''),
+                nombre: String(item?.nombre ?? ''),
+                descripcion: String(item?.descripcion ?? ''),
+                fechaInicio: String(item?.fechaInicio ?? ''),
+                fechaFin: item?.fechaFin ?? null,
+                presupuestoEstimado: Number(item?.presupuestoEstimado ?? 0),
+                estado: String(item?.estado ?? ''),
             }));
         },
     });
