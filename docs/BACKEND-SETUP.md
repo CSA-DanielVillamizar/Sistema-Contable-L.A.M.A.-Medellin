@@ -123,24 +123,75 @@ API/
 
 ### Build & Run
 
+El runbook completo (Docker, configuracion local, frontend) esta en el
+[README](../README.md#ejecucion-local). Resumen:
+
 ```powershell
-# Navigate to backend root
+# Base de datos local
+docker compose up -d
+
+# Backend (escucha en http://localhost:5006)
 cd .\LAMAMedellin
+dotnet restore LAMAMedellin.slnx
+dotnet build LAMAMedellin.slnx
+dotnet run --project src/LAMAMedellin.API --no-launch-profile
 
-# Restore dependencies
-dotnet restore
+# Pruebas
+dotnet test LAMAMedellin.slnx
+```
 
-# Build solution
-dotnet build
+Nota: los comandos deben apuntar a `LAMAMedellin.slnx` explicitamente. La solucion
+estuvo vacia durante meses, y `dotnet build` sin argumentos no compilaba nada.
 
-# Run API server (will start on http://localhost:5001)
+## Historial de migraciones
 
-dotnet run --project src/LAMAMedellin.API
+### Estado actual
 
-# Run unit tests (when added)
-dotnet test
+El historial consta de una unica migracion base: **`20260727233255_Baseline`**, que
+crea las 23 tablas del modelo. A partir de ella el flujo normal de EF Core funciona:
+
+```powershell
+dotnet ef migrations add <NombreDelCambio> --project src/LAMAMedellin.Infrastructure --startup-project src/LAMAMedellin.API
+```
+
+### Por que se colapso el historial
+
+Las 23 migraciones anteriores estaban rotas: solo `20260313035240_AddTesoreriaModule`
+tenia su archivo `.Designer.cs`, que es el que aporta el atributo `[Migration]`. Sin
+ese atributo EF Core **no reconoce la clase como migracion**, asi que
+`Database.Migrate()` solo intentaba aplicar esa unica migracion, que crea `Cajas` con
+una FK hacia `CuentasContables` — tabla cuya migracion era invisible para EF:
 
 ```
+Foreign key 'FK_Cajas_CuentasContables_CuentaContableId' references invalid table 'CuentasContables'.
+```
+
+Por eso el esquema de produccion nunca se construyo con `dotnet ef database update`,
+sino con los scripts SQL manuales de `scripts/` (`migraciones-production-idempotent.sql`,
+`fase3-centrocosto-idempotent.sql`).
+
+Como `LamaDbContextModelSnapshot` estaba sincronizado con el modelo, se pudo regenerar
+una baseline unica desde el modelo mismo. Se verifico que produce un esquema **identico**
+al del modelo: 0 diferencias en columnas, tipos, longitudes, nullability, indices,
+claves foraneas, defaults y check constraints.
+
+El historial anterior sigue disponible en el historial de git si hiciera falta
+consultarlo.
+
+### Registrar la baseline en produccion
+
+Produccion ya tiene el esquema, asi que **no** debe ejecutar la baseline como DDL: solo
+registrarla como aplicada. Procedimiento:
+
+1. **Respaldar** la base de produccion.
+2. **Verificar drift** con `scripts/sql/inventario-esquema.sql`: volcar el inventario de
+   produccion y el de una base local recien creada, y compararlos con un diff de texto.
+   Deben salir identicos.
+3. Si no hay diferencias, ejecutar `scripts/sql/baseline-registrar-en-produccion.sql`.
+   Es idempotente, no ejecuta DDL, y aborta solo si detecta que falta alguna tabla.
+
+Mientras la baseline no este registrada en produccion, **no desplegar** con el arranque
+en modo Development: `Database.Migrate()` intentaria crear tablas que ya existen.
 
 ## Key Design Decisions
 
