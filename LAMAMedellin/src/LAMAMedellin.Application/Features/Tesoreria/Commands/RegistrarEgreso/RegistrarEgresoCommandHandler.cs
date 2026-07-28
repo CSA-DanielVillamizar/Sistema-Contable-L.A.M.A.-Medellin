@@ -9,6 +9,7 @@ namespace LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarEgreso;
 
 public sealed class RegistrarEgresoCommandHandler(
     ICajaRepository cajaRepository,
+    IGeneradorConsecutivos generadorConsecutivos,
     IEgresoRepository egresoRepository,
     IComprobanteRepository comprobanteRepository,
     ICentroCostoRepository centroCostoRepository,
@@ -66,7 +67,7 @@ public sealed class RegistrarEgresoCommandHandler(
             caja.AplicarEgreso(request.Monto);
 
             var comprobante = new Comprobante(
-                GenerarNumeroConsecutivo(),
+                await generadorConsecutivos.SiguienteAsync(TipoComprobante.Egreso, ct),
                 DateTime.UtcNow,
                 TipoComprobante.Egreso,
                 $"Egreso - {request.Concepto.Trim()}",
@@ -99,7 +100,4 @@ public sealed class RegistrarEgresoCommandHandler(
             return egreso.Id;
         }, cancellationToken);
     }
-
-    private static string GenerarNumeroConsecutivo() =>
-        $"EGR-{DateTime.UtcNow:yyyyMMddHHmmssfff}";
 }

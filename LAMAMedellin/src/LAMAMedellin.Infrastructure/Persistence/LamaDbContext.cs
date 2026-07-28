@@ -1,10 +1,13 @@
+using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Domain.Common;
 using LAMAMedellin.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LAMAMedellin.Infrastructure.Persistence;
 
-public sealed class LamaDbContext(DbContextOptions<LamaDbContext> options) : DbContext(options)
+public sealed class LamaDbContext(
+    DbContextOptions<LamaDbContext> options,
+    IUsuarioActual? usuarioActual = null) : DbContext(options)
 {
     public DbSet<Caja> Cajas => Set<Caja>();
     public DbSet<Ingreso> Ingresos => Set<Ingreso>();
@@ -29,17 +32,46 @@ public sealed class LamaDbContext(DbContextOptions<LamaDbContext> options) : DbC
     public DbSet<Transaccion> Transacciones => Set<Transaccion>();
     public DbSet<Producto> Productos => Set<Producto>();
     public DbSet<MovimientoInventario> MovimientosInventario => Set<MovimientoInventario>();
+    public DbSet<ConsecutivoComprobante> ConsecutivosComprobante => Set<ConsecutivoComprobante>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LamaDbContext).Assembly);
+
+        // Columnas de auditoria: acotadas para no terminar en nvarchar(max).
+        foreach (var tipo in modelBuilder.Model.GetEntityTypes()
+                     .Where(t => typeof(BaseEntity).IsAssignableFrom(t.ClrType)))
+        {
+            modelBuilder.Entity(tipo.ClrType)
+                .Property(nameof(BaseEntity.CreatedBy))
+                .HasMaxLength(256);
+
+            modelBuilder.Entity(tipo.ClrType)
+                .Property(nameof(BaseEntity.UpdatedBy))
+                .HasMaxLength(256);
+
+            modelBuilder.Entity(tipo.ClrType)
+                .Property(nameof(BaseEntity.DeletedBy))
+                .HasMaxLength(256);
+        }
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         AplicarSoftDelete();
+        AnotarAuditoria();
         return base.SaveChangesAsync(cancellationToken);
+    }
+
+    // La version sincrona tambien debe pasar por aqui: sobrescribir solo la
+    // asincrona dejaba una via por la que se salvaban cambios sin soft delete
+    // ni auditoria.
+    public override int SaveChanges()
+    {
+        AplicarSoftDelete();
+        AnotarAuditoria();
+        return base.SaveChanges();
     }
 
     private void AplicarSoftDelete()
@@ -53,6 +85,38 @@ public sealed class LamaDbContext(DbContextOptions<LamaDbContext> options) : DbC
         {
             entrada.State = EntityState.Modified;
             entrada.Entity.MarcarComoEliminado();
+            MarcarAuditoria(entrada, nameof(BaseEntity.DeletedAt), nameof(BaseEntity.DeletedBy));
         }
+    }
+
+    /// <summary>
+    /// Sella quien y cuando sobre cada entidad que se va a persistir.
+    /// Se escribe por el rastreador de cambios para no exponer setters
+    /// publicos en el dominio: ningun manejador puede falsear estos valores.
+    /// </summary>
+    private void AnotarAuditoria()
+    {
+        foreach (var entrada in ChangeTracker.Entries<BaseEntity>())
+        {
+            switch (entrada.State)
+            {
+                case EntityState.Added:
+                    MarcarAuditoria(entrada, nameof(BaseEntity.CreatedAt), nameof(BaseEntity.CreatedBy));
+                    break;
+
+                case EntityState.Modified:
+                    MarcarAuditoria(entrada, nameof(BaseEntity.UpdatedAt), nameof(BaseEntity.UpdatedBy));
+                    break;
+            }
+        }
+    }
+
+    private void MarcarAuditoria(
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<BaseEntity> entrada,
+        string propiedadFecha,
+        string propiedadUsuario)
+    {
+        entrada.Property(propiedadFecha).CurrentValue = DateTime.UtcNow;
+        entrada.Property(propiedadUsuario).CurrentValue = usuarioActual?.Identificador;
     }
 }

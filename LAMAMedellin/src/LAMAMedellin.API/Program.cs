@@ -1,5 +1,7 @@
 using LAMAMedellin.API.Middleware;
+using LAMAMedellin.API.Services;
 using LAMAMedellin.Application;
+using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Infrastructure.Configuration;
 using LAMAMedellin.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,6 +18,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration, builder.Environment);
+
+// Necesario para que la pista de auditoria sepa quien ejecuta cada operacion.
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUsuarioActual, UsuarioActual>();
 
 builder.Services.AddCors(options =>
 {

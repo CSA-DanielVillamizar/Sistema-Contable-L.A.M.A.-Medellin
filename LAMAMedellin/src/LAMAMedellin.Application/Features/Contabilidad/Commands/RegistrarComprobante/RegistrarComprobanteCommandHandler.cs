@@ -1,5 +1,6 @@
 using LAMAMedellin.Application.Common.Exceptions;
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
+using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Domain.Entities;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
@@ -8,6 +9,7 @@ namespace LAMAMedellin.Application.Features.Contabilidad.Commands.RegistrarCompr
 
 public sealed class RegistrarComprobanteCommandHandler(
     IComprobanteRepository comprobanteRepository,
+    IGeneradorConsecutivos generadorConsecutivos,
     ICuentaContableRepository cuentaContableRepository,
     ICentroCostoRepository centroCostoRepository)
     : IRequestHandler<RegistrarComprobanteCommand, Guid>
@@ -18,7 +20,7 @@ public sealed class RegistrarComprobanteCommandHandler(
         await ValidarCentrosCostoAsync(request, cancellationToken);
 
         var comprobante = new Comprobante(
-            GenerarNumeroConsecutivo(),
+            await generadorConsecutivos.SiguienteAsync(request.Tipo, cancellationToken),
             request.Fecha,
             request.Tipo,
             request.Descripcion,
@@ -93,7 +95,4 @@ public sealed class RegistrarComprobanteCommandHandler(
             }
         }
     }
-
-    private static string GenerarNumeroConsecutivo() =>
-        $"CMP-{DateTime.UtcNow:yyyyMMddHHmmssfff}";
 }
