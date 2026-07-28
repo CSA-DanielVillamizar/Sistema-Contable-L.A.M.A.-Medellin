@@ -63,6 +63,14 @@ PublishProfiles/
 ServiceDefinition.*.csdef
 ServiceConfiguration.*.cscfg
 
+# Publish profiles: contienen userPWD (credencial de despliegue en texto plano).
+# Nunca deben entrar al repositorio bajo ningun nombre.
+*.pubxml
+*.pubxml.user
+*publish_profile*
+*publishsettings
+*.PublishSettings
+
 # ============================================================================
 # JavaScript / TypeScript / Node.js (Next.js Frontend)
 # ============================================================================
