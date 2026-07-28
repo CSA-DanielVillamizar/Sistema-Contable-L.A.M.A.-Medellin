@@ -2,6 +2,7 @@
 
 import ResumenKpis from '@/features/dashboard/components/ResumenKpis';
 import apiClient from '@/lib/apiClient';
+import { hasValidSession } from '@/lib/msalClient';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
@@ -52,26 +53,30 @@ export default function Home() {
     const [authError, setAuthError] = useState<string | null>(null);
 
     useEffect(() => {
-        const syncAuthState = () => {
-            const token = localStorage.getItem('token');
+        const syncAuthState = async () => {
+            // El token ya no vive en localStorage: se le pregunta a MSAL si hay
+            // sesion utilizable, sin traer el token a este componente.
+            const sesionValida = await hasValidSession();
             const authWasResolved = sessionStorage.getItem('auth_ready') === '1';
             const lastAuthError = sessionStorage.getItem('msal_auth_last_error');
 
-            setHasToken(Boolean(token));
-            setAuthReady(Boolean(token) || authWasResolved);
+            setHasToken(sesionValida);
+            setAuthReady(sesionValida || authWasResolved);
             setAuthError(lastAuthError);
         };
 
-        syncAuthState();
+        const onAuthStateChanged = () => void syncAuthState();
 
-        window.addEventListener('auth-token-updated', syncAuthState);
-        window.addEventListener('auth-status-updated', syncAuthState);
-        window.addEventListener('storage', syncAuthState);
+        onAuthStateChanged();
+
+        // Se retiro el listener de 'storage': existia para detectar cambios del
+        // token en localStorage, que ya no se persiste ahi.
+        window.addEventListener('auth-token-updated', onAuthStateChanged);
+        window.addEventListener('auth-status-updated', onAuthStateChanged);
 
         return () => {
-            window.removeEventListener('auth-token-updated', syncAuthState);
-            window.removeEventListener('auth-status-updated', syncAuthState);
-            window.removeEventListener('storage', syncAuthState);
+            window.removeEventListener('auth-token-updated', onAuthStateChanged);
+            window.removeEventListener('auth-status-updated', onAuthStateChanged);
         };
     }, []);
 

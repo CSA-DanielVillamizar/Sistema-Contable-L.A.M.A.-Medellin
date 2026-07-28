@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, { type InternalAxiosRequestConfig } from 'axios';
+import { getAccessToken } from '@/lib/msalClient';
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:5006';
 
@@ -10,9 +11,12 @@ const apiClient = axios.create({
     },
 });
 
+// El token se pide a MSAL en cada request en vez de leerlo de localStorage.
+// MSAL lo mantiene en cache y lo renueva solo cuando esta por expirar, asi que
+// esto no genera trafico extra y elimina el token persistido en disco.
 apiClient.interceptors.request.use(
-    (config) => {
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    async (config) => {
+        const accessToken = await getAccessToken();
 
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -57,15 +61,34 @@ export class ApiError extends Error {
 // ---------------------------------------------------------------------------
 // Interceptor de RESPUESTA — normaliza errores ProblemDetails del backend
 // ---------------------------------------------------------------------------
+/** Marca interna para no reintentar en bucle una request que ya se reintento. */
+type RequestConfigConReintento = InternalAxiosRequestConfig & { _reintentoAuth?: boolean };
+
 apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
         if (!axios.isAxiosError(error) || !error.response) {
             // Error de red o timeout — relanzamos tal cual
             return Promise.reject(error);
         }
 
         const { status, data } = error.response;
+
+        // Un 401 suele ser un token vencido. Se pide uno nuevo saltando la cache y
+        // se reintenta la request una sola vez. Antes el usuario quedaba viendo
+        // errores hasta que recargara la pagina a mano.
+        const originalConfig = error.config as RequestConfigConReintento | undefined;
+
+        if (status === 401 && originalConfig && !originalConfig._reintentoAuth) {
+            originalConfig._reintentoAuth = true;
+
+            const tokenRenovado = await getAccessToken({ forceRefresh: true });
+
+            if (tokenRenovado) {
+                originalConfig.headers.Authorization = `Bearer ${tokenRenovado}`;
+                return apiClient(originalConfig);
+            }
+        }
 
         // El backend (.NET ProblemDetails) siempre envía un objeto con `title`
         // o `detail`. Aceptamos tanto camelCase como PascalCase por defensividad.

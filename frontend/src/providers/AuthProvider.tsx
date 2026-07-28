@@ -1,30 +1,15 @@
 'use client';
 
-import { InteractionRequiredAuthError, PublicClientApplication } from '@azure/msal-browser';
+import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
 import { useEffect, useRef, useState } from 'react';
+import { apiScope, msalInstance } from '@/lib/msalClient';
 
-const tenantId = process.env.NEXT_PUBLIC_AZURE_AD_TENANT_ID ?? '95bb5dd0-a2fa-4336-9db4-fee9c5cbe8ae';
-const clientId = process.env.NEXT_PUBLIC_AZURE_AD_CLIENT_ID ?? '3805c7ed-4245-4578-9ee1-85d48a2232fd';
-const apiScope = process.env.NEXT_PUBLIC_API_SCOPE ?? 'api://b81ee2ee-5417-4aa0-8000-e470aec5543e/user_impersonation';
-const fallbackRedirectUri = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-const redirectUri = process.env.NEXT_PUBLIC_AZURE_AD_REDIRECT_URI ?? fallbackRedirectUri;
 const redirectInFlightKey = 'msal_redirect_in_flight';
 const authReadyKey = 'auth_ready';
 const authRetryKey = 'msal_auth_auto_retry';
 const authLastErrorKey = 'msal_auth_last_error';
 const authManualLoginEvent = 'auth-login-request';
-
-const msalInstance = new PublicClientApplication({
-    auth: {
-        clientId,
-        authority: `https://login.microsoftonline.com/${tenantId}`,
-        redirectUri,
-    },
-    cache: {
-        cacheLocation: 'localStorage',
-    },
-});
 
 type AuthProviderProps = {
     children: React.ReactNode;
@@ -160,7 +145,6 @@ function TokenSync({ children }: AuthProviderProps) {
                     hasTriggeredRedirectRef.current = false;
                     sessionStorage.setItem(authReadyKey, '1');
                     setLastAuthError(callbackError);
-                    localStorage.removeItem('token');
                     setIsAuthReady(true);
                     return;
                 }
@@ -179,12 +163,14 @@ function TokenSync({ children }: AuthProviderProps) {
             try {
                 instance.setActiveAccount(accounts[0]);
 
-                const tokenResponse = await instance.acquireTokenSilent({
+                // Se pide el token para confirmar que la sesion sirve, pero NO se
+                // persiste: a partir de aqui MSAL es el unico que lo custodia y el
+                // cliente HTTP se lo pide cuando lo necesita.
+                await instance.acquireTokenSilent({
                     account: accounts[0],
                     scopes: [apiScope],
                 });
 
-                localStorage.setItem('token', tokenResponse.accessToken);
                 notifyTokenStateChanged();
                 resolveReady();
             } catch (error) {
@@ -222,7 +208,6 @@ function TokenSync({ children }: AuthProviderProps) {
                 sessionStorage.removeItem(redirectInFlightKey);
                 hasTriggeredRedirectRef.current = false;
                 sessionStorage.setItem(authReadyKey, '1');
-                localStorage.removeItem('token');
                 setLastAuthError(errorMessage);
                 notifyTokenStateChanged();
                 setIsAuthReady(true);
