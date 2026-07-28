@@ -1,0 +1,83 @@
+name: CI
+
+# Gate de calidad: compila y prueba backend y frontend.
+# Debe pasar antes de que los workflows de deploy publiquen a produccion.
+# Configurar como required status check en la proteccion de la rama main.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (.NET 8)
+    runs-on: ubuntu-latest
+
+    env:
+      SOLUTION_PATH: LAMAMedellin/LAMAMedellin.slnx
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore $SOLUTION_PATH
+
+      - name: Build
+        run: dotnet build $SOLUTION_PATH --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test $SOLUTION_PATH --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+
+      - name: Publicar resultados de pruebas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results
+          path: ./test-results
+          if-no-files-found: ignore
+
+  frontend:
+    name: Frontend (Next.js)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Informativo por ahora, no bloqueante: el repositorio arrastra 31 errores de
+      # lint preexistentes (mayormente `no-explicit-any` y un `set-state-in-effect`)
+      # repartidos en tributario, transacciones, donaciones, eventos y merchandising.
+      # Volver a hacerlo bloqueante — quitando continue-on-error — en cuanto se salden.
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Build
+        run: npm run build

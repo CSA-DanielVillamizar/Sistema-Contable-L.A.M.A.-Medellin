@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using FluentAssertions;
-using LAMAMedellin.Application.Features.Cartera.Commands.RegistrarPago;
+using LAMAMedellin.Application.Features.Cartera.Commands.RegistrarPagoCartera;
 using LAMAMedellin.Application.Features.Cartera.Queries.GetCarteraPendiente;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -38,8 +38,8 @@ public sealed class CarteraControllerTests
         await using var factory = new CarteraApiFactory();
         factory.Sender.CarteraPendienteResponse =
         [
-            new CarteraPendienteDto(Guid.NewGuid(), Guid.NewGuid(), "Ana Zapata", "2026-02", 100000m, 25000m),
-            new CarteraPendienteDto(Guid.NewGuid(), Guid.NewGuid(), "Bruno Perez", "2026-01", 100000m, 100000m)
+            new CarteraPendienteDto(Guid.NewGuid(), Guid.NewGuid(), "Ana Zapata", new DateOnly(2026, 2, 1), 100000m, 25000m),
+            new CarteraPendienteDto(Guid.NewGuid(), Guid.NewGuid(), "Bruno Perez", new DateOnly(2026, 1, 1), 100000m, 100000m)
         ];
 
         using var client = factory.CreateClient();
@@ -56,9 +56,9 @@ public sealed class CarteraControllerTests
 
         Assert.NotNull(data);
         data.Should().HaveCount(2);
-        data[0].Periodo.Should().Be("2026-02");
+        data[0].FechaEmision.Should().Be(new DateOnly(2026, 2, 1));
         data[0].NombreMiembro.Should().Be("Ana Zapata");
-        data[1].Periodo.Should().Be("2026-01");
+        data[1].FechaEmision.Should().Be(new DateOnly(2026, 1, 1));
 
         factory.Sender.CapturedRequests.Should().ContainSingle(r => r is GetCarteraPendienteQuery);
     }
@@ -69,7 +69,9 @@ public sealed class CarteraControllerTests
         await using var factory = new CarteraApiFactory();
         using var client = factory.CreateClient();
 
-        var response = await client.PostAsync($"/api/cartera/{Guid.NewGuid()}/pago", JsonContent(new { MontoCOP = 100000m }));
+        var response = await client.PostAsync(
+            $"/api/cartera/cuentas-por-cobrar/{Guid.NewGuid()}/pagos",
+            JsonContent(new { Monto = 100000m, CajaId = Guid.NewGuid() }));
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
@@ -84,7 +86,9 @@ public sealed class CarteraControllerTests
         var cuentaId = Guid.NewGuid();
         var monto = 150000m;
 
-        var response = await client.PostAsync($"/api/cartera/{cuentaId}/pago", JsonContent(new { MontoCOP = monto }));
+        var response = await client.PostAsync(
+            $"/api/cartera/cuentas-por-cobrar/{cuentaId}/pagos",
+            JsonContent(new { Monto = monto, CajaId = Guid.NewGuid() }));
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -97,17 +101,21 @@ public sealed class CarteraControllerTests
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TestAuthHandler.SchemeName, "ok");
 
         var cuentaId = Guid.NewGuid();
+        var cajaId = Guid.NewGuid();
         var monto = 175000m;
 
-        var response = await client.PostAsync($"/api/cartera/{cuentaId}/pago", JsonContent(new { MontoCOP = monto }));
+        var response = await client.PostAsync(
+            $"/api/cartera/cuentas-por-cobrar/{cuentaId}/pagos",
+            JsonContent(new { Monto = monto, CajaId = cajaId }));
         response.EnsureSuccessStatusCode();
 
         factory.Sender.CapturedRequests.Should().ContainSingle();
-        factory.Sender.CapturedRequests[0].Should().BeOfType<RegistrarPagoCuotaCommand>();
+        factory.Sender.CapturedRequests[0].Should().BeOfType<RegistrarPagoCarteraCommand>();
 
-        var command = (RegistrarPagoCuotaCommand)factory.Sender.CapturedRequests[0];
+        var command = (RegistrarPagoCarteraCommand)factory.Sender.CapturedRequests[0];
         command.CuentaPorCobrarId.Should().Be(cuentaId);
-        command.MontoCOP.Should().Be(monto);
+        command.Monto.Should().Be(monto);
+        command.CajaId.Should().Be(cajaId);
     }
 
     private static StringContent JsonContent(object payload)
