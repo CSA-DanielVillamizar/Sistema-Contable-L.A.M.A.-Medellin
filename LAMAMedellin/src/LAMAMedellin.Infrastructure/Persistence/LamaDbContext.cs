@@ -1,6 +1,7 @@
 using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Domain.Common;
 using LAMAMedellin.Domain.Entities;
+using LAMAMedellin.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace LAMAMedellin.Infrastructure.Persistence;
@@ -33,6 +34,7 @@ public sealed class LamaDbContext(
     public DbSet<Producto> Productos => Set<Producto>();
     public DbSet<MovimientoInventario> MovimientosInventario => Set<MovimientoInventario>();
     public DbSet<ConsecutivoComprobante> ConsecutivosComprobante => Set<ConsecutivoComprobante>();
+    public DbSet<PeriodoContable> PeriodosContables => Set<PeriodoContable>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -61,6 +63,7 @@ public sealed class LamaDbContext(
     {
         AplicarSoftDelete();
         AnotarAuditoria();
+        RechazarMovimientosEnPeriodoCerrado();
         return base.SaveChangesAsync(cancellationToken);
     }
 
@@ -71,7 +74,58 @@ public sealed class LamaDbContext(
     {
         AplicarSoftDelete();
         AnotarAuditoria();
+        RechazarMovimientosEnPeriodoCerrado();
         return base.SaveChanges();
+    }
+
+    /// <summary>
+    /// Impide tocar la contabilidad de un periodo ya cerrado.
+    ///
+    /// Se valida aqui y no en los manejadores a proposito: todo hecho contable
+    /// termina siendo un Comprobante, asi que este es el unico punto por el que
+    /// necesariamente pasa. Ponerlo en cada caso de uso dejaria la puerta
+    /// abierta a que un caso de uso nuevo se olvide de la regla.
+    ///
+    /// Los comprobantes de tipo Ajuste si se admiten, porque son justamente el
+    /// mecanismo que el backlog define para corregir despues del cierre
+    /// (historia 1-5) sin editar el documento de origen.
+    /// </summary>
+    private void RechazarMovimientosEnPeriodoCerrado()
+    {
+        var comprobantes = ChangeTracker
+            .Entries<Comprobante>()
+            .Where(entrada => entrada.State is EntityState.Added or EntityState.Modified)
+            .Select(entrada => entrada.Entity)
+            .Where(comprobante => comprobante.TipoComprobante != TipoComprobante.Ajuste)
+            .ToList();
+
+        if (comprobantes.Count == 0)
+        {
+            // Sin comprobantes en juego no se consulta nada: el guardian no
+            // cuesta en los guardados que no tocan contabilidad.
+            return;
+        }
+
+        var periodosAfectados = comprobantes
+            .Select(comprobante => (comprobante.Fecha.Year, comprobante.Fecha.Month))
+            .Distinct()
+            .ToList();
+
+        var cerrados = PeriodosContables
+            .Where(periodo => periodo.Estado == EstadoPeriodoContable.Cerrado)
+            .Select(periodo => new { periodo.Anio, periodo.Mes })
+            .ToList();
+
+        var choque = periodosAfectados
+            .FirstOrDefault(afectado => cerrados.Any(
+                cerrado => cerrado.Anio == afectado.Year && cerrado.Mes == afectado.Month));
+
+        if (choque != default)
+        {
+            throw new ReglaNegocioException(
+                $"El periodo contable {choque.Year}-{choque.Month:D2} esta cerrado. " +
+                "Registre un comprobante de ajuste en lugar de modificar el origen.");
+        }
     }
 
     private void AplicarSoftDelete()
