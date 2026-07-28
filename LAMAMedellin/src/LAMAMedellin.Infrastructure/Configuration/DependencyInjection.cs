@@ -139,6 +139,7 @@ public static class DependencyInjection
         services.AddScoped<IGeneradorConsecutivos, GeneradorConsecutivos>();
         services.AddScoped<IComprobanteRepository, ComprobanteRepository>();
         services.AddScoped<IPeriodoContableRepository, PeriodoContableRepository>();
+        services.AddScoped<ILibrosContablesRepository, LibrosContablesRepository>();
         services.AddScoped<IProyectoSocialRepository, ProyectoSocialRepository>();
         services.AddScoped<IBeneficiarioRepository, BeneficiarioRepository>();
         services.AddScoped<ITributarioRepository, TributarioRepository>();
