@@ -59,9 +59,9 @@ export default function ResumenKpis() {
             <article className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm">
                 <div className="flex items-center gap-2 text-emerald-700">
                     <Banknote size={24} className="text-emerald-600" />
-                    <p className="text-xs font-semibold uppercase tracking-wide">Total en Cajas</p>
+                    <p className="text-xs font-semibold uppercase tracking-wide">Total en CuentasBancarias</p>
                 </div>
-                <p className="mt-2 text-4xl font-bold text-emerald-900">{formatCOP(resumen?.totalDineroCajas ?? 0)}</p>
+                <p className="mt-2 text-4xl font-bold text-emerald-900">{formatCOP(resumen?.totalDineroCuentasBancarias ?? 0)}</p>
                 <p className="mt-1 text-sm text-emerald-700">Liquidez disponible en tesorería</p>
             </article>
 

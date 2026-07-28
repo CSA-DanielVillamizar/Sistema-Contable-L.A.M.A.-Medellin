@@ -5,5 +5,5 @@ namespace LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarVent
 public sealed record RegistrarVentaProductoCommand(
     Guid ProductoId,
     int Cantidad,
-    Guid CajaId,
+    Guid BancoId,
     string Concepto) : IRequest<Guid>;

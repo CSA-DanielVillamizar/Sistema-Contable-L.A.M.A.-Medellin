@@ -1,6 +1,6 @@
 using LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarEgreso;
 using LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarIngreso;
-using LAMAMedellin.Application.Features.Tesoreria.Queries.GetCajas;
+using LAMAMedellin.Application.Features.Tesoreria.Queries.GetCuentasBancarias;
 using LAMAMedellin.Application.Features.Tesoreria.Queries.GetEgresos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,12 +13,12 @@ namespace LAMAMedellin.API.Controllers;
 [Authorize(Roles = "Admin,Tesorero")]
 public sealed class TesoreriaController(ISender sender) : ControllerBase
 {
-    [HttpGet("cajas")]
-    [ProducesResponseType(typeof(List<CajaDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCajas(CancellationToken cancellationToken)
+    [HttpGet("cuentas-bancarias")]
+    [ProducesResponseType(typeof(List<CuentaBancariaDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCuentasBancarias(CancellationToken cancellationToken)
     {
-        var cajas = await sender.Send(new GetCajasQuery(), cancellationToken);
-        return Ok(cajas);
+        var cuentas = await sender.Send(new GetCuentasBancariasQuery(), cancellationToken);
+        return Ok(cuentas);
     }
 
     [HttpGet("egresos")]

@@ -121,7 +121,6 @@ public static class DependencyInjection
         });
 
         services.AddScoped<ITransaccionRepository, TransaccionRepository>();
-        services.AddScoped<ICajaRepository, CajaRepository>();
         services.AddScoped<IIngresoRepository, IngresoRepository>();
         services.AddScoped<IEgresoRepository, EgresoRepository>();
         services.AddScoped<IBancoRepository, BancoRepository>();

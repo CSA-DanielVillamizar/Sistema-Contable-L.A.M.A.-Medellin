@@ -8,7 +8,7 @@ using MediatR;
 namespace LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarEgreso;
 
 public sealed class RegistrarEgresoCommandHandler(
-    ICajaRepository cajaRepository,
+    IBancoRepository bancoRepository,
     IGeneradorConsecutivos generadorConsecutivos,
     IEgresoRepository egresoRepository,
     IComprobanteRepository comprobanteRepository,
@@ -21,10 +21,10 @@ public sealed class RegistrarEgresoCommandHandler(
     {
         return await transactionManager.ExecuteInTransactionAsync(async ct =>
         {
-            var caja = await cajaRepository.GetByIdAsync(request.CajaId, ct);
-            if (caja is null)
+            var banco = await bancoRepository.GetByIdAsync(request.BancoId, ct);
+            if (banco is null)
             {
-                throw new ExcepcionNegocio("La caja indicada no existe.");
+                throw new ExcepcionNegocio("La cuenta bancaria indicada no existe.");
             }
 
             var centroCosto = await centroCostoRepository.GetByIdAsync(request.CentroCostoId, ct);
@@ -44,15 +44,15 @@ public sealed class RegistrarEgresoCommandHandler(
                 throw new ExcepcionNegocio("La cuenta contable de gasto no permite movimiento.");
             }
 
-            var cuentaCaja = await cuentaContableRepository.GetByIdAsync(caja.CuentaContableId, ct);
-            if (cuentaCaja is null)
+            var cuentaBanco = await cuentaContableRepository.GetByIdAsync(banco.CuentaContableId, ct);
+            if (cuentaBanco is null)
             {
-                throw new ExcepcionNegocio("La cuenta contable asociada a la caja no existe.");
+                throw new ExcepcionNegocio("La cuenta contable asociada al banco no existe.");
             }
 
-            if (!cuentaCaja.PermiteMovimiento)
+            if (!cuentaBanco.PermiteMovimiento)
             {
-                throw new ExcepcionNegocio("La cuenta contable asociada a la caja no permite movimiento.");
+                throw new ExcepcionNegocio("La cuenta contable asociada al banco no permite movimiento.");
             }
 
             var egreso = new Egreso(
@@ -61,10 +61,10 @@ public sealed class RegistrarEgresoCommandHandler(
                 request.Concepto,
                 request.TerceroId,
                 request.CuentaContableId,
-                request.CajaId,
+                request.BancoId,
                 request.CentroCostoId);
 
-            caja.AplicarEgreso(request.Monto);
+            banco.AplicarEgreso(request.Monto);
 
             var comprobante = new Comprobante(
                 await generadorConsecutivos.SiguienteAsync(TipoComprobante.Egreso, ct),
@@ -84,7 +84,7 @@ public sealed class RegistrarEgresoCommandHandler(
 
             comprobante.AgregarAsiento(AsientoContable.Crear(
                 comprobante.Id,
-                caja.CuentaContableId,
+                banco.CuentaContableId,
                 request.TerceroId,
                 request.CentroCostoId,
                 0m,

@@ -11,7 +11,7 @@ export type TesoreriaMovimientoFormValues = {
     fecha: string;
     monto: string;
     concepto: string;
-    cajaId: string;
+    bancoId: string;
     cuentaContableId: string;
     centroCostoId: string;
 };
@@ -19,7 +19,7 @@ export type TesoreriaMovimientoFormValues = {
 type TesoreriaMovimientoModalProps = {
     modo: 'ingreso' | 'egreso';
     abierto: boolean;
-    cajas: TesoreriaCatalogItem[];
+    cuentasBancarias: TesoreriaCatalogItem[];
     cuentasContables: TesoreriaCatalogItem[];
     centrosCosto: TesoreriaCatalogItem[];
     enviando: boolean;
@@ -33,7 +33,7 @@ function getFechaActual(): string {
 }
 
 function buildInitialValues(
-    cajas: TesoreriaCatalogItem[],
+    cuentasBancarias: TesoreriaCatalogItem[],
     cuentasContables: TesoreriaCatalogItem[],
     centrosCosto: TesoreriaCatalogItem[],
 ): TesoreriaMovimientoFormValues {
@@ -41,7 +41,7 @@ function buildInitialValues(
         fecha: getFechaActual(),
         monto: '',
         concepto: '',
-        cajaId: cajas[0]?.id ?? '',
+        bancoId: cuentasBancarias[0]?.id ?? '',
         cuentaContableId: cuentasContables[0]?.id ?? '',
         centroCostoId: centrosCosto[0]?.id ?? '',
     };
@@ -50,7 +50,7 @@ function buildInitialValues(
 export default function TesoreriaMovimientoModal({
     modo,
     abierto,
-    cajas,
+    cuentasBancarias,
     cuentasContables,
     centrosCosto,
     enviando,
@@ -59,7 +59,7 @@ export default function TesoreriaMovimientoModal({
     onEnviar,
 }: TesoreriaMovimientoModalProps) {
     const [values, setValues] = useState<TesoreriaMovimientoFormValues>(() =>
-        buildInitialValues(cajas, cuentasContables, centrosCosto),
+        buildInitialValues(cuentasBancarias, cuentasContables, centrosCosto),
     );
     const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -69,9 +69,9 @@ export default function TesoreriaMovimientoModal({
         }
 
         // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
-        setValues(buildInitialValues(cajas, cuentasContables, centrosCosto));
+        setValues(buildInitialValues(cuentasBancarias, cuentasContables, centrosCosto));
         setValidationError(null);
-    }, [abierto, cajas, cuentasContables, centrosCosto, modo]);
+    }, [abierto, cuentasBancarias, cuentasContables, centrosCosto, modo]);
 
     if (!abierto) {
         return null;
@@ -88,7 +88,7 @@ export default function TesoreriaMovimientoModal({
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (!values.fecha || !values.monto || !values.concepto.trim() || !values.cajaId || !values.cuentaContableId || !values.centroCostoId) {
+        if (!values.fecha || !values.monto || !values.concepto.trim() || !values.bancoId || !values.cuentaContableId || !values.centroCostoId) {
             setValidationError('Todos los campos son obligatorios para registrar el movimiento.');
             return;
         }
@@ -109,7 +109,7 @@ export default function TesoreriaMovimientoModal({
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <h2 className="text-xl font-bold text-slate-900">{titulo}</h2>
-                        <p className="mt-1 text-sm text-slate-600">Movimientos en caja con comprobante y partida doble.</p>
+                        <p className="mt-1 text-sm text-slate-600">Movimientos en cuentaBancaria con comprobante y partida doble.</p>
                     </div>
 
                     <button
@@ -157,16 +157,16 @@ export default function TesoreriaMovimientoModal({
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-sm font-medium text-slate-700">Caja</label>
+                        <label className="mb-1 block text-sm font-medium text-slate-700">Cuenta bancaria</label>
                         <select
-                            value={values.cajaId}
-                            onChange={(event) => onChange('cajaId', event.target.value)}
+                            value={values.bancoId}
+                            onChange={(event) => onChange('bancoId', event.target.value)}
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
                         >
                             <option value="">Seleccione...</option>
-                            {cajas.map((caja) => (
-                                <option key={caja.id} value={caja.id}>
-                                    {caja.nombre}
+                            {cuentasBancarias.map((cuentaBancaria) => (
+                                <option key={cuentaBancaria.id} value={cuentaBancaria.id}>
+                                    {cuentaBancaria.nombre}
                                 </option>
                             ))}
                         </select>

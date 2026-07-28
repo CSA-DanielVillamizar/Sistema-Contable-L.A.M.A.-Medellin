@@ -7,5 +7,5 @@ public sealed record RegistrarIngresoCommand(
     string Concepto,
     Guid? TerceroId,
     Guid CuentaContableId,
-    Guid CajaId,
+    Guid BancoId,
     Guid CentroCostoId) : IRequest<Guid>;

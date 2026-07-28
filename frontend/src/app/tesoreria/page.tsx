@@ -4,7 +4,7 @@ import TesoreriaMovimientoModal, {
     type TesoreriaCatalogItem,
     type TesoreriaMovimientoFormValues,
 } from '@/features/tesoreria/components/TesoreriaMovimientoModal';
-import { useGetCajas } from '@/features/tesoreria/hooks/useGetCajas';
+import { useGetCuentasBancarias } from '@/features/tesoreria/hooks/useGetCuentasBancarias';
 import { useGetEgresos } from '@/features/tesoreria/hooks/useGetEgresos';
 import { useRegistrarEgreso } from '@/features/tesoreria/hooks/useRegistrarEgreso';
 import { useRegistrarIngreso } from '@/features/tesoreria/hooks/useRegistrarIngreso';
@@ -78,7 +78,7 @@ function toMovimientoPayload(values: TesoreriaMovimientoFormValues): RegistrarMo
         concepto: values.concepto.trim(),
         terceroId: null,
         cuentaContableId: values.cuentaContableId,
-        cajaId: values.cajaId,
+        bancoId: values.bancoId,
         centroCostoId: values.centroCostoId,
     };
 }
@@ -88,7 +88,7 @@ export default function TesoreriaPage() {
     const [tabActiva, setTabActiva] = useState<TabLibro>('consolidado');
     const [mensajeExito, setMensajeExito] = useState<string | null>(null);
 
-    const cajasQuery = useGetCajas();
+    const cuentasBancariasQuery = useGetCuentasBancarias();
     const egresosQuery = useGetEgresos();
     const transaccionesQuery = useTransacciones();
     const registrarIngresoMutation = useRegistrarIngreso();
@@ -123,9 +123,9 @@ export default function TesoreriaPage() {
         },
     });
 
-    const cajasCatalogo = useMemo<TesoreriaCatalogItem[]>(() => {
-        return (cajasQuery.data ?? []).map((caja) => ({ id: caja.id, nombre: caja.nombre }));
-    }, [cajasQuery.data]);
+    const cuentasBancariasCatalogo = useMemo<TesoreriaCatalogItem[]>(() => {
+        return (cuentasBancariasQuery.data ?? []).map((cuentaBancaria) => ({ id: cuentaBancaria.id, nombre: cuentaBancaria.nombre }));
+    }, [cuentasBancariasQuery.data]);
 
     const centrosCostoCatalogo = useMemo<TesoreriaCatalogItem[]>(() => {
         return (centrosCostoQuery.data ?? []).map((centro) => ({ id: centro.id, nombre: centro.nombre }));
@@ -173,7 +173,7 @@ export default function TesoreriaPage() {
             fecha: item.fecha,
             tipo: 'Egreso' as const,
             concepto: item.concepto,
-            origen: item.cajaNombre || 'Caja no especificada',
+            origen: item.cuentaBancariaNombre || 'Cuenta bancaria no especificada',
             detalle: item.cuentaContableNombre || 'Cuenta contable no especificada',
             monto: Number(item.monto ?? 0),
         }));
@@ -197,7 +197,7 @@ export default function TesoreriaPage() {
         return movimientosConsolidados;
     }, [tabActiva, ingresosLibro, egresosLibro, movimientosConsolidados]);
 
-    const totalSaldo = (cajasQuery.data ?? []).reduce((sum, caja) => sum + caja.saldoActual, 0);
+    const totalSaldo = (cuentasBancariasQuery.data ?? []).reduce((sum, cuentaBancaria) => sum + cuentaBancaria.saldoActual, 0);
 
     const onEnviarMovimiento = async (values: TesoreriaMovimientoFormValues) => {
         const payload = toMovimientoPayload(values);
@@ -229,7 +229,7 @@ export default function TesoreriaPage() {
                 <header className="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
                     <h1 className="text-2xl font-semibold text-slate-900">Tesoreria Operativa</h1>
                     <p className="mt-1 text-sm text-slate-600">
-                        Gestion de saldos por caja y libro mayor operativo de ingresos y egresos.
+                        Gestion de saldos por cuentaBancaria y libro mayor operativo de ingresos y egresos.
                     </p>
                 </header>
 
@@ -246,25 +246,25 @@ export default function TesoreriaPage() {
                             <p className="mt-2 text-3xl font-bold text-emerald-900">{formatCOP(totalSaldo)}</p>
                         </article>
 
-                        {cajasQuery.isLoading ? (
+                        {cuentasBancariasQuery.isLoading ? (
                             <div className="rounded-xl border border-slate-200 bg-white px-4 py-6 text-sm text-slate-600">
-                                Cargando cajas de tesoreria...
+                                Cargando cuentasBancarias de tesoreria...
                             </div>
                         ) : null}
 
-                        {cajasQuery.isError ? (
+                        {cuentasBancariasQuery.isError ? (
                             <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-6 text-sm text-rose-700">
-                                No fue posible cargar el resumen de cajas.
+                                No fue posible cargar el resumen de cuentasBancarias.
                             </div>
                         ) : null}
 
-                        {!cajasQuery.isLoading && !cajasQuery.isError ? (
+                        {!cuentasBancariasQuery.isLoading && !cuentasBancariasQuery.isError ? (
                             <div className="grid gap-3 sm:grid-cols-2">
-                                {(cajasQuery.data ?? []).map((caja) => (
-                                    <article key={caja.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                                        <p className="text-sm font-semibold text-slate-900">{caja.nombre}</p>
-                                        <p className="mt-1 text-xs text-slate-500">{caja.cuentaContable || 'Sin cuenta contable asociada'}</p>
-                                        <p className="mt-3 text-2xl font-bold text-slate-900">{formatCOP(caja.saldoActual)}</p>
+                                {(cuentasBancariasQuery.data ?? []).map((cuentaBancaria) => (
+                                    <article key={cuentaBancaria.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                                        <p className="text-sm font-semibold text-slate-900">{cuentaBancaria.nombre}</p>
+                                        <p className="mt-1 text-xs text-slate-500">{cuentaBancaria.numeroCuenta}</p>
+                                        <p className="mt-3 text-2xl font-bold text-slate-900">{formatCOP(cuentaBancaria.saldoActual)}</p>
                                     </article>
                                 ))}
                             </div>
@@ -375,7 +375,7 @@ export default function TesoreriaPage() {
             <TesoreriaMovimientoModal
                 modo={modalActivo === 'egreso' ? 'egreso' : 'ingreso'}
                 abierto={modalActivo !== null}
-                cajas={cajasCatalogo}
+                cuentasBancarias={cuentasBancariasCatalogo}
                 cuentasContables={cuentasContablesCatalogo}
                 centrosCosto={centrosCostoCatalogo}
                 enviando={enviandoMovimiento}

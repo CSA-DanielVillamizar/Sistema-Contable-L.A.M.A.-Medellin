@@ -2,14 +2,14 @@ import apiClient from '@/lib/apiClient';
 
 export type DashboardResumenDto = {
     totalMiembrosActivos: number;
-    totalDineroCajas: number;
+    totalDineroCuentasBancarias: number;
     proximoEventoNombre: string | null;
     proximaFechaEvento: string | null;
 };
 
 type DashboardResumenApiDto = {
     totalMiembrosActivos?: number | string | null;
-    totalDineroCajas?: number | string | null;
+    totalDineroCuentasBancarias?: number | string | null;
     proximoEventoNombre?: string | null;
     proximaFechaEvento?: string | null;
 };
@@ -31,7 +31,7 @@ function toNullableStringValue(value: unknown): string | null {
 function mapResumen(item: DashboardResumenApiDto | null | undefined): DashboardResumenDto {
     return {
         totalMiembrosActivos: toNumberValue(item?.totalMiembrosActivos),
-        totalDineroCajas: toNumberValue(item?.totalDineroCajas),
+        totalDineroCuentasBancarias: toNumberValue(item?.totalDineroCuentasBancarias),
         proximoEventoNombre: toNullableStringValue(item?.proximoEventoNombre),
         proximaFechaEvento: toNullableStringValue(item?.proximaFechaEvento),
     };

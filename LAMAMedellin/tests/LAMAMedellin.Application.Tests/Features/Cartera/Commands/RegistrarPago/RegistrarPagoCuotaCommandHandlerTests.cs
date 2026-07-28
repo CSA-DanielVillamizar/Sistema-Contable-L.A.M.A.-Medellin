@@ -68,7 +68,7 @@ public sealed class RegistrarPagoCuotaCommandHandlerTests
         var command = new RegistrarPagoCuotaCommand(Guid.NewGuid(), 100_000m);
         var sut = BuildSut();
         var cxc = CrearCuentaPorCobrarConSaldo(command.CuentaPorCobrarId, 100_000m);
-        var banco = new Banco("Bancolombia Ahorros", 1_000_000m);
+        var banco = new Banco("Bancolombia Ahorros", "CTA-001", 1_000_000m, Guid.NewGuid());
 
         _cuentaPorCobrarRepositoryMock
             .Setup(r => r.GetByIdAsync(command.CuentaPorCobrarId, It.IsAny<CancellationToken>()))

@@ -53,7 +53,7 @@ public sealed class RegistrarVentaProductoCommandHandler(
             Concepto: $"Venta: {conceptoVenta}",
             TerceroId: null,
             CuentaContableId: producto.CuentaContableIngresoId,
-            CajaId: request.CajaId,
+            BancoId: request.BancoId,
             CentroCostoId: centroCosto.Id), cancellationToken);
 
         return movimiento.Id;

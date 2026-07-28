@@ -28,7 +28,7 @@ public sealed class IngresoConfiguration : IEntityTypeConfiguration<Ingreso>
         builder.Property(x => x.CuentaContableId)
             .IsRequired();
 
-        builder.Property(x => x.CajaId)
+        builder.Property(x => x.BancoId)
             .IsRequired();
 
         builder.Property(x => x.CentroCostoId)
@@ -36,9 +36,9 @@ public sealed class IngresoConfiguration : IEntityTypeConfiguration<Ingreso>
 
         builder.Property(x => x.ComprobanteContableId);
 
-        builder.HasOne<Caja>()
+        builder.HasOne<Banco>()
             .WithMany()
-            .HasForeignKey(x => x.CajaId)
+            .HasForeignKey(x => x.BancoId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne<CentroCosto>()

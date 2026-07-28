@@ -10,7 +10,6 @@ public sealed class LamaDbContext(
     DbContextOptions<LamaDbContext> options,
     IUsuarioActual? usuarioActual = null) : DbContext(options)
 {
-    public DbSet<Caja> Cajas => Set<Caja>();
     public DbSet<Ingreso> Ingresos => Set<Ingreso>();
     public DbSet<Egreso> Egresos => Set<Egreso>();
     public DbSet<Banco> Bancos => Set<Banco>();

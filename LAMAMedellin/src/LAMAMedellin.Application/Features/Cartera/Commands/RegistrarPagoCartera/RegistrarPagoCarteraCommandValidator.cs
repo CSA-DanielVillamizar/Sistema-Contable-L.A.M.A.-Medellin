@@ -12,7 +12,7 @@ public sealed class RegistrarPagoCarteraCommandValidator : AbstractValidator<Reg
         RuleFor(x => x.Monto)
             .GreaterThan(0);
 
-        RuleFor(x => x.CajaId)
+        RuleFor(x => x.BancoId)
             .NotEmpty();
     }
 }

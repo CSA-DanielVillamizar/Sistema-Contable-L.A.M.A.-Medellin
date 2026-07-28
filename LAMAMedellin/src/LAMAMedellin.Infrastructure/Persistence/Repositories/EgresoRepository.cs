@@ -10,7 +10,7 @@ public sealed class EgresoRepository(LamaDbContext context) : IEgresoRepository
     {
         return await context.Egresos
             .AsNoTracking()
-            .Include(x => x.Caja)
+            .Include(x => x.Banco)
             .Include(x => x.CuentaContable)
             .OrderByDescending(x => x.Fecha)
             .ToListAsync(cancellationToken);

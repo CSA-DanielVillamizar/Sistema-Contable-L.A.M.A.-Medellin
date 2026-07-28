@@ -94,7 +94,7 @@ public sealed class CarteraControllerTests
 
         var response = await client.PostAsync(
             $"/api/cartera/cuentas-por-cobrar/{Guid.NewGuid()}/pagos",
-            JsonContent(new { Monto = 100000m, CajaId = Guid.NewGuid() }));
+            JsonContent(new { Monto = 100000m, BancoId = Guid.NewGuid() }));
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
@@ -111,7 +111,7 @@ public sealed class CarteraControllerTests
 
         var response = await client.PostAsync(
             $"/api/cartera/cuentas-por-cobrar/{cuentaId}/pagos",
-            JsonContent(new { Monto = monto, CajaId = Guid.NewGuid() }));
+            JsonContent(new { Monto = monto, BancoId = Guid.NewGuid() }));
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -124,12 +124,12 @@ public sealed class CarteraControllerTests
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TestAuthHandler.SchemeName, "ok");
 
         var cuentaId = Guid.NewGuid();
-        var cajaId = Guid.NewGuid();
+        var bancoId = Guid.NewGuid();
         var monto = 175000m;
 
         var response = await client.PostAsync(
             $"/api/cartera/cuentas-por-cobrar/{cuentaId}/pagos",
-            JsonContent(new { Monto = monto, CajaId = cajaId }));
+            JsonContent(new { Monto = monto, BancoId = bancoId }));
         response.EnsureSuccessStatusCode();
 
         factory.Sender.CapturedRequests.Should().ContainSingle();
@@ -138,7 +138,7 @@ public sealed class CarteraControllerTests
         var command = (RegistrarPagoCarteraCommand)factory.Sender.CapturedRequests[0];
         command.CuentaPorCobrarId.Should().Be(cuentaId);
         command.Monto.Should().Be(monto);
-        command.CajaId.Should().Be(cajaId);
+        command.BancoId.Should().Be(bancoId);
     }
 
     private static StringContent JsonContent(object payload)

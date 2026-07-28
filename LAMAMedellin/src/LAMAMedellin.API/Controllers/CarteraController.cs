@@ -141,7 +141,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
         await sender.Send(new RegistrarPagoCarteraCommand(
             id,
             request.Monto,
-            request.CajaId), cancellationToken);
+            request.BancoId), cancellationToken);
 
         return Ok(new
         {
@@ -151,7 +151,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
 }
 
 public sealed record GenerarCarteraMensualRequest(string Periodo);
-public sealed record RegistrarPagoRequest(decimal Monto, Guid CajaId);
+public sealed record RegistrarPagoRequest(decimal Monto, Guid BancoId);
 public sealed record CrearMiembroRequest(
     string DocumentoIdentidad,
     string Nombres,

@@ -8,6 +8,6 @@ public sealed record EgresoDto(
     Guid? TerceroId,
     Guid CuentaContableId,
     string CuentaContableNombre,
-    Guid CajaId,
-    string CajaNombre,
+    Guid BancoId,
+    string BancoNombre,
     Guid? ComprobanteContableId);

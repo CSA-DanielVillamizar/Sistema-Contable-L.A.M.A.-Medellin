@@ -41,7 +41,7 @@ public sealed class RegistrarPagoCarteraCommandHandler(
             $"Pago de Cartera: {concepto.Nombre}",
             cuenta.MiembroId,
             concepto.CuentaContableIngresoId,
-            request.CajaId,
+            request.BancoId,
             centroCosto.Id), cancellationToken);
 
         return Unit.Value;

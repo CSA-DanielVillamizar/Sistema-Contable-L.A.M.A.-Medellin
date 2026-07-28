@@ -9,7 +9,7 @@ public sealed class Ingreso : BaseEntity
     public string Concepto { get; private set; } = string.Empty;
     public Guid? TerceroId { get; private set; }
     public Guid CuentaContableId { get; private set; }
-    public Guid CajaId { get; private set; }
+    public Guid BancoId { get; private set; }
     public Guid CentroCostoId { get; private set; }
     public Guid? ComprobanteContableId { get; private set; }
 
@@ -21,7 +21,7 @@ public sealed class Ingreso : BaseEntity
         string concepto,
         Guid? terceroId,
         Guid cuentaContableId,
-        Guid cajaId,
+        Guid bancoId,
         Guid centroCostoId)
     {
         if (monto <= 0)
@@ -39,9 +39,9 @@ public sealed class Ingreso : BaseEntity
             throw new ArgumentException("CuentaContableId es obligatorio.", nameof(cuentaContableId));
         }
 
-        if (cajaId == Guid.Empty)
+        if (bancoId == Guid.Empty)
         {
-            throw new ArgumentException("CajaId es obligatorio.", nameof(cajaId));
+            throw new ArgumentException("BancoId es obligatorio.", nameof(bancoId));
         }
 
         if (centroCostoId == Guid.Empty)
@@ -54,7 +54,7 @@ public sealed class Ingreso : BaseEntity
         Concepto = concepto.Trim();
         TerceroId = terceroId;
         CuentaContableId = cuentaContableId;
-        CajaId = cajaId;
+        BancoId = bancoId;
         CentroCostoId = centroCostoId;
     }
 

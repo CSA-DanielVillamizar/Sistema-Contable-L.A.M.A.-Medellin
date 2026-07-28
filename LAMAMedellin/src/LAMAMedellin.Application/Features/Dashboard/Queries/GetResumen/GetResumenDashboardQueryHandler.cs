@@ -5,7 +5,7 @@ namespace LAMAMedellin.Application.Features.Dashboard.Queries.GetResumen;
 
 public sealed class GetResumenDashboardQueryHandler(
     IMiembroRepository miembroRepository,
-    ICajaRepository cajaRepository,
+    IBancoRepository bancoRepository,
     IEventoRepository eventoRepository)
     : IRequestHandler<GetResumenDashboardQuery, DashboardResumenDto>
 {
@@ -14,18 +14,18 @@ public sealed class GetResumenDashboardQueryHandler(
         CancellationToken cancellationToken)
     {
         var totalMiembrosActivos = await miembroRepository.CountActivosAsync(cancellationToken);
-        var totalDineroCajas = await cajaRepository.GetTotalSaldoActualAsync(cancellationToken);
+        var totalDineroBancos = await bancoRepository.GetTotalSaldoActualAsync(cancellationToken);
         var proximoEvento = await eventoRepository.GetProximoProgramadoAsync(cancellationToken);
 
         // Defensa ante repositorios vacios o valores no inicializados.
         var totalMiembrosActivosSeguro = totalMiembrosActivos < 0 ? 0 : totalMiembrosActivos;
-        var totalDineroCajasSeguro = totalDineroCajas;
+        var totalDineroBancosSeguro = totalDineroBancos;
         var proximoEventoNombre = proximoEvento?.Nombre;
         var proximaFechaEvento = proximoEvento?.FechaProgramada;
 
         return new DashboardResumenDto(
             totalMiembrosActivosSeguro,
-            totalDineroCajasSeguro,
+            totalDineroBancosSeguro,
             proximoEventoNombre,
             proximaFechaEvento);
     }
