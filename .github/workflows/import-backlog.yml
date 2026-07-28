@@ -1,0 +1,45 @@
+name: 📋 Importar Backlog L.A.M.A. (34 issues)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry-run (solo imprime, no crea issues)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  import-backlog:
+    name: Crear / Actualizar Issues
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verificar autenticación
+        run: gh auth status
+
+      - name: Ejecutar importación
+        run: |
+          chmod +x scripts/import_backlog_lama.sh
+          if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+            echo ">> DRY RUN — solo mostrando catalog.csv"
+            grep -E "^US-" scripts/import_backlog_lama.sh | head -5 || true
+            # Extraer el CSV embebido y mostrarlo
+            sed -n '/^CSV$/,/^CSV$/p' scripts/import_backlog_lama.sh | head -40 || true
+            echo ">> 34 historias listas para importar. Corre sin dry_run para crear."
+          else
+            ./scripts/import_backlog_lama.sh
+          fi
