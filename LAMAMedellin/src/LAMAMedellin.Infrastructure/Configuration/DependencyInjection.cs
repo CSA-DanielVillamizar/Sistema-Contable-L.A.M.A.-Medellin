@@ -26,10 +26,12 @@ public static class DependencyInjection
 
         services.AddDbContext<LamaDbContext>(options =>
         {
-            if (environment.IsDevelopment())
+            if (environment.IsDevelopment() && RequiereTokenEntraManual(connectionString))
             {
-                // Development: Token SQL desde variable de entorno (si existe)
-                // Fallback: cadena de credenciales Entra (CLI, DevCLI, PowerShell, Default)
+                // Development contra Azure SQL: la cadena no trae credenciales propias,
+                // asi que hay que obtener un token Entra a mano.
+                // Si la cadena ya declara autenticacion (SQL Server local en Docker o
+                // Authentication=Active Directory *), se omite este bloque y resuelve SqlClient.
                 var tokenValue = Environment.GetEnvironmentVariable("SQL_ACCESS_TOKEN");
 
                 if (string.IsNullOrWhiteSpace(tokenValue))
@@ -153,5 +155,33 @@ public static class DependencyInjection
         IHostEnvironment environment)
     {
         return services.AddInfrastructureServices(configuration, environment);
+    }
+
+    /// <summary>
+    /// Indica si hay que obtener un token Entra ID a mano para abrir la conexion.
+    /// Solo hace falta cuando la cadena no declara como autenticarse: si trae
+    /// credenciales SQL (SQL Server local en Docker) o un modo Authentication
+    /// explicito, SqlClient lo resuelve por su cuenta.
+    /// </summary>
+    private static bool RequiereTokenEntraManual(string connectionString)
+    {
+        SqlConnectionStringBuilder builder;
+
+        try
+        {
+            builder = new SqlConnectionStringBuilder(connectionString);
+        }
+        catch (ArgumentException)
+        {
+            // Cadena malformada: que falle mas adelante con el error real de SqlClient.
+            return false;
+        }
+
+        var tieneCredencialesSql =
+            !string.IsNullOrWhiteSpace(builder.UserID) && !string.IsNullOrWhiteSpace(builder.Password);
+
+        var declaraAutenticacion = builder.Authentication != SqlAuthenticationMethod.NotSpecified;
+
+        return !tieneCredencialesSql && !declaraAutenticacion;
     }
 }

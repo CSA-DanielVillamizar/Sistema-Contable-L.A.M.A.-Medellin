@@ -1,0 +1,42 @@
+# SQL Server local para desarrollo.
+#
+# Existe para que el sistema se pueda ejecutar sin credenciales de Azure ni
+# conexion a internet. Es el mismo motor que produccion (SQL Server), asi que
+# las migraciones de EF Core y el SQL especifico del proveedor se comportan
+# igual que en Azure SQL.
+#
+#   docker compose up -d
+#   docker compose down        (conserva los datos)
+#   docker compose down -v     (borra los datos y arranca de cero)
+#
+# La contrasena de abajo es local y descartable: este contenedor solo escucha
+# en 127.0.0.1 y nunca debe exponerse fuera de la maquina del desarrollador.
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: lama-sqlserver-dev
+    # Puerto 14330 en el host a proposito: evita chocar con una instancia de
+    # SQL Server ya instalada en la maquina, que normalmente ocupa el 1433.
+    ports:
+      - "127.0.0.1:14330:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "LamaDev!2026"
+      MSSQL_PID: "Developer"
+    volumes:
+      - lama-sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q 'SELECT 1' || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  lama-sqlserver-data:
