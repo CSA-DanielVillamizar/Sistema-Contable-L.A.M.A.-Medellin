@@ -4,7 +4,11 @@ using LAMAMedellin.Application;
 using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Infrastructure.Configuration;
 using LAMAMedellin.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 
@@ -40,7 +44,25 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
+// El rol interno de la base de datos se proyecta como claim en cada peticion,
+// de modo que [Authorize(Roles = ...)] evalue lo que administra la aplicacion y
+// no solo los app roles de Entra.
+builder.Services.AddScoped<IClaimsTransformation, RolInternoClaimsTransformation>();
+
 builder.Services.AddAuthorization();
+
+// Un usuario dado de baja debe quedar bloqueado tambien en los endpoints que se
+// conforman con [Authorize] sin exigir rol. Se aplica como filtro global para
+// que cubra todos los controladores; [AllowAnonymous] sigue teniendo prioridad.
+var politicaUsuarioActivo = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .RequireAssertion(contexto => !contexto.User.HasClaim(
+        RolInternoClaimsTransformation.ClaimUsuarioActivo,
+        "false"))
+    .Build();
+
+builder.Services.Configure<MvcOptions>(options =>
+    options.Filters.Add(new AuthorizeFilter(politicaUsuarioActivo)));
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
