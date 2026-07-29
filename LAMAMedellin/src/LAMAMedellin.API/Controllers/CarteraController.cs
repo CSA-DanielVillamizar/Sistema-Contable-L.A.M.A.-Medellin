@@ -70,6 +70,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
         var id = await sender.Send(new CrearCuentaPorCobrarCommand(
             request.MiembroId,
             request.ConceptoCobroId,
+            request.Periodo,
             request.FechaEmision,
             request.FechaVencimiento,
             request.ValorTotal), cancellationToken);
@@ -141,7 +142,8 @@ public sealed class CarteraController(ISender sender) : ControllerBase
         await sender.Send(new RegistrarPagoCarteraCommand(
             id,
             request.Monto,
-            request.CajaId), cancellationToken);
+            request.BancoId,
+            request.MedioPago), cancellationToken);
 
         return Ok(new
         {
@@ -151,7 +153,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
 }
 
 public sealed record GenerarCarteraMensualRequest(string Periodo);
-public sealed record RegistrarPagoRequest(decimal Monto, Guid CajaId);
+public sealed record RegistrarPagoRequest(decimal Monto, Guid BancoId, MedioPago MedioPago);
 public sealed record CrearMiembroRequest(
     string DocumentoIdentidad,
     string Nombres,
@@ -176,6 +178,7 @@ public sealed record CrearConceptoCobroRequest(
 public sealed record CrearCuentaPorCobrarRequest(
     Guid MiembroId,
     Guid ConceptoCobroId,
+    string Periodo,
     DateOnly FechaEmision,
     DateOnly FechaVencimiento,
     decimal ValorTotal);

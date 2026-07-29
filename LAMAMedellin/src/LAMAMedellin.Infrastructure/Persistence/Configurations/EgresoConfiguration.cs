@@ -28,7 +28,11 @@ public sealed class EgresoConfiguration : IEntityTypeConfiguration<Egreso>
         builder.Property(x => x.CuentaContableId)
             .IsRequired();
 
-        builder.Property(x => x.CajaId)
+        builder.Property(x => x.BancoId)
+            .IsRequired();
+
+        builder.Property(x => x.MedioPago)
+            .HasConversion<int>()
             .IsRequired();
 
         builder.Property(x => x.CentroCostoId)
@@ -36,9 +40,9 @@ public sealed class EgresoConfiguration : IEntityTypeConfiguration<Egreso>
 
         builder.Property(x => x.ComprobanteContableId);
 
-        builder.HasOne(x => x.Caja)
+        builder.HasOne(x => x.Banco)
             .WithMany()
-            .HasForeignKey(x => x.CajaId)
+            .HasForeignKey(x => x.BancoId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.CentroCosto)

@@ -35,6 +35,7 @@ public sealed class CrearCuentaPorCobrarCommandHandler(
         var cuentaPorCobrar = new CuentaPorCobrar(
             request.MiembroId,
             request.ConceptoCobroId,
+            request.Periodo,
             request.FechaEmision,
             request.FechaVencimiento,
             request.ValorTotal);

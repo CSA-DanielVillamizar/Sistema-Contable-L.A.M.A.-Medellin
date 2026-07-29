@@ -1,4 +1,5 @@
 using LAMAMedellin.Domain.Common;
+using LAMAMedellin.Domain.Enums;
 
 namespace LAMAMedellin.Domain.Entities;
 
@@ -9,11 +10,18 @@ public sealed class Egreso : BaseEntity
     public string Concepto { get; private set; }
     public Guid? TerceroId { get; private set; }
     public Guid CuentaContableId { get; private set; }
-    public Guid CajaId { get; private set; }
+    public Guid BancoId { get; private set; }
     public Guid CentroCostoId { get; private set; }
+
+    /// <summary>
+    /// Como entro o salio el dinero. Obligatorio por trazabilidad: la
+    /// historia 0-6 del backlog exige capturarlo en todo movimiento, y sin el
+    /// no se puede conciliar contra el extracto bancario.
+    /// </summary>
+    public MedioPago MedioPago { get; private set; }
     public Guid? ComprobanteContableId { get; private set; }
 
-    public Caja? Caja { get; private set; }
+    public Banco? Banco { get; private set; }
     public CentroCosto? CentroCosto { get; private set; }
     public CuentaContable? CuentaContable { get; private set; }
     public Comprobante? ComprobanteContable { get; private set; }
@@ -28,8 +36,9 @@ public sealed class Egreso : BaseEntity
         string concepto,
         Guid? terceroId,
         Guid cuentaContableId,
-        Guid cajaId,
-        Guid centroCostoId)
+        Guid bancoId,
+        Guid centroCostoId,
+        MedioPago medioPago)
     {
         if (string.IsNullOrWhiteSpace(concepto))
         {
@@ -41,9 +50,9 @@ public sealed class Egreso : BaseEntity
             throw new ArgumentOutOfRangeException(nameof(monto), "Monto debe ser mayor a cero.");
         }
 
-        if (cajaId == Guid.Empty)
+        if (bancoId == Guid.Empty)
         {
-            throw new ArgumentException("CajaId es obligatorio.", nameof(cajaId));
+            throw new ArgumentException("BancoId es obligatorio.", nameof(bancoId));
         }
 
         if (cuentaContableId == Guid.Empty)
@@ -61,8 +70,9 @@ public sealed class Egreso : BaseEntity
         Concepto = concepto.Trim();
         TerceroId = terceroId;
         CuentaContableId = cuentaContableId;
-        CajaId = cajaId;
+        BancoId = bancoId;
         CentroCostoId = centroCostoId;
+        MedioPago = medioPago;
     }
 
     public void AsignarComprobanteContable(Guid comprobanteContableId)

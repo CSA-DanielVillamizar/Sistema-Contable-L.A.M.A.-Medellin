@@ -9,7 +9,7 @@ public sealed class BancoRepository(LamaDbContext dbContext) : IBancoRepository
     public Task<List<Banco>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return dbContext.Bancos
-            .OrderBy(banco => banco.NumeroCuenta)
+            .OrderBy(banco => banco.Nombre)
             .ToListAsync(cancellationToken);
     }
 
@@ -18,19 +18,21 @@ public sealed class BancoRepository(LamaDbContext dbContext) : IBancoRepository
         return dbContext.Bancos.FirstOrDefaultAsync(banco => banco.Id == id, cancellationToken);
     }
 
-    public async Task<Banco?> GetDefaultAsync(CancellationToken cancellationToken = default)
+    public Task<Banco?> GetDefaultAsync(CancellationToken cancellationToken = default)
     {
-        var bancoPrincipal = await dbContext.Bancos
-            .FirstOrDefaultAsync(banco => banco.NumeroCuenta == "Bancolombia Ahorros", cancellationToken);
-
-        if (bancoPrincipal is not null)
-        {
-            return bancoPrincipal;
-        }
-
-        return await dbContext.Bancos
-            .OrderBy(banco => banco.NumeroCuenta)
+        // Se restringe a cuentas activas: una cuenta dada de baja conserva su
+        // historia pero no debe recibir movimientos nuevos.
+        return dbContext.Bancos
+            .Where(banco => banco.EsActivo)
+            .OrderBy(banco => banco.Nombre)
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<decimal> GetTotalSaldoActualAsync(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Bancos
+            .Where(banco => banco.EsActivo)
+            .SumAsync(banco => banco.SaldoActual, cancellationToken);
     }
 
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -182,11 +182,16 @@ export const registrarPagoCarteraSchema = z.object({
         .coerce
         .number({ error: 'Monto debe ser un número.' })
         .gt(0, 'Monto debe ser mayor a cero.'),
-    cajaId: z
+    bancoId: z
         .string()
         .trim()
-        .min(1, 'Caja destino es obligatoria.')
-        .regex(uuidRegex, 'Caja destino debe tener formato UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).'),
+        .min(1, 'Cuenta bancaria destino es obligatoria.')
+        .regex(uuidRegex, 'Cuenta bancaria destino debe tener formato UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).'),
+    medioPago: z
+        .coerce
+        .number()
+        .int('Medio de pago invalido.')
+        .refine((v) => [1, 2, 3, 4].includes(v), 'Medio de pago debe ser un valor valido.'),
 });
 
 export type RegistrarPagoCarteraFormInput = z.input<typeof registrarPagoCarteraSchema>;

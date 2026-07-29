@@ -41,6 +41,11 @@ public sealed class MiembroConfiguration : IEntityTypeConfiguration<Miembro>
             .HasDefaultValue(RangoClub.Aspirante)
             .IsRequired();
 
+        builder.Property(m => m.TipoAfiliacion)
+            .HasConversion<int>()
+            .HasDefaultValue(TipoAfiliacion.Prospect)
+            .IsRequired();
+
         builder.Property(m => m.EsActivo)
             .HasDefaultValue(true)
             .IsRequired();

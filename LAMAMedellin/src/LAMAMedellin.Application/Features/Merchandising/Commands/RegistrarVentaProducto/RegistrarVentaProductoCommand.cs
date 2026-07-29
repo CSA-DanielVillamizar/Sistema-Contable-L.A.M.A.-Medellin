@@ -1,3 +1,4 @@
+using LAMAMedellin.Domain.Enums;
 using MediatR;
 
 namespace LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarVentaProducto;
@@ -5,5 +6,6 @@ namespace LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarVent
 public sealed record RegistrarVentaProductoCommand(
     Guid ProductoId,
     int Cantidad,
-    Guid CajaId,
-    string Concepto) : IRequest<Guid>;
+    Guid BancoId,
+    string Concepto,
+    MedioPago MedioPago) : IRequest<Guid>;

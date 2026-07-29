@@ -1,9 +1,13 @@
 'use client';
 
 import {
+    BookOpenText,
     CalendarDays,
     ChevronLeft,
+    FileBarChart,
+    FolderKanban,
     LayoutDashboard,
+    ListTree,
     Menu,
     Shield,
     Store,
@@ -16,45 +20,98 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 // ---------------------------------------------------------------------------
-// Definición de la navegación principal del ERP
+// Navegación principal
+//
+// El alcance vigente es Phase 0 + Phase 1 del backlog: configuración base,
+// contabilidad general, tesorería y cuotas con cartera. Los módulos de Phase 3+
+// (eventos, proyectos, merchandising) están construidos a medias y se difieren:
+// se dejan declarados con fase 'diferido' en vez de borrarlos, para no perder
+// el registro de lo que existe y poder reactivarlos cambiando una sola marca.
+//
+// Mostrarlos hoy expone cifras que no son confiables: se apoyan en una
+// contabilidad que apenas está completando sus controles.
 // ---------------------------------------------------------------------------
-const NAV_ITEMS = [
+type Fase = 'mvp' | 'diferido';
+
+type NavItem = {
+    label: string;
+    href: string;
+    icon: React.ReactNode;
+    fase: Fase;
+};
+
+const NAV_ITEMS: NavItem[] = [
     {
         label: 'Dashboard',
         href: '/',
         icon: <LayoutDashboard size={20} strokeWidth={2} />,
+        fase: 'mvp',
     },
     {
-        label: 'Cartera',
-        href: '/cartera',
-        icon: <WalletCards size={20} strokeWidth={2} />,
+        label: 'Contabilidad',
+        href: '/contabilidad/comprobantes',
+        icon: <BookOpenText size={20} strokeWidth={2} />,
+        fase: 'mvp',
+    },
+    {
+        label: 'Plan de cuentas',
+        href: '/contabilidad/cuentas',
+        icon: <ListTree size={20} strokeWidth={2} />,
+        fase: 'mvp',
     },
     {
         label: 'Tesorería',
         href: '/tesoreria',
         icon: <Wallet size={20} strokeWidth={2} />,
+        fase: 'mvp',
     },
     {
-        label: 'Merchandising',
-        href: '/merchandising',
-        icon: <Store size={20} strokeWidth={2} />,
+        label: 'Cartera',
+        href: '/cartera',
+        icon: <WalletCards size={20} strokeWidth={2} />,
+        fase: 'mvp',
     },
     {
         label: 'Miembros',
         href: '/miembros',
         icon: <UsersRound size={20} strokeWidth={2} />,
+        fase: 'mvp',
     },
     {
-        label: 'Eventos',
-        href: '/eventos',
-        icon: <CalendarDays size={20} strokeWidth={2} />,
+        label: 'Reportes',
+        href: '/reportes',
+        icon: <FileBarChart size={20} strokeWidth={2} />,
+        fase: 'mvp',
     },
     {
         label: 'Seguridad',
         href: '/seguridad',
         icon: <Shield size={20} strokeWidth={2} />,
+        fase: 'mvp',
     },
-] as const;
+
+    // --- Phase 3+ : diferidos, no se renderizan ---
+    {
+        label: 'Merchandising',
+        href: '/merchandising',
+        icon: <Store size={20} strokeWidth={2} />,
+        fase: 'diferido',
+    },
+    {
+        label: 'Eventos',
+        href: '/eventos',
+        icon: <CalendarDays size={20} strokeWidth={2} />,
+        fase: 'diferido',
+    },
+    {
+        label: 'Proyectos',
+        href: '/proyectos',
+        icon: <FolderKanban size={20} strokeWidth={2} />,
+        fase: 'diferido',
+    },
+];
+
+const NAV_VISIBLE = NAV_ITEMS.filter((item) => item.fase === 'mvp');
 
 // ---------------------------------------------------------------------------
 // Sidebar Component
@@ -97,7 +154,7 @@ export default function Sidebar() {
 
             {/* Navegación */}
             <nav className="mt-3 flex flex-1 flex-col gap-1 overflow-y-auto px-2 pb-4">
-                {NAV_ITEMS.map((item) => {
+                {NAV_VISIBLE.map((item) => {
                     // La ruta "/" solo está activa cuando el path es exactamente "/"
                     const isActive =
                         item.href === '/'

@@ -1,3 +1,4 @@
+using LAMAMedellin.Domain.Enums;
 using MediatR;
 
 namespace LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarIngreso;
@@ -7,5 +8,6 @@ public sealed record RegistrarIngresoCommand(
     string Concepto,
     Guid? TerceroId,
     Guid CuentaContableId,
-    Guid CajaId,
-    Guid CentroCostoId) : IRequest<Guid>;
+    Guid BancoId,
+    Guid CentroCostoId,
+    MedioPago MedioPago) : IRequest<Guid>;

@@ -11,7 +11,7 @@ public static class LamaDbContextSeed
         await context.SeedCuentasContablesAsync();
         await context.SeedCentrosCostoAsync();
         await context.SeedBancoAsync();
-        await context.SeedCajasAsync();
+        await context.SeedConceptosCobroAsync();
         await context.SeedCuotasAsambleaAsync();
         await context.SeedTarifasCuotaAsync();
         await context.SeedMiembrosAsync();

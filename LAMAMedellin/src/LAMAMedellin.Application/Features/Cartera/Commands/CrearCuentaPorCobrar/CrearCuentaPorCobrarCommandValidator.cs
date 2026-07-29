@@ -12,6 +12,11 @@ public sealed class CrearCuentaPorCobrarCommandValidator : AbstractValidator<Cre
         RuleFor(x => x.ConceptoCobroId)
             .NotEmpty().WithMessage("ConceptoCobroId es obligatorio.");
 
+        RuleFor(x => x.Periodo)
+            .NotEmpty()
+            .Matches(@"^\d{4}-(0[1-9]|1[0-2])$")
+            .WithMessage("Periodo debe tener formato YYYY-MM.");
+
         RuleFor(x => x.FechaEmision)
             .NotEmpty().WithMessage("FechaEmision es obligatoria.");
 

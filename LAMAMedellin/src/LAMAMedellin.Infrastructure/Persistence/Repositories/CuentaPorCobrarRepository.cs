@@ -7,10 +7,18 @@ namespace LAMAMedellin.Infrastructure.Persistence.Repositories;
 
 public sealed class CuentaPorCobrarRepository(LamaDbContext dbContext) : ICuentaPorCobrarRepository
 {
-    public Task<bool> ExistePorMiembroYPeriodoAsync(Guid miembroId, string periodo, CancellationToken cancellationToken = default)
+    public Task<bool> ExisteParaMiembroYPeriodoAsync(
+        Guid miembroId,
+        Guid conceptoCobroId,
+        string periodo,
+        CancellationToken cancellationToken = default)
     {
         return dbContext.CuentasPorCobrar
-            .AnyAsync(c => c.MiembroId == miembroId, cancellationToken);
+            .AnyAsync(
+                c => c.MiembroId == miembroId
+                     && c.ConceptoCobroId == conceptoCobroId
+                     && c.Periodo == periodo,
+                cancellationToken);
     }
 
     public async Task<List<CuentaPorCobrar>> GetPendientesAsync(CancellationToken cancellationToken = default)

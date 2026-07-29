@@ -12,7 +12,7 @@ public sealed class RegistrarVentaProductoCommandValidator : AbstractValidator<R
         RuleFor(x => x.Cantidad)
             .GreaterThan(0);
 
-        RuleFor(x => x.CajaId)
+        RuleFor(x => x.BancoId)
             .NotEmpty();
 
         RuleFor(x => x.Concepto)

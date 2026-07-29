@@ -1,19 +1,21 @@
 import apiClient from '@/lib/apiClient';
 
-export type CajaTesoreria = {
+/** Espeja CuentaBancariaDto del backend. */
+export type CuentaBancariaTesoreria = {
     id: string;
     nombre: string;
-    tipoCaja: number;
-    cuentaContable: string;
+    numeroCuenta: string;
     saldoActual: number;
+    esActivo: boolean;
 };
 
 export type RegistrarMovimientoTesoreriaPayload = {
     monto: number;
     concepto: string;
     cuentaContableId: string;
-    cajaId: string;
+    bancoId: string;
     centroCostoId: string;
+    medioPago: number;
     fecha?: string;
     terceroId?: string | null;
 };
@@ -26,8 +28,8 @@ export type EgresoTesoreria = {
     terceroId: string | null;
     cuentaContableId: string;
     cuentaContableNombre: string;
-    cajaId: string;
-    cajaNombre: string;
+    bancoId: string;
+    cuentaBancariaNombre: string;
     comprobanteContableId: string | null;
 };
 
@@ -35,12 +37,12 @@ type RegistrarMovimientoTesoreriaResponse = {
     id: string;
 };
 
-type CajaApiDto = {
+type CuentaBancariaApiDto = {
     id?: string;
     nombre?: string;
-    tipoCaja?: number;
-    cuentaContable?: string;
+    numeroCuenta?: string;
     saldoActual?: number;
+    esActivo?: boolean;
 };
 
 type RegistrarMovimientoTesoreriaResponseDto = {
@@ -55,20 +57,20 @@ type EgresoApiDto = {
     terceroId?: string | null;
     cuentaContableId?: string;
     cuentaContableNombre?: string;
-    cajaId?: string;
-    cajaNombre?: string;
+    bancoId?: string;
+    cuentaBancariaNombre?: string;
     comprobanteContableId?: string | null;
 };
 
-export async function getCajas(): Promise<CajaTesoreria[]> {
-    const response = await apiClient.get<CajaApiDto[]>('/api/tesoreria/cajas');
+export async function getCuentasBancarias(): Promise<CuentaBancariaTesoreria[]> {
+    const response = await apiClient.get<CuentaBancariaApiDto[]>('/api/tesoreria/cuentas-bancarias');
 
     return (response.data ?? []).map((item) => ({
         id: String(item?.id ?? ''),
         nombre: String(item?.nombre ?? ''),
-        tipoCaja: Number(item?.tipoCaja ?? 0),
-        cuentaContable: String(item?.cuentaContable ?? ''),
+        numeroCuenta: String(item?.numeroCuenta ?? ''),
         saldoActual: Number(item?.saldoActual ?? 0),
+        esActivo: Boolean(item?.esActivo ?? true),
     }));
 }
 
@@ -83,8 +85,8 @@ export async function getEgresos(): Promise<EgresoTesoreria[]> {
         terceroId: item?.terceroId ?? null,
         cuentaContableId: String(item?.cuentaContableId ?? ''),
         cuentaContableNombre: String(item?.cuentaContableNombre ?? ''),
-        cajaId: String(item?.cajaId ?? ''),
-        cajaNombre: String(item?.cajaNombre ?? ''),
+        bancoId: String(item?.bancoId ?? ''),
+        cuentaBancariaNombre: String(item?.cuentaBancariaNombre ?? ''),
         comprobanteContableId: item?.comprobanteContableId ?? null,
     }));
 }

@@ -13,7 +13,7 @@ public sealed class RegistrarEgresoCommandValidator : AbstractValidator<Registra
         RuleFor(x => x.Monto)
             .GreaterThan(0);
 
-        RuleFor(x => x.CajaId)
+        RuleFor(x => x.BancoId)
             .NotEmpty();
 
         RuleFor(x => x.CuentaContableId)
@@ -21,5 +21,8 @@ public sealed class RegistrarEgresoCommandValidator : AbstractValidator<Registra
 
         RuleFor(x => x.CentroCostoId)
             .NotEmpty();
+
+        RuleFor(x => x.MedioPago)
+            .IsInEnum().WithMessage("MedioPago debe ser un valor valido.");
     }
 }

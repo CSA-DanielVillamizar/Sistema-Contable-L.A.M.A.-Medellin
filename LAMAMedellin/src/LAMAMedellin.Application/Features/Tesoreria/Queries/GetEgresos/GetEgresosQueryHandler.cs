@@ -19,8 +19,8 @@ public sealed class GetEgresosQueryHandler(IEgresoRepository egresoRepository)
                 egreso.TerceroId,
                 egreso.CuentaContableId,
                 egreso.CuentaContable?.Descripcion ?? string.Empty,
-                egreso.CajaId,
-                egreso.Caja?.Nombre ?? string.Empty,
+                egreso.BancoId,
+                egreso.Banco?.Nombre ?? string.Empty,
                 egreso.ComprobanteContableId))
             .ToList();
     }

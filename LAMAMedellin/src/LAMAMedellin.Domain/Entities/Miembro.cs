@@ -12,6 +12,13 @@ public sealed class Miembro : BaseEntity
 
     public DateOnly FechaIngreso { get; private set; }
     public RangoClub Rango { get; private set; }
+
+    /// <summary>
+    /// Determina si paga cuota mensual y a que centro de costo se imputa
+    /// (historia 0-7). Antes se deducia del rango con un switch fijo que
+    /// mandaba todo lo desconocido a Prospect.
+    /// </summary>
+    public TipoAfiliacion TipoAfiliacion { get; private set; }
     public bool EsActivo { get; private set; } = true;
 
     public GrupoSanguineo TipoSangre { get; private set; }
@@ -40,7 +47,8 @@ public sealed class Miembro : BaseEntity
         string modeloMoto,
         int cilindraje,
         string placa,
-        RangoClub rango = RangoClub.Aspirante)
+        RangoClub rango = RangoClub.Aspirante,
+        TipoAfiliacion tipoAfiliacion = TipoAfiliacion.Prospect)
     {
         DocumentoIdentidad = ValidarTextoRequerido(documentoIdentidad, nameof(documentoIdentidad), 50);
         Nombres = ValidarTextoRequerido(nombres, nameof(nombres), 150);
@@ -55,6 +63,7 @@ public sealed class Miembro : BaseEntity
         FechaIngreso = fechaIngreso;
         EsActivo = true;
         Rango = rango;
+        TipoAfiliacion = tipoAfiliacion;
 
         TipoSangre = tipoSangre;
         NombreContactoEmergencia = ValidarTextoRequerido(nombreContactoEmergencia, nameof(nombreContactoEmergencia), 150);
@@ -105,6 +114,11 @@ public sealed class Miembro : BaseEntity
         TipoSangre = tipoSangre;
         NombreContactoEmergencia = ValidarTextoRequerido(nombreContactoEmergencia, nameof(nombreContactoEmergencia), 150);
         TelefonoContactoEmergencia = ValidarTelefono(telefonoContactoEmergencia, nameof(telefonoContactoEmergencia));
+    }
+
+    public void CambiarTipoAfiliacion(TipoAfiliacion tipoAfiliacion)
+    {
+        TipoAfiliacion = tipoAfiliacion;
     }
 
     public void DarDeBaja()

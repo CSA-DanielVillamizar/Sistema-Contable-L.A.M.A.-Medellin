@@ -3,7 +3,8 @@
 import { useRegistrarPago } from '@/features/cartera/hooks/useRegistrarPago';
 import { registrarPagoCarteraSchema } from '@/features/cartera/schemas/carteraSchemas';
 import type { CuentaPorCobrarItem } from '@/features/cartera/services/carteraService';
-import { useGetCajas } from '@/features/tesoreria/hooks/useGetCajas';
+import { useGetCuentasBancarias } from '@/features/tesoreria/hooks/useGetCuentasBancarias';
+import { MEDIOS_PAGO, MEDIO_PAGO_POR_DEFECTO } from '@/lib/mediosPago';
 import { useEffect, useMemo, useState } from 'react';
 
 type ListaCuentasPorCobrarProps = {
@@ -51,10 +52,11 @@ function estadoLabel(estado: number): string {
 
 export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: ListaCuentasPorCobrarProps) {
     const registrarPagoMutation = useRegistrarPago();
-    const cajasQuery = useGetCajas();
+    const cuentasBancariasQuery = useGetCuentasBancarias();
     const [cuentaActivaId, setCuentaActivaId] = useState<string | null>(null);
     const [montoPago, setMontoPago] = useState<string>('');
-    const [cajaId, setCajaId] = useState<string>('');
+    const [bancoId, setBancoId] = useState<string>('');
+    const [medioPago, setMedioPago] = useState<number>(MEDIO_PAGO_POR_DEFECTO);
     const [errorMonto, setErrorMonto] = useState<string | null>(null);
 
     const cuentaActiva = useMemo(
@@ -65,14 +67,14 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
     const seleccionarCuenta = (cuenta: CuentaPorCobrarItem) => {
         setCuentaActivaId(cuenta.id);
         setMontoPago(String(cuenta.saldoPendiente));
-        setCajaId(cajasQuery.data?.[0]?.id ?? '');
+        setBancoId(cuentasBancariasQuery.data?.[0]?.id ?? '');
         setErrorMonto(null);
     };
 
     const cerrarPago = () => {
         setCuentaActivaId(null);
         setMontoPago('');
-        setCajaId('');
+        setBancoId('');
         setErrorMonto(null);
     };
 
@@ -95,7 +97,7 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
             return;
         }
 
-        const parsed = registrarPagoCarteraSchema.safeParse({ monto: montoPago, cajaId });
+        const parsed = registrarPagoCarteraSchema.safeParse({ monto: montoPago, bancoId, medioPago });
         if (!parsed.success) {
             setErrorMonto(parsed.error.issues[0]?.message ?? 'Monto invalido.');
             return;
@@ -106,7 +108,8 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
         await registrarPagoMutation.mutateAsync({
             cuentaPorCobrarId: cuentaActiva.id,
             monto: parsed.data.monto,
-            cajaId: parsed.data.cajaId,
+            bancoId: parsed.data.bancoId,
+            medioPago: parsed.data.medioPago,
         });
 
         cerrarPago();
@@ -198,24 +201,37 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
                                 <h4 className="text-sm font-semibold uppercase tracking-wide text-slate-700">Registrar pago</h4>
 
                                 <div>
-                                    <label htmlFor="caja-destino" className="mb-1 block text-sm font-medium text-slate-700">
-                                        Caja Destino
+                                    <label htmlFor="cuenta bancaria-destino" className="mb-1 block text-sm font-medium text-slate-700">
+                                        Cuenta bancaria Destino
                                     </label>
                                     <select
-                                        id="caja-destino"
+                                        id="cuenta bancaria-destino"
                                         className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
-                                        value={cajaId}
-                                        onChange={(e) => setCajaId(e.target.value)}
-                                        disabled={cajasQuery.isLoading || (cajasQuery.data?.length ?? 0) === 0}
+                                        value={bancoId}
+                                        onChange={(e) => setBancoId(e.target.value)}
+                                        disabled={cuentasBancariasQuery.isLoading || (cuentasBancariasQuery.data?.length ?? 0) === 0}
                                     >
                                         <option value="">Seleccione...</option>
-                                        {(cajasQuery.data ?? []).map((caja) => (
-                                            <option key={caja.id} value={caja.id}>
-                                                {caja.nombre}
+                                        {(cuentasBancariasQuery.data ?? []).map((cuentaBancaria) => (
+                                            <option key={cuentaBancaria.id} value={cuentaBancaria.id}>
+                                                {cuentaBancaria.nombre}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
+
+                                    <label className="mt-3 mb-1 block text-xs font-medium text-slate-600">Medio de pago</label>
+                                    <select
+                                        value={medioPago}
+                                        onChange={(event) => setMedioPago(Number(event.target.value))}
+                                        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                                    >
+                                        {MEDIOS_PAGO.map((medio) => (
+                                            <option key={medio.value} value={medio.value}>
+                                                {medio.label}
+                                            </option>
+                                        ))}
+                                    </select>
 
                                 <div>
                                     <label htmlFor="monto-pago" className="mb-1 block text-sm font-medium text-slate-700">

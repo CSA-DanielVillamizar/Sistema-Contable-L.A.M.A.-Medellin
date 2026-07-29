@@ -12,7 +12,10 @@ public sealed class RegistrarPagoCarteraCommandValidator : AbstractValidator<Reg
         RuleFor(x => x.Monto)
             .GreaterThan(0);
 
-        RuleFor(x => x.CajaId)
+        RuleFor(x => x.BancoId)
             .NotEmpty();
+
+        RuleFor(x => x.MedioPago)
+            .IsInEnum().WithMessage("MedioPago debe ser un valor valido.");
     }
 }

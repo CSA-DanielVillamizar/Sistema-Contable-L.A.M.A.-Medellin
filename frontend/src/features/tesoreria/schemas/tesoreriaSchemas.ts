@@ -17,16 +17,21 @@ const baseRegistrarMovimientoSchema = z.object({
         .trim()
         .min(1, 'CuentaContableId es obligatorio.')
         .regex(uuidRegex, 'CuentaContableId debe tener formato UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).'),
-    cajaId: z
+    bancoId: z
         .string()
         .trim()
-        .min(1, 'CajaId es obligatorio.')
-        .regex(uuidRegex, 'CajaId debe tener formato UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).'),
+        .min(1, 'BancoId es obligatorio.')
+        .regex(uuidRegex, 'BancoId debe tener formato UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).'),
     centroCostoId: z
         .string()
         .trim()
         .min(1, 'CentroCostoId es obligatorio.')
         .regex(uuidRegex, 'CentroCostoId debe tener formato UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).'),
+    medioPago: z
+        .coerce
+        .number()
+        .int('Medio de pago invalido.')
+        .refine((v) => [1, 2, 3, 4].includes(v), 'Medio de pago debe ser un valor valido.'),
 });
 
 export const registrarIngresoSchema = baseRegistrarMovimientoSchema;

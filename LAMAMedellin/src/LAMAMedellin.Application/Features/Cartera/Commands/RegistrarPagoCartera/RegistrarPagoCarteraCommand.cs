@@ -1,3 +1,4 @@
+using LAMAMedellin.Domain.Enums;
 using MediatR;
 
 namespace LAMAMedellin.Application.Features.Cartera.Commands.RegistrarPagoCartera;
@@ -5,4 +6,5 @@ namespace LAMAMedellin.Application.Features.Cartera.Commands.RegistrarPagoCarter
 public sealed record RegistrarPagoCarteraCommand(
     Guid CuentaPorCobrarId,
     decimal Monto,
-    Guid CajaId) : IRequest<Unit>;
+    Guid BancoId,
+    MedioPago MedioPago) : IRequest<Unit>;

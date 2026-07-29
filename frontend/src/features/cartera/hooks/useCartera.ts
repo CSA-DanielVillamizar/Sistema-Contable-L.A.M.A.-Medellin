@@ -24,7 +24,6 @@ type RegistrarPagoPayload = {
     MontoPagadoCOP: number;
     BancoId: string;
     CentroCostoId: string;
-    CajaId: string;
     Descripcion?: string;
 };
 
@@ -87,7 +86,7 @@ export function useRegistrarPagoCartera() {
             try {
                 await apiClient.post(`/api/cartera/cuentas-por-cobrar/${id}/pagos`, {
                     monto: payload.MontoPagadoCOP,
-                    cajaId: payload.CajaId,
+                    bancoId: payload.BancoId,
                 });
             } catch (error) {
                 throw new Error(getErrorMessage(error, 'No fue posible registrar el pago.'));

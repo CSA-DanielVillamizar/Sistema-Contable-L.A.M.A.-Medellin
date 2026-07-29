@@ -29,7 +29,7 @@ export type RegistrarEntradaPayload = {
 
 export type RegistrarVentaPayload = {
     cantidad: number;
-    cajaId: string;
+    bancoId: string;
     concepto: string;
     observaciones?: string | null;
 };

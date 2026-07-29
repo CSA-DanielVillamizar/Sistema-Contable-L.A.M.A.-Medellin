@@ -8,4 +8,8 @@ public interface IConceptoCobroRepository
     Task<List<ConceptoCobro>> GetAllAsync(CancellationToken cancellationToken = default);
     Task AddAsync(ConceptoCobro conceptoCobro, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Concepto con el que se genera la cuota mensual.</summary>
+    Task<ConceptoCobro?> GetCuotaMensualAsync(CancellationToken cancellationToken = default);
+
 }
