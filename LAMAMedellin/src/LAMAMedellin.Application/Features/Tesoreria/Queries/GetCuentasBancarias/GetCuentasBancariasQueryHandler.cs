@@ -15,7 +15,7 @@ public sealed class GetCuentasBancariasQueryHandler(IBancoRepository bancoReposi
         return bancos
             .Where(b => request.IncluirInactivas || b.EsActivo)
             .OrderBy(b => b.Nombre)
-            .Select(b => new CuentaBancariaDto(b.Id, b.Nombre, b.NumeroCuenta, b.SaldoActual, b.EsActivo))
+            .Select(b => new CuentaBancariaDto(b.Id, b.Nombre, b.NumeroCuenta, b.SaldoActual, b.EsActivo, b.CuentaContableId))
             .ToList();
     }
 }

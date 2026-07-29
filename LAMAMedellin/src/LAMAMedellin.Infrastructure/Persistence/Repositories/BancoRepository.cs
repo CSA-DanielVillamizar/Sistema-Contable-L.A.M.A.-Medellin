@@ -18,6 +18,24 @@ public sealed class BancoRepository(LamaDbContext dbContext) : IBancoRepository
         return dbContext.Bancos.FirstOrDefaultAsync(banco => banco.Id == id, cancellationToken);
     }
 
+    public async Task AddAsync(Banco banco, CancellationToken cancellationToken = default)
+    {
+        await dbContext.Bancos.AddAsync(banco, cancellationToken);
+    }
+
+    public Task<bool> ExisteNumeroCuentaAsync(
+        string numeroCuenta,
+        Guid? excluyendoId = null,
+        CancellationToken cancellationToken = default)
+    {
+        var normalizado = numeroCuenta.Trim();
+
+        return dbContext.Bancos
+            .Where(banco => banco.NumeroCuenta == normalizado)
+            .Where(banco => excluyendoId == null || banco.Id != excluyendoId)
+            .AnyAsync(cancellationToken);
+    }
+
     public Task<Banco?> GetDefaultAsync(CancellationToken cancellationToken = default)
     {
         // Se restringe a cuentas activas: una cuenta dada de baja conserva su
