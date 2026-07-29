@@ -15,6 +15,7 @@ export default function ModalEntradaInventario({
     const registrarEntradaMutation = useRegistrarEntrada();
     const [values, setValues] = useState({
         cantidad: '',
+        fecha: new Date().toISOString().slice(0, 10),
         concepto: '',
     });
     const [validationError, setValidationError] = useState<string | null>(null);
@@ -23,15 +24,15 @@ export default function ModalEntradaInventario({
         return null;
     }
 
-    const onChange = (field: 'cantidad' | 'concepto', value: string) => {
+    const onChange = (field: 'cantidad' | 'fecha' | 'concepto', value: string) => {
         setValues((previous) => ({ ...previous, [field]: value }));
     };
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (!values.cantidad || !values.concepto.trim()) {
-            setValidationError('Cantidad y concepto son obligatorios.');
+        if (!values.cantidad || !values.fecha || !values.concepto.trim()) {
+            setValidationError('Cantidad, fecha y concepto son obligatorios.');
             return;
         }
 
@@ -46,11 +47,12 @@ export default function ModalEntradaInventario({
             productoId,
             payload: {
                 cantidad,
-                concepto: values.concepto.trim(),
+                fecha: values.fecha,
+                observaciones: values.concepto.trim(),
             },
         });
 
-        setValues({ cantidad: '', concepto: '' });
+        setValues({ cantidad: '', fecha: new Date().toISOString().slice(0, 10), concepto: '' });
         onCerrar();
     };
 
@@ -82,6 +84,16 @@ export default function ModalEntradaInventario({
                             value={values.cantidad}
                             onChange={(event) => onChange('cantidad', event.target.value)}
                             placeholder="10"
+                            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-medium text-slate-700">Fecha</label>
+                        <input
+                            type="date"
+                            value={values.fecha}
+                            onChange={(event) => onChange('fecha', event.target.value)}
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
                         />
                     </div>

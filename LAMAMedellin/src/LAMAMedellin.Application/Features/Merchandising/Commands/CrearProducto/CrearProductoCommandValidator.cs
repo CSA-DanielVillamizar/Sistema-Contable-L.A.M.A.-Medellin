@@ -13,14 +13,20 @@ public sealed class CrearProductoCommandValidator : AbstractValidator<CrearProdu
             .NotEmpty()
             .MaximumLength(255);
 
-        RuleFor(x => x.SKU)
+        RuleFor(x => x.CodigoSKU)
             .NotEmpty()
             .MaximumLength(50);
 
-        RuleFor(x => x.PrecioVentaCOP)
+        RuleFor(x => x.PrecioVenta)
             .GreaterThan(0);
 
         RuleFor(x => x.CuentaContableIngresoId)
             .NotEmpty();
+
+        RuleFor(x => x.CantidadEnStock)
+            .GreaterThanOrEqualTo(0).WithMessage("CantidadEnStock no puede ser negativa.");
+
+        RuleFor(x => x.CantidadMinima)
+            .GreaterThanOrEqualTo(0).WithMessage("CantidadMinima no puede ser negativa.");
     }
 }

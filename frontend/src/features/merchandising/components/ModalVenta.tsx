@@ -2,6 +2,7 @@
 
 import { useRegistrarVenta } from '@/features/merchandising/hooks/useRegistrarVenta';
 import { useGetCuentasBancarias } from '@/features/tesoreria/hooks/useGetCuentasBancarias';
+import { MEDIOS_PAGO, MEDIO_PAGO_POR_DEFECTO } from '@/lib/mediosPago';
 import { useState } from 'react';
 
 type ModalVentaProps = {
@@ -20,6 +21,9 @@ export default function ModalVenta({
         bancoId: '',
         concepto: '',
     });
+    // El backend exige el medio de pago para poder conciliar la venta contra el
+    // extracto; el formulario no lo pedia y la peticion salia incompleta.
+    const [medioPago, setMedioPago] = useState<number>(MEDIO_PAGO_POR_DEFECTO);
     const [validationError, setValidationError] = useState<string | null>(null);
 
     if (!productoId) {
@@ -34,7 +38,7 @@ export default function ModalVenta({
         event.preventDefault();
 
         if (!values.cantidad || !values.bancoId || !values.concepto.trim()) {
-            setValidationError('Cantidad, cuentaBancaria destino y concepto son obligatorios.');
+            setValidationError('Cantidad, cuenta bancaria destino y concepto son obligatorios.');
             return;
         }
 
@@ -51,10 +55,12 @@ export default function ModalVenta({
                 cantidad,
                 bancoId: values.bancoId,
                 concepto: values.concepto.trim(),
+                medioPago,
             },
         });
 
         setValues({ cantidad: '', bancoId: '', concepto: '' });
+        setMedioPago(MEDIO_PAGO_POR_DEFECTO);
         onCerrar();
     };
 
@@ -91,13 +97,13 @@ export default function ModalVenta({
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-sm font-medium text-slate-700">Cuenta bancaria Destino</label>
+                        <label className="mb-1 block text-sm font-medium text-slate-700">Cuenta bancaria destino</label>
                         <select
                             value={values.bancoId}
                             onChange={(event) => onChange('bancoId', event.target.value)}
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
                         >
-                            <option value="">Seleccione una cuentaBancaria...</option>
+                            <option value="">Seleccione una cuenta...</option>
                             {(cuentasBancariasQuery.data ?? []).map((cuentaBancaria) => (
                                 <option key={cuentaBancaria.id} value={cuentaBancaria.id}>
                                     {cuentaBancaria.nombre}
@@ -105,8 +111,23 @@ export default function ModalVenta({
                             ))}
                         </select>
                         {cuentasBancariasQuery.isLoading ? (
-                            <p className="mt-1 text-xs text-slate-500">Cargando cuentasBancarias...</p>
+                            <p className="mt-1 text-xs text-slate-500">Cargando cuentas...</p>
                         ) : null}
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-medium text-slate-700">Medio de pago</label>
+                        <select
+                            value={medioPago}
+                            onChange={(event) => setMedioPago(Number(event.target.value))}
+                            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
+                        >
+                            {MEDIOS_PAGO.map((medio) => (
+                                <option key={medio.value} value={medio.value}>
+                                    {medio.label}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div>

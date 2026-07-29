@@ -21,9 +21,15 @@ export type CrearProductoPayload = {
     cuentaContableIngresoId: string;
 };
 
+/**
+ * Espeja RegistrarEntradaInventarioCommand. ProductoId viaja por la ruta.
+ * 'concepto' no existia en el backend: lo que el formulario captura son las
+ * observaciones del movimiento. Y 'fecha' era obligatoria pero nunca se
+ * enviaba, asi que toda entrada quedaba fechada en 0001-01-01.
+ */
 export type RegistrarEntradaPayload = {
     cantidad: number;
-    concepto: string;
+    fecha: string;
     observaciones?: string | null;
 };
 
@@ -32,6 +38,7 @@ export type RegistrarVentaPayload = {
     bancoId: string;
     concepto: string;
     observaciones?: string | null;
+    medioPago: number;
 };
 
 export type MovimientoProducto = {

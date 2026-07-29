@@ -27,6 +27,8 @@ export type CrearConceptoCobroPayload = {
 export type CrearCuentaPorCobrarPayload = {
     miembroId: string;
     conceptoCobroId: string;
+    /** YYYY-MM. Obligatorio: es lo que identifica el mes que cubre la obligacion. */
+    periodo: string;
     fechaEmision: string;
     fechaVencimiento: string;
     valorTotal: number;
