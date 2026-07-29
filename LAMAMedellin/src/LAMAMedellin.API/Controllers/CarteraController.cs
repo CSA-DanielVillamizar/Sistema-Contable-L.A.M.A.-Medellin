@@ -70,6 +70,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
         var id = await sender.Send(new CrearCuentaPorCobrarCommand(
             request.MiembroId,
             request.ConceptoCobroId,
+            request.Periodo,
             request.FechaEmision,
             request.FechaVencimiento,
             request.ValorTotal), cancellationToken);
@@ -177,6 +178,7 @@ public sealed record CrearConceptoCobroRequest(
 public sealed record CrearCuentaPorCobrarRequest(
     Guid MiembroId,
     Guid ConceptoCobroId,
+    string Periodo,
     DateOnly FechaEmision,
     DateOnly FechaVencimiento,
     decimal ValorTotal);

@@ -19,6 +19,10 @@ public sealed class CuentaPorCobrarConfiguration : IEntityTypeConfiguration<Cuen
             .HasDefaultValue(Guid.Empty)
             .IsRequired();
 
+        builder.Property(c => c.Periodo)
+            .HasMaxLength(7)
+            .IsRequired();
+
         builder.Property(c => c.FechaEmision)
             .HasColumnType("date")
             .HasDefaultValueSql("GETDATE()")
@@ -55,9 +59,12 @@ public sealed class CuentaPorCobrarConfiguration : IEntityTypeConfiguration<Cuen
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
-        builder.HasIndex(c => new { c.MiembroId, c.ConceptoCobroId, c.FechaEmision })
+        // El indice va por periodo, no por fecha de emision: dos ejecuciones de
+        // la generacion del mismo mes en dias distintos habrian creado
+        // duplicados con el indice anterior.
+        builder.HasIndex(c => new { c.MiembroId, c.ConceptoCobroId, c.Periodo })
             .IsUnique()
-            .HasName("IX_CuentasPorCobrar_MiembroConceptoFecha");
+            .HasDatabaseName("IX_CuentasPorCobrar_MiembroConceptoPeriodo");
 
         builder.HasQueryFilter(c => !c.IsDeleted);
     }

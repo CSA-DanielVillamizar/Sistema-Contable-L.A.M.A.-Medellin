@@ -78,6 +78,7 @@ public sealed class CuentaPorCobrarTests
         return new CuentaPorCobrar(
             miembroId: Guid.NewGuid(),
             conceptoCobroId: Guid.NewGuid(),
+            periodo: "2026-02",
             fechaEmision: fechaEmision,
             fechaVencimiento: fechaEmision.AddMonths(1).AddDays(-1),
             valorTotal: valorTotal);

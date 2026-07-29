@@ -5,6 +5,7 @@ namespace LAMAMedellin.Application.Features.Cartera.Commands.CrearCuentaPorCobra
 public sealed record CrearCuentaPorCobrarCommand(
     Guid MiembroId,
     Guid ConceptoCobroId,
+    string Periodo,
     DateOnly FechaEmision,
     DateOnly FechaVencimiento,
     decimal ValorTotal) : IRequest<Guid>;

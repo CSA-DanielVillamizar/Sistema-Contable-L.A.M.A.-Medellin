@@ -6,105 +6,100 @@ using MediatR;
 
 namespace LAMAMedellin.Application.Features.Cartera.Commands.GenerarCarteraMensual;
 
+/// <summary>
+/// Genera las obligaciones de cuota mensual del periodo (historia 1-10).
+///
+/// El valor sale de la cuota vigente aprobada en asamblea, no de una tarifa por
+/// tipo de afiliacion: el capitulo define un unico valor en la primera asamblea
+/// de cada mes y ese valor rige para todos los que pagan.
+///
+/// Antes este manejador construia cada cuenta por cobrar con un Guid aleatorio
+/// como ConceptoCobroId, contra una clave foranea requerida, de modo que el
+/// endpoint fallaba siempre que hubiera al menos un miembro activo con tarifa.
+/// </summary>
 public sealed class GenerarCarteraMensualCommandHandler(
     IMiembroRepository miembroRepository,
-    ITarifaCuotaRepository tarifaCuotaRepository,
+    ICuotaAsambleaRepository cuotaAsambleaRepository,
+    IConceptoCobroRepository conceptoCobroRepository,
     ICuentaPorCobrarRepository cuentaPorCobrarRepository)
     : IRequestHandler<GenerarCarteraMensualCommand, int>
 {
     public async Task<int> Handle(GenerarCarteraMensualCommand request, CancellationToken cancellationToken)
     {
-        // TODO: Refactorizar este comando para usar ConceptoCobro como fuente de verdad
-        // en lugar de TarifaCuota. Por ahora, mantiene compatibilidad legacy.
+        var (anio, mes) = ParsearPeriodo(request.Periodo);
 
-        var tarifas = await tarifaCuotaRepository.GetAllAsync(cancellationToken);
-        if (tarifas.Count == 0)
+        var cuota = await cuotaAsambleaRepository.GetVigentePorPeriodoAsync(anio, mes, cancellationToken)
+            ?? throw new ExcepcionNegocio(
+                $"No hay cuota de asamblea vigente para el periodo {request.Periodo}. " +
+                "El tesorero debe confirmar el valor aprobado antes de generar la cartera.");
+
+        if (cuota.ValorMensualCOP <= 0)
         {
-            throw new ExcepcionNegocio("No existen tarifas de cuota configuradas.");
+            throw new ExcepcionNegocio(
+                $"La cuota vigente para {request.Periodo} es cero. Revise el valor aprobado en asamblea.");
         }
 
-        var tarifasPorTipo = tarifas.ToDictionary(x => x.TipoAfiliacion, x => x.ValorMensualCOP);
+        var concepto = await conceptoCobroRepository.GetCuotaMensualAsync(cancellationToken)
+            ?? throw new ExcepcionNegocio(
+                "No existe el concepto de cobro de cuota mensual. Configure la cartera antes de generar.");
 
         var miembrosActivos = await miembroRepository.GetActivosAsync(cancellationToken);
-        var cuentasNuevas = new List<CuentaPorCobrar>();
+
+        var inicio = new DateOnly(anio, mes, 1);
+        var fin = inicio.AddMonths(1).AddDays(-1);
+
+        var nuevas = new List<CuentaPorCobrar>();
 
         foreach (var miembro in miembrosActivos)
         {
-            var tipoAfiliacion = MapearTipoAfiliacionDesdeRango(miembro.Rango);
-
-            if (!tarifasPorTipo.TryGetValue(tipoAfiliacion, out var valorMensual))
-            {
-                throw new ExcepcionNegocio($"No existe tarifa configurada para el rango {miembro.Rango}.");
-            }
-
-            // Regla contable: si la tarifa es 0 (ej. Esposa), no se genera CxC para evitar saldos artificiales.
-            if (valorMensual == 0)
+            // Spousal no paga cuota mensual. La exencion es una regla del
+            // dominio y no una tarifa en cero, para que sea explicita y nadie la
+            // altere sin entender lo que significa.
+            if (miembro.TipoAfiliacion.ExentoDeCuotaMensual())
             {
                 continue;
             }
 
-            // TODO: Cambiar lógica para verificar por ConceptoCobro, no por Periodo
-            var existeCuenta = await cuentaPorCobrarRepository.ExistePorMiembroYPeriodoAsync(
+            // Idempotencia real: se consulta por miembro, concepto Y periodo.
+            // Volver a ejecutar la generacion del mismo mes no duplica nada.
+            var yaExiste = await cuentaPorCobrarRepository.ExisteParaMiembroYPeriodoAsync(
                 miembro.Id,
+                concepto.Id,
                 request.Periodo,
                 cancellationToken);
 
-            if (existeCuenta)
+            if (yaExiste)
             {
                 continue;
             }
 
-            // TODO: Obtener un ConceptoCobro predeterminado o configurado para este tipo de miembro
-            // Por ahora, crear con placeholder (Guid.Empty será reemplazado)
-            var periodo = request.Periodo;
-            var inicio = ParsearFechaPeriodoInicio(periodo);
-            var fin = ParsearFechaPeriodoFin(periodo);
-
-            // Generar CxC con modelo nuevo (requiere ConceptoCobroId real)
-            // NOTA: Este código fallará hasta que exista ConceptoCobro para mapping de TarifaCuota
-            // Temporalmente, se mantiene la generación con valores calculados
-            cuentasNuevas.Add(new CuentaPorCobrar(
+            nuevas.Add(new CuentaPorCobrar(
                 miembro.Id,
-                Guid.NewGuid(), // Placeholder: será migrado a ConceptoCobro real
+                concepto.Id,
+                request.Periodo,
                 inicio,
                 fin,
-                valorMensual));
+                cuota.ValorMensualCOP));
         }
 
-        if (cuentasNuevas.Count == 0)
+        if (nuevas.Count == 0)
         {
             return 0;
         }
 
-        await cuentaPorCobrarRepository.AddRangeAsync(cuentasNuevas, cancellationToken);
+        await cuentaPorCobrarRepository.AddRangeAsync(nuevas, cancellationToken);
         await cuentaPorCobrarRepository.SaveChangesAsync(cancellationToken);
 
-        return cuentasNuevas.Count;
+        return nuevas.Count;
     }
 
-    private static DateOnly ParsearFechaPeriodoInicio(string periodo)
+    private static (int Anio, int Mes) ParsearPeriodo(string periodo)
     {
-        var anio = int.Parse(periodo[..4]);
-        var mes = int.Parse(periodo[5..]);
-        return new DateOnly(anio, mes, 1);
-    }
-
-    private static DateOnly ParsearFechaPeriodoFin(string periodo)
-    {
-        var inicio = ParsearFechaPeriodoInicio(periodo);
-        var fin = inicio.AddMonths(1).AddDays(-1);
-        return fin;
-    }
-
-    private static TipoAfiliacion MapearTipoAfiliacionDesdeRango(RangoClub rango)
-    {
-        return rango switch
+        if (!CuentaPorCobrar.EsPeriodoValido(periodo))
         {
-            RangoClub.Aspirante => TipoAfiliacion.Prospect,
-            RangoClub.Prospecto => TipoAfiliacion.Prospect,
-            RangoClub.MiembroActivo => TipoAfiliacion.FullColor,
-            RangoClub.Directivo => TipoAfiliacion.Asociado,
-            _ => TipoAfiliacion.Prospect
-        };
+            throw new ExcepcionNegocio("Periodo debe tener formato YYYY-MM.");
+        }
+
+        return (int.Parse(periodo[..4]), int.Parse(periodo[5..]));
     }
 }

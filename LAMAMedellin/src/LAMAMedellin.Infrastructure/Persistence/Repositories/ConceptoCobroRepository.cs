@@ -1,5 +1,6 @@
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
 using LAMAMedellin.Domain.Entities;
+using LAMAMedellin.Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
 
 namespace LAMAMedellin.Infrastructure.Persistence.Repositories;
@@ -28,5 +29,11 @@ public sealed class ConceptoCobroRepository(LamaDbContext dbContext) : IConcepto
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public Task<ConceptoCobro?> GetCuotaMensualAsync(CancellationToken cancellationToken = default)
+    {
+        return dbContext.ConceptosCobro
+            .FirstOrDefaultAsync(c => c.Nombre == ConceptoCobroSeeder.NombreCuotaMensual, cancellationToken);
     }
 }

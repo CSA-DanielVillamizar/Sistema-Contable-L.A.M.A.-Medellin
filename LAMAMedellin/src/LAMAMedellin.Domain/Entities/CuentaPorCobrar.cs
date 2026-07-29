@@ -7,6 +7,15 @@ public sealed class CuentaPorCobrar : BaseEntity
 {
     public Guid MiembroId { get; private set; }
     public Guid ConceptoCobroId { get; private set; }
+    /// <summary>
+    /// Periodo que cubre la obligacion, en formato YYYY-MM.
+    ///
+    /// Sin este campo no habia forma de saber que mes cubre una cuenta por
+    /// cobrar, de modo que la generacion mensual no podia ser idempotente ni se
+    /// podian contar meses adeudados.
+    /// </summary>
+    public string Periodo { get; private set; }
+
     public DateOnly FechaEmision { get; private set; }
     public DateOnly FechaVencimiento { get; private set; }
     public decimal ValorTotal { get; private set; }
@@ -24,6 +33,7 @@ public sealed class CuentaPorCobrar : BaseEntity
     public CuentaPorCobrar(
         Guid miembroId,
         Guid conceptoCobroId,
+        string periodo,
         DateOnly fechaEmision,
         DateOnly fechaVencimiento,
         decimal valorTotal)
@@ -59,12 +69,32 @@ public sealed class CuentaPorCobrar : BaseEntity
         }
 
         MiembroId = miembroId;
+        if (!EsPeriodoValido(periodo))
+        {
+            throw new ReglaNegocioException("Periodo debe tener formato YYYY-MM.");
+        }
+
         ConceptoCobroId = conceptoCobroId;
+        Periodo = periodo;
         FechaEmision = fechaEmision;
         FechaVencimiento = fechaVencimiento;
         ValorTotal = valorTotal;
         SaldoPendiente = valorTotal;
         Estado = EstadoCuentaPorCobrar.Pendiente;
+    }
+
+    /// <summary>Valida el formato YYYY-MM.</summary>
+    public static bool EsPeriodoValido(string? periodo)
+    {
+        if (string.IsNullOrWhiteSpace(periodo) || periodo.Length != 7 || periodo[4] != '-')
+        {
+            return false;
+        }
+
+        return int.TryParse(periodo[..4], out var anio)
+            && int.TryParse(periodo[5..], out var mes)
+            && anio >= 2000
+            && mes is >= 1 and <= 12;
     }
 
     public void AplicarPago(decimal monto)

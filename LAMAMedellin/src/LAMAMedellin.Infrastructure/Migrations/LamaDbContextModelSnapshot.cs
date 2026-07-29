@@ -550,6 +550,11 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<Guid>("MiembroId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Periodo")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
+
                     b.Property<decimal>("SaldoPendiente")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(18,2)")
@@ -571,9 +576,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.HasIndex("ConceptoCobroId");
 
-                    b.HasIndex("MiembroId", "ConceptoCobroId", "FechaEmision")
+                    b.HasIndex("MiembroId", "ConceptoCobroId", "Periodo")
                         .IsUnique()
-                        .HasDatabaseName("IX_CuentasPorCobrar_MiembroConceptoFecha");
+                        .HasDatabaseName("IX_CuentasPorCobrar_MiembroConceptoPeriodo");
 
                     b.ToTable("CuentasPorCobrar", (string)null);
                 });
@@ -1054,6 +1059,11 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("TipoAfiliacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(3);
 
                     b.Property<int>("TipoSangre")
                         .HasColumnType("int");

@@ -5,7 +5,17 @@ namespace LAMAMedellin.Application.Common.Interfaces.Repositories;
 
 public interface ICuentaPorCobrarRepository
 {
-    Task<bool> ExistePorMiembroYPeriodoAsync(Guid miembroId, string periodo, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Idempotencia de la generacion mensual: consulta por miembro, concepto Y
+    /// periodo. El metodo anterior recibia el periodo y lo ignoraba, de modo que
+    /// bastaba una sola cuenta por cobrar para que el miembro nunca volviera a
+    /// recibir obligaciones.
+    /// </summary>
+    Task<bool> ExisteParaMiembroYPeriodoAsync(
+        Guid miembroId,
+        Guid conceptoCobroId,
+        string periodo,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Cuentas con saldo por cobrar, sin importar si el saldo esta intacto o ya
