@@ -15,8 +15,8 @@ Permitir que el Tesorero configure el valor vigente de la cuota mensual, con tra
 |---|---|---|
 | Id | uniqueidentifier | PK |
 | ValorCuotaMensualCOP | decimal(18,2) | Obligatorio, > 0 |
-| PeriodoVigenciaDesde | char(7) | Formato `YYYY-MM`, obligatorio |
-| PeriodoVigenciaHasta | char(7) | `YYYY-MM`, opcional |
+| PeriodoVigenciaDesde | date | Primer dia del mes (`YYYY-MM-01`), obligatorio |
+| PeriodoVigenciaHasta | date | Ultimo dia del mes, opcional (nulo = abierto) |
 | ActaAsamblea | nvarchar(50) | Obligatorio |
 | FechaActa | date | Obligatorio |
 | MotivoCambio | nvarchar(300) | Opcional |
@@ -24,7 +24,10 @@ Permitir que el Tesorero configure el valor vigente de la cuota mensual, con tra
 | FechaModificacion | datetime2 | Obligatorio |
 | IsDeleted | bit | Soft delete |
 
-Regla de consistencia: no debe existir traslape de periodos vigentes para la misma configuración.
+Regla de consistencia:
+- Validar traslape solo entre registros no eliminados logicamente (`IsDeleted = 0`).
+- Periodos adyacentes son validos (ej. termina 2024-12-31 e inicia 2025-01-01).
+- Si `PeriodoVigenciaHasta` es nulo, se considera vigencia abierta y no puede coexistir con otra vigencia que inicie despues de `PeriodoVigenciaDesde`.
 
 ---
 
@@ -36,7 +39,7 @@ Regla de consistencia: no debe existir traslape de periodos vigentes para la mis
 | Id | uniqueidentifier | PK |
 | Codigo | nvarchar(50) | Unico. Valores iniciales: `CUOTA_MENSUAL`, `RENOVACION_INTERNACIONAL` |
 | Nombre | nvarchar(150) | Obligatorio |
-| ClaseContable | tinyint | 2=Pasivo, 4=Ingreso |
+| ClaseContable | tinyint | Catalogo PUC: 1=Activo, 2=Pasivo, 3=Patrimonio, 4=Ingreso, 5=Gasto, 6=Costo |
 | CuentaContableId | uniqueidentifier | FK a `CuentasContables` |
 | MonedaBase | nvarchar(3) | `COP` o `USD` |
 | ValorBase | decimal(18,2) | Obligatorio, > 0 |
@@ -109,12 +112,12 @@ El asiento debe conservar referencia al documento origen para auditoría.
 **Criterios de aceptación**
 - `CUOTA_MENSUAL` usa clase contable 4 (ingreso).
 - `RENOVACION_INTERNACIONAL` usa clase contable 2 (pasivo/recaudo para terceros).
-- `Codigo` es unico.
-- No se permite guardar sin cuenta contable valida.
+- `Codigo` es único.
+- No se permite guardar sin cuenta contable válida.
 
 ### HU-03 - Cobrar renovación internacional en diciembre (USD)
 **Como** Tesorero  
-**Quiero** generar el cobro de renovacion internacional por 20 USD en diciembre  
+**Quiero** generar el cobro de renovación internacional por 20 USD en diciembre  
 **Para** recaudar y transferir a L.A.M.A. Internacional sin reconocerlo como ingreso propio.
 
 **Criterios de aceptación**
