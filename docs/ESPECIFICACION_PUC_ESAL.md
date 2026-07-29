@@ -370,7 +370,7 @@ CREATE INDEX IX_CuentasContables_CuentaPadreId ON CuentasContables (CuentaPadreI
 | Hook React Query | `frontend/src/features/contabilidad/hooks/useCuentasContables.ts` | ✅ |
 | Tabla UI | `frontend/src/features/contabilidad/components/TablaCuentasContables.tsx` | ✅ |
 | Página `/contabilidad/cuentas` | `frontend/src/app/contabilidad/cuentas/page.tsx` | ✅ |
-| Acceso rápido en dashboard | `frontend/src/app/page.tsx` | ✅ |
+| Acceso desde Sidebar (Contabilidad → Catálogo de Cuentas) | `frontend/src/components/layout/Sidebar.tsx` | ✅ |
 | Tests unitarios (26 tests) | `Application.Tests/Domain/Entities/CuentaContableTests.cs` | ✅ |
 | Validación `PermiteMovimiento` en asientos | Pendiente — Phase 1 | ⬜ |
 | Validación `ExigeTercero` en asientos | Pendiente — Phase 1 | ⬜ |
