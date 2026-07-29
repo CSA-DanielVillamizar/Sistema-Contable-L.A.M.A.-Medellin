@@ -1,13 +1,13 @@
-# Diseno breve y Historias de Usuario - Facturacion de Miembros
+# Diseño breve y Historias de Usuario - Facturación de Miembros
 
-## 1) Modulo de Parametrizacion de Cartera
+## 1) Módulo de Parametrización de Cartera
 
 ### Objetivo
 Permitir que el Tesorero configure el valor vigente de la cuota mensual, con trazabilidad auditable soportada por acta de asamblea.
 
-### Diseno funcional
-- El sistema conserva historico por vigencias (no se sobreescribe el registro anterior).
-- Toda modificacion exige `ActaAsamblea`.
+### Diseño funcional
+- El sistema conserva histórico por vigencias (no se sobreescribe el registro anterior).
+- Toda modificación exige `ActaAsamblea`.
 - Solo usuarios con rol Tesorero (o autorizado) pueden crear una nueva vigencia.
 
 ### Estructura sugerida: `ConfiguracionCarteraCuota`
@@ -24,7 +24,7 @@ Permitir que el Tesorero configure el valor vigente de la cuota mensual, con tra
 | FechaModificacion | datetime2 | Obligatorio |
 | IsDeleted | bit | Soft delete |
 
-Regla de consistencia: no debe existir traslape de periodos vigentes para la misma configuracion.
+Regla de consistencia: no debe existir traslape de periodos vigentes para la misma configuración.
 
 ---
 
@@ -60,11 +60,11 @@ Regla de consistencia: no debe existir traslape de periodos vigentes para la mis
    - `RequiereTRM = true`
    - Cuenta sugerida: pasivo por recaudos para terceros (Clase 2).
 
-Esta separacion evita inflar ingresos fiscales de la ESAL local ante DIAN cuando el capitulo actua solo como intermediario.
+Esta separación evita inflar ingresos fiscales de la ESAL local ante DIAN cuando el capítulo actúa solo como intermediario.
 
 ---
 
-## 3) Gestion Multimoneda (cobro de 20 USD en diciembre)
+## 3) Gestión Multimoneda (cobro de 20 USD en diciembre)
 
 ### Regla de negocio
 - En diciembre, al facturar `RENOVACION_INTERNACIONAL`, se liquida `20 USD`.
@@ -80,10 +80,10 @@ Esta separacion evita inflar ingresos fiscales de la ESAL local ante DIAN cuando
 
 ### Diferencia en cambio
 Si el COP estimado y el COP real difieren al recaudar o liquidar:
-- diferencia positiva: registrar ingreso por diferencia en cambio.
-- diferencia negativa: registrar gasto por diferencia en cambio.
+- Diferencia positiva: registrar ingreso por diferencia en cambio.
+- Diferencia negativa: registrar gasto por diferencia en cambio.
 
-El asiento debe conservar referencia al documento origen para auditoria.
+El asiento debe conservar referencia al documento origen para auditoría.
 
 ---
 
@@ -94,41 +94,42 @@ El asiento debe conservar referencia al documento origen para auditoria.
 **Quiero** actualizar el valor de la cuota mensual vigente  
 **Para** aplicar lo aprobado por asamblea con trazabilidad auditable.
 
-**Criterios de aceptacion**
+**Criterios de aceptación**
 - No se guarda el cambio sin `ActaAsamblea`.
+- Si falta `ActaAsamblea`, el sistema muestra validación y no permite guardar.
 - No se permiten valores `<= 0`.
-- Se registra historico por vigencia sin borrar el anterior.
-- Se guarda usuario y fecha de modificacion.
+- Se registra histórico por vigencia sin borrar el anterior.
+- Se guarda usuario y fecha de modificación.
 
 ### HU-02 - Administrar conceptos de facturacion con naturaleza contable
 **Como** Contador/Tesorero  
 **Quiero** configurar `ConceptosFacturacion`  
 **Para** mapear cada cobro al tratamiento contable correcto NIIF/DIAN.
 
-**Criterios de aceptacion**
+**Criterios de aceptación**
 - `CUOTA_MENSUAL` usa clase contable 4 (ingreso).
 - `RENOVACION_INTERNACIONAL` usa clase contable 2 (pasivo/recaudo para terceros).
 - `Codigo` es unico.
 - No se permite guardar sin cuenta contable valida.
 
-### HU-03 - Cobrar renovacion internacional en diciembre (USD)
+### HU-03 - Cobrar renovación internacional en diciembre (USD)
 **Como** Tesorero  
 **Quiero** generar el cobro de renovacion internacional por 20 USD en diciembre  
 **Para** recaudar y transferir a L.A.M.A. Internacional sin reconocerlo como ingreso propio.
 
-**Criterios de aceptacion**
+**Criterios de aceptación**
 - El cobro se activa en diciembre.
 - Exige TRM, fecha y fuente de tasa.
-- Registra moneda origen USD y conversion a COP.
+- Registra moneda origen USD y conversión a COP.
 - El asiento principal usa cuenta de clase 2.
 
 ### HU-04 - Reconocer diferencia en cambio
 **Como** Contador  
-**Quiero** que el sistema registre automaticamente la diferencia en cambio  
+**Quiero** que el sistema registre automáticamente la diferencia en cambio  
 **Para** reflejar correctamente el resultado cambiario.
 
-**Criterios de aceptacion**
-- Si hay diferencia entre COP calculado y COP real, se genera asiento automatico.
+**Criterios de aceptación**
+- Si hay diferencia entre COP calculado y COP real, se genera asiento automático.
 - La diferencia positiva va a ingreso por diferencia en cambio.
 - La diferencia negativa va a gasto por diferencia en cambio.
 - El asiento queda vinculado al comprobante o recaudo origen.
