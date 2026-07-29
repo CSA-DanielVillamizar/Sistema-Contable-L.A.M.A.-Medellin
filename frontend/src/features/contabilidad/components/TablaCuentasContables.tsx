@@ -154,9 +154,9 @@ export default function TablaCuentasContables() {
                                         </td>
                                         <td className="whitespace-nowrap px-4 py-2.5 text-center">
                                             {cuenta.permiteMovimiento ? (
-                                                <span className="text-blue-600" title="Permite asientos contables">✔</span>
+                                                <span className="text-blue-600" title="Permite asientos contables" role="img" aria-label="Permite movimiento">✔</span>
                                             ) : (
-                                                <span className="text-slate-300" title="Solo agrupador">—</span>
+                                                <span className="text-slate-300" title="Solo agrupador" aria-hidden="true">—</span>
                                             )}
                                         </td>
                                         <td className="whitespace-nowrap px-4 py-2.5 text-center">
