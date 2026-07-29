@@ -4,6 +4,7 @@ using LAMAMedellin.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LAMAMedellin.Infrastructure.Migrations
 {
     [DbContext(typeof(LamaDbContext))]
-    partial class LamaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260729002315_AgregarMedioPagoAMovimientos")]
+    partial class AgregarMedioPagoAMovimientos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,9 +109,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<decimal?>("CuotaAplicadaCOP")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -553,11 +553,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<Guid>("MiembroId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Periodo")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
                     b.Property<decimal>("SaldoPendiente")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(18,2)")
@@ -579,9 +574,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.HasIndex("ConceptoCobroId");
 
-                    b.HasIndex("MiembroId", "ConceptoCobroId", "Periodo")
+                    b.HasIndex("MiembroId", "ConceptoCobroId", "FechaEmision")
                         .IsUnique()
-                        .HasDatabaseName("IX_CuentasPorCobrar_MiembroConceptoPeriodo");
+                        .HasDatabaseName("IX_CuentasPorCobrar_MiembroConceptoFecha");
 
                     b.ToTable("CuentasPorCobrar", (string)null);
                 });
@@ -618,9 +613,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.Property<int>("MesInicioCobro")
                         .HasColumnType("int");
-
-                    b.Property<decimal?>("RenovacionMembresiaUSD")
-                        .HasColumnType("decimal(18,4)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -857,9 +849,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<decimal?>("CuotaLogisticaCOP")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
@@ -1068,11 +1057,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("TipoAfiliacion")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(3);
 
                     b.Property<int>("TipoSangre")
                         .HasColumnType("int");

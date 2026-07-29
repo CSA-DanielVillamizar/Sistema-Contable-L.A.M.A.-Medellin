@@ -4,6 +4,7 @@ using LAMAMedellin.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LAMAMedellin.Infrastructure.Migrations
 {
     [DbContext(typeof(LamaDbContext))]
-    partial class LamaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260729144849_AplicarCuotasLogisticaYRenovacionMembresia")]
+    partial class AplicarCuotasLogisticaYRenovacionMembresia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

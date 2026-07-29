@@ -4,6 +4,7 @@ using LAMAMedellin.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LAMAMedellin.Infrastructure.Migrations
 {
     [DbContext(typeof(LamaDbContext))]
-    partial class LamaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260729011546_CarteraPorPeriodoYTipoAfiliacion")]
+    partial class CarteraPorPeriodoYTipoAfiliacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,9 +109,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<decimal?>("CuotaAplicadaCOP")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -619,9 +619,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<int>("MesInicioCobro")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("RenovacionMembresiaUSD")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -856,9 +853,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<decimal?>("CuotaLogisticaCOP")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");

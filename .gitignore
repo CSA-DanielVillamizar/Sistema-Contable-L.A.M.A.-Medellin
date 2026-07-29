@@ -44,8 +44,14 @@ out/
 # Entity Framework Core
 efpt.config.json
 efpt.renaming.json
-migrations/*.Designer.cs
-*.Designer.cs
+
+# NO ignorar los archivos .Designer.cs de las migraciones.
+#
+# Ese archivo es el que lleva el atributo [Migration]; sin el, EF Core no
+# reconoce la clase como migracion y la salta en silencio, informando que la
+# base "ya esta al dia". Esa regla dejo 22 de 23 migraciones inservibles y
+# obligo a colapsar el historial; al no retirarla, la primera migracion nueva
+# del equipo volvio a caer en lo mismo.
 
 # NuGet
 *.nupkg

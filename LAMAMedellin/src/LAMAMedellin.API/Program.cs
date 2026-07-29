@@ -84,9 +84,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 
-app.UseHttpsRedirection();
-
+// CORS va antes de cualquier redireccion: si el preflight OPTIONS se responde
+// con un redirect, el navegador lo rechaza sin siquiera mirar las cabeceras.
 app.UseCors("NextJsCors");
+
+// En Development la API escucha en HTTP plano, asi que redirigir a HTTPS
+// rompia todas las llamadas del frontend con
+// "Redirect is not allowed for a preflight request".
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

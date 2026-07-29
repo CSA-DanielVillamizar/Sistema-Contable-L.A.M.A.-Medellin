@@ -30,7 +30,12 @@ FROM AsientosContables a
 JOIN Comprobantes c ON c.Id = a.ComprobanteId
 WHERE c.NumeroConsecutivo LIKE 'DEMO-%';
 
+DELETE i FROM Ingresos i JOIN Comprobantes c ON c.Id = i.ComprobanteContableId WHERE c.NumeroConsecutivo LIKE 'DEMO-%';
+DELETE e FROM Egresos  e JOIN Comprobantes c ON c.Id = e.ComprobanteContableId WHERE c.NumeroConsecutivo LIKE 'DEMO-%';
+
 DELETE FROM Comprobantes WHERE NumeroConsecutivo LIKE 'DEMO-%';
+
+UPDATE Bancos SET SaldoActual = 0 WHERE EsActivo = 1;
 
 DELETE cpc
 FROM CuentasPorCobrar cpc
