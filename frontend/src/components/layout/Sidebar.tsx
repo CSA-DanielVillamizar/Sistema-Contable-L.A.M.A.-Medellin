@@ -164,7 +164,7 @@ export default function Sidebar() {
                                         <Link
                                             href={item.href}
                                             title={collapsed ? item.label : undefined}
-                                            className={`flex items-center gap-3 rounded-lg px-2 py-2 text-sm font-medium transition-colors ${
+                                            aria-label={item.label}
                                                 isActive
                                                     ? 'bg-amber-500 text-slate-900'
                                                     : 'text-slate-300 hover:bg-slate-800 hover:text-white'
