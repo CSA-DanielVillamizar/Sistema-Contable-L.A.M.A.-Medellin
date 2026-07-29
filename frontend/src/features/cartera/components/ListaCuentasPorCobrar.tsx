@@ -4,6 +4,7 @@ import { useRegistrarPago } from '@/features/cartera/hooks/useRegistrarPago';
 import { registrarPagoCarteraSchema } from '@/features/cartera/schemas/carteraSchemas';
 import type { CuentaPorCobrarItem } from '@/features/cartera/services/carteraService';
 import { useGetCuentasBancarias } from '@/features/tesoreria/hooks/useGetCuentasBancarias';
+import { MEDIOS_PAGO, MEDIO_PAGO_POR_DEFECTO } from '@/lib/mediosPago';
 import { useEffect, useMemo, useState } from 'react';
 
 type ListaCuentasPorCobrarProps = {
@@ -55,6 +56,7 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
     const [cuentaActivaId, setCuentaActivaId] = useState<string | null>(null);
     const [montoPago, setMontoPago] = useState<string>('');
     const [bancoId, setBancoId] = useState<string>('');
+    const [medioPago, setMedioPago] = useState<number>(MEDIO_PAGO_POR_DEFECTO);
     const [errorMonto, setErrorMonto] = useState<string | null>(null);
 
     const cuentaActiva = useMemo(
@@ -95,7 +97,7 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
             return;
         }
 
-        const parsed = registrarPagoCarteraSchema.safeParse({ monto: montoPago, bancoId });
+        const parsed = registrarPagoCarteraSchema.safeParse({ monto: montoPago, bancoId, medioPago });
         if (!parsed.success) {
             setErrorMonto(parsed.error.issues[0]?.message ?? 'Monto invalido.');
             return;
@@ -107,6 +109,7 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
             cuentaPorCobrarId: cuentaActiva.id,
             monto: parsed.data.monto,
             bancoId: parsed.data.bancoId,
+            medioPago: parsed.data.medioPago,
         });
 
         cerrarPago();
@@ -216,6 +219,19 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
                                         ))}
                                     </select>
                                 </div>
+
+                                    <label className="mt-3 mb-1 block text-xs font-medium text-slate-600">Medio de pago</label>
+                                    <select
+                                        value={medioPago}
+                                        onChange={(event) => setMedioPago(Number(event.target.value))}
+                                        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                                    >
+                                        {MEDIOS_PAGO.map((medio) => (
+                                            <option key={medio.value} value={medio.value}>
+                                                {medio.label}
+                                            </option>
+                                        ))}
+                                    </select>
 
                                 <div>
                                     <label htmlFor="monto-pago" className="mb-1 block text-sm font-medium text-slate-700">

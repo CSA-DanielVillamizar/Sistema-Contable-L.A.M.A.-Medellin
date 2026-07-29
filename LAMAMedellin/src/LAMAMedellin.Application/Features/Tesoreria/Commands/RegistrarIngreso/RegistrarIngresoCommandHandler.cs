@@ -62,7 +62,8 @@ public sealed class RegistrarIngresoCommandHandler(
                 request.TerceroId,
                 request.CuentaContableId,
                 request.BancoId,
-                request.CentroCostoId);
+                request.CentroCostoId,
+                request.MedioPago);
 
             banco.AplicarIngreso(request.Monto);
 

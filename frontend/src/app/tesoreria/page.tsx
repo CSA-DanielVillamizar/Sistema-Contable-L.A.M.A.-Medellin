@@ -78,6 +78,7 @@ function toMovimientoPayload(values: TesoreriaMovimientoFormValues): RegistrarMo
         concepto: values.concepto.trim(),
         terceroId: null,
         cuentaContableId: values.cuentaContableId,
+        medioPago: Number(values.medioPago),
         bancoId: values.bancoId,
         centroCostoId: values.centroCostoId,
     };

@@ -42,7 +42,8 @@ public sealed class RegistrarPagoCarteraCommandHandler(
             cuenta.MiembroId,
             concepto.CuentaContableIngresoId,
             request.BancoId,
-            centroCosto.Id), cancellationToken);
+            centroCosto.Id,
+            request.MedioPago), cancellationToken);
 
         return Unit.Value;
     }

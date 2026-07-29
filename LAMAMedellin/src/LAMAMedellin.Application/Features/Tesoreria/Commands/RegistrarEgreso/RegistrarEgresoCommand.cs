@@ -1,3 +1,4 @@
+using LAMAMedellin.Domain.Enums;
 using MediatR;
 
 namespace LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarEgreso;
@@ -8,4 +9,5 @@ public sealed record RegistrarEgresoCommand(
     Guid? TerceroId,
     Guid CuentaContableId,
     Guid BancoId,
-    Guid CentroCostoId) : IRequest<Guid>;
+    Guid CentroCostoId,
+    MedioPago MedioPago) : IRequest<Guid>;

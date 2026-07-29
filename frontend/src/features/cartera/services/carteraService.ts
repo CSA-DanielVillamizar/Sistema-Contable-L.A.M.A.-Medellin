@@ -62,6 +62,7 @@ export type RegistrarPagoCarteraPayload = {
     cuentaPorCobrarId: string;
     monto: number;
     bancoId: string;
+    medioPago: number;
 };
 
 type IdResponseDto = {
@@ -129,5 +130,6 @@ export async function registrarPagoCartera(payload: RegistrarPagoCarteraPayload)
     await apiClient.post(`/api/cartera/cuentas-por-cobrar/${payload.cuentaPorCobrarId}/pagos`, {
         monto: payload.monto,
         bancoId: payload.bancoId,
+        medioPago: payload.medioPago,
     });
 }

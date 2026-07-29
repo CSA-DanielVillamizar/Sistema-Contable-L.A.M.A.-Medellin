@@ -1,4 +1,5 @@
 using LAMAMedellin.Domain.Common;
+using LAMAMedellin.Domain.Enums;
 
 namespace LAMAMedellin.Domain.Entities;
 
@@ -11,6 +12,13 @@ public sealed class Egreso : BaseEntity
     public Guid CuentaContableId { get; private set; }
     public Guid BancoId { get; private set; }
     public Guid CentroCostoId { get; private set; }
+
+    /// <summary>
+    /// Como entro o salio el dinero. Obligatorio por trazabilidad: la
+    /// historia 0-6 del backlog exige capturarlo en todo movimiento, y sin el
+    /// no se puede conciliar contra el extracto bancario.
+    /// </summary>
+    public MedioPago MedioPago { get; private set; }
     public Guid? ComprobanteContableId { get; private set; }
 
     public Banco? Banco { get; private set; }
@@ -29,7 +37,8 @@ public sealed class Egreso : BaseEntity
         Guid? terceroId,
         Guid cuentaContableId,
         Guid bancoId,
-        Guid centroCostoId)
+        Guid centroCostoId,
+        MedioPago medioPago)
     {
         if (string.IsNullOrWhiteSpace(concepto))
         {
@@ -63,6 +72,7 @@ public sealed class Egreso : BaseEntity
         CuentaContableId = cuentaContableId;
         BancoId = bancoId;
         CentroCostoId = centroCostoId;
+        MedioPago = medioPago;
     }
 
     public void AsignarComprobanteContable(Guid comprobanteContableId)

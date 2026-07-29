@@ -21,5 +21,8 @@ public sealed class RegistrarIngresoCommandValidator : AbstractValidator<Registr
 
         RuleFor(x => x.CentroCostoId)
             .NotEmpty();
+
+        RuleFor(x => x.MedioPago)
+            .IsInEnum().WithMessage("MedioPago debe ser un valor valido.");
     }
 }

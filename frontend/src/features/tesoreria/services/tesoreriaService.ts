@@ -15,6 +15,7 @@ export type RegistrarMovimientoTesoreriaPayload = {
     cuentaContableId: string;
     bancoId: string;
     centroCostoId: string;
+    medioPago: number;
     fecha?: string;
     terceroId?: string | null;
 };

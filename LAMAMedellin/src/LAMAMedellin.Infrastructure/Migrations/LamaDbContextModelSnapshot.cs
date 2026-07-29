@@ -803,6 +803,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MedioPago")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Monto")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -937,6 +940,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("MedioPago")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Monto")
                         .HasPrecision(18, 2)

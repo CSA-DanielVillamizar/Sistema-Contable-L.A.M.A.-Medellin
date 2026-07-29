@@ -54,7 +54,8 @@ public sealed class RegistrarVentaProductoCommandHandler(
             TerceroId: null,
             CuentaContableId: producto.CuentaContableIngresoId,
             BancoId: request.BancoId,
-            CentroCostoId: centroCosto.Id), cancellationToken);
+            CentroCostoId: centroCosto.Id,
+            MedioPago: request.MedioPago), cancellationToken);
 
         return movimiento.Id;
     }

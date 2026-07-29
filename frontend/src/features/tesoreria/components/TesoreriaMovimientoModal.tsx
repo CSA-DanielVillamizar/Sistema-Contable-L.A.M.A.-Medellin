@@ -1,5 +1,6 @@
 'use client';
 
+import { MEDIOS_PAGO, MEDIO_PAGO_POR_DEFECTO } from '@/lib/mediosPago';
 import { useEffect, useState } from 'react';
 
 export type TesoreriaCatalogItem = {
@@ -12,6 +13,7 @@ export type TesoreriaMovimientoFormValues = {
     monto: string;
     concepto: string;
     bancoId: string;
+    medioPago: string;
     cuentaContableId: string;
     centroCostoId: string;
 };
@@ -42,6 +44,7 @@ function buildInitialValues(
         monto: '',
         concepto: '',
         bancoId: cuentasBancarias[0]?.id ?? '',
+        medioPago: String(MEDIO_PAGO_POR_DEFECTO),
         cuentaContableId: cuentasContables[0]?.id ?? '',
         centroCostoId: centrosCosto[0]?.id ?? '',
     };
@@ -88,7 +91,7 @@ export default function TesoreriaMovimientoModal({
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (!values.fecha || !values.monto || !values.concepto.trim() || !values.bancoId || !values.cuentaContableId || !values.centroCostoId) {
+        if (!values.fecha || !values.monto || !values.concepto.trim() || !values.bancoId || !values.cuentaContableId || !values.centroCostoId || !values.medioPago) {
             setValidationError('Todos los campos son obligatorios para registrar el movimiento.');
             return;
         }
@@ -183,6 +186,21 @@ export default function TesoreriaMovimientoModal({
                             {cuentasContables.map((cuenta) => (
                                 <option key={cuenta.id} value={cuenta.id}>
                                     {cuenta.nombre}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-medium text-slate-700">Medio de pago</label>
+                        <select
+                            value={values.medioPago}
+                            onChange={(event) => onChange('medioPago', event.target.value)}
+                            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
+                        >
+                            {MEDIOS_PAGO.map((medio) => (
+                                <option key={medio.value} value={medio.value}>
+                                    {medio.label}
                                 </option>
                             ))}
                         </select>

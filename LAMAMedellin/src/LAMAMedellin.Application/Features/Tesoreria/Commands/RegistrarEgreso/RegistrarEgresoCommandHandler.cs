@@ -62,7 +62,8 @@ public sealed class RegistrarEgresoCommandHandler(
                 request.TerceroId,
                 request.CuentaContableId,
                 request.BancoId,
-                request.CentroCostoId);
+                request.CentroCostoId,
+                request.MedioPago);
 
             banco.AplicarEgreso(request.Monto);
 

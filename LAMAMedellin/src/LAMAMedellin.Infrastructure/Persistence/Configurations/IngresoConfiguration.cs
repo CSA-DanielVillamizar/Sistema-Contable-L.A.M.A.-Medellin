@@ -31,6 +31,10 @@ public sealed class IngresoConfiguration : IEntityTypeConfiguration<Ingreso>
         builder.Property(x => x.BancoId)
             .IsRequired();
 
+        builder.Property(x => x.MedioPago)
+            .HasConversion<int>()
+            .IsRequired();
+
         builder.Property(x => x.CentroCostoId)
             .IsRequired();
 
