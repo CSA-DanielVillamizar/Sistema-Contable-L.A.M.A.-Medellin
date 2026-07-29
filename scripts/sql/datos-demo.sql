@@ -66,6 +66,7 @@ DECLARE @ctaDeporte   UNIQUEIDENTIFIER = (SELECT Id FROM CuentasContables WHERE 
 DECLARE @ctaOtros     UNIQUEIDENTIFIER = (SELECT Id FROM CuentasContables WHERE Codigo = '519595');
 
 DECLARE @banco        UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM Bancos);
+DECLARE @bancoActivo  UNIQUEIDENTIFIER = (SELECT TOP 1 Id FROM Bancos WHERE EsActivo = 1 ORDER BY Nombre);
 
 IF @ccCapitulo IS NULL OR @ctaCaja IS NULL OR @banco IS NULL
 BEGIN
@@ -94,19 +95,19 @@ DECLARE @movimientos TABLE (
 INSERT INTO @movimientos VALUES
     -- Mayo 2026
     ('DEMO-ING-00000001', '2026-05-05', 1, 'Recaudo cuotas de sostenimiento mayo', @ctaBanco, @ctaCuotas,    2400000, @ccCapitulo),
-    ('DEMO-ING-00000002', '2026-05-12', 1, 'Inscripciones rodada Santa Fe',        @ctaCaja,  @ctaEventos,    850000, @ccEventos),
+    ('DEMO-ING-00000002', '2026-05-12', 1, 'Inscripciones rodada Santa Fe',        @ctaBanco, @ctaEventos,    850000, @ccEventos),
     ('DEMO-EGR-00000001', '2026-05-20', 2, 'Honorarios contables mayo',            @ctaHonor, @ctaBanco,      600000, @ccFundacion),
-    ('DEMO-EGR-00000002', '2026-05-28', 2, 'Transporte logistica rodada',          @ctaTranspo, @ctaCaja,     320000, @ccEventos),
+    ('DEMO-EGR-00000002', '2026-05-28', 2, 'Transporte logistica rodada',          @ctaTranspo, @ctaBanco,     320000, @ccEventos),
     -- Junio 2026
     ('DEMO-ING-00000003', '2026-06-04', 1, 'Recaudo cuotas de sostenimiento junio', @ctaBanco, @ctaCuotas,   2550000, @ccCapitulo),
     ('DEMO-ING-00000004', '2026-06-15', 1, 'Donacion libre empresa aliada',         @ctaBanco, @ctaDonaLibre, 1500000, @ccFundacion),
-    ('DEMO-ING-00000005', '2026-06-22', 1, 'Venta de merchandising junio',          @ctaCaja,  @ctaMerch,      430000, @ccCapitulo),
+    ('DEMO-ING-00000005', '2026-06-22', 1, 'Venta de merchandising junio',          @ctaBanco, @ctaMerch,      430000, @ccCapitulo),
     ('DEMO-EGR-00000003', '2026-06-18', 2, 'Honorarios contables junio',            @ctaHonor, @ctaBanco,      600000, @ccFundacion),
     ('DEMO-EGR-00000004', '2026-06-25', 2, 'Actividad deportiva jornada social',    @ctaDeporte, @ctaBanco,    780000, @ccFundacion),
     -- Julio 2026
     ('DEMO-ING-00000006', '2026-07-03', 1, 'Recaudo cuotas de sostenimiento julio', @ctaBanco, @ctaCuotas,   2700000, @ccCapitulo),
-    ('DEMO-ING-00000007', '2026-07-14', 1, 'Inscripciones rodada Guatape',          @ctaCaja,  @ctaEventos,    920000, @ccEventos),
-    ('DEMO-ING-00000008', '2026-07-21', 1, 'Venta de merchandising julio',          @ctaCaja,  @ctaMerch,      615000, @ccCapitulo),
+    ('DEMO-ING-00000007', '2026-07-14', 1, 'Inscripciones rodada Guatape',          @ctaBanco, @ctaEventos,    920000, @ccEventos),
+    ('DEMO-ING-00000008', '2026-07-21', 1, 'Venta de merchandising julio',          @ctaBanco, @ctaMerch,      615000, @ccCapitulo),
     ('DEMO-EGR-00000005', '2026-07-16', 2, 'Honorarios contables julio',            @ctaHonor, @ctaBanco,      600000, @ccFundacion),
     ('DEMO-EGR-00000006', '2026-07-24', 2, 'Gastos varios administrativos',         @ctaOtros, @ctaBanco,      245000, @ccFundacion);
 
@@ -134,6 +135,21 @@ BEGIN
         VALUES
             (NEWID(), @comprobanteId, @cuentaDebe,  NULL, @cc, @monto, 0,      @descripcion, 0, SYSUTCDATETIME()),
             (NEWID(), @comprobanteId, @cuentaHaber, NULL, @cc, 0,      @monto, @descripcion, 0, SYSUTCDATETIME());
+
+        -- El comprobante por si solo no alcanza: el tablero y la pantalla de
+        -- tesoreria leen las tablas operativas, no el libro. Sin estas filas la
+        -- contabilidad mostraba movimiento pero tesoreria salia vacia.
+        -- MedioPago = 1 (Transferencia): el capitulo opera 100% bancarizado.
+        IF @tipo = 1
+        BEGIN
+            INSERT INTO Ingresos (Id, Fecha, Monto, Concepto, TerceroId, CuentaContableId, BancoId, CentroCostoId, ComprobanteContableId, MedioPago, IsDeleted, CreatedAt)
+            VALUES (NEWID(), @fecha, @monto, @descripcion, NULL, @cuentaHaber, @bancoActivo, @cc, @comprobanteId, 1, 0, SYSUTCDATETIME());
+        END
+        ELSE
+        BEGIN
+            INSERT INTO Egresos (Id, Fecha, Monto, Concepto, TerceroId, CuentaContableId, BancoId, CentroCostoId, ComprobanteContableId, MedioPago, IsDeleted, CreatedAt)
+            VALUES (NEWID(), @fecha, @monto, @descripcion, NULL, @cuentaDebe, @bancoActivo, @cc, @comprobanteId, 1, 0, SYSUTCDATETIME());
+        END
     END
 
     FETCH NEXT FROM cursorMovimientos INTO @consecutivo, @fecha, @tipo, @descripcion, @cuentaDebe, @cuentaHaber, @monto, @cc;
@@ -169,11 +185,15 @@ BEGIN
         FROM Miembros
         WHERE EsActivo = 1 AND IsDeleted = 0
     )
-    INSERT INTO CuentasPorCobrar (Id, MiembroId, ConceptoCobroId, FechaEmision, FechaVencimiento, ValorTotal, SaldoPendiente, Estado, IsDeleted, CreatedAt)
+    INSERT INTO CuentasPorCobrar (Id, MiembroId, ConceptoCobroId, Periodo, FechaEmision, FechaVencimiento, ValorTotal, SaldoPendiente, Estado, IsDeleted, CreatedAt)
     SELECT
         NEWID(),
         Id,
         @conceptoMensual,
+        -- Periodo YYYY-MM: es lo que hace idempotente la generacion mensual y
+        -- permite contar meses adeudados. Debe coincidir con el mes que cubre
+        -- la obligacion.
+        CASE WHEN Fila % 3 = 0 THEN '2026-05' WHEN Fila % 3 = 1 THEN '2026-06' ELSE '2026-07' END,
         CASE WHEN Fila % 3 = 0 THEN '2026-05-01' WHEN Fila % 3 = 1 THEN '2026-06-01' ELSE '2026-07-01' END,
         CASE WHEN Fila % 3 = 0 THEN '2026-05-31' WHEN Fila % 3 = 1 THEN '2026-06-30' ELSE '2026-07-31' END,
         60000,
@@ -222,6 +242,19 @@ BEGIN
         (NEWID(), @donante3,  300000, '2026-07-19', @banco, @ccFundacion, 0, 'DEMO-CERT-0003', 1, 'Consignacion en efectivo',   0, SYSUTCDATETIME());
 END
 
+-- ---------------------------------------------------------------------------
+-- 6. Saldo de la cuenta bancaria
+--
+-- Se recalcula desde los movimientos en vez de fijarlo a mano, para que el
+-- saldo que muestra el tablero coincida siempre con lo registrado.
+-- ---------------------------------------------------------------------------
+UPDATE b
+SET b.SaldoActual =
+        ISNULL((SELECT SUM(i.Monto) FROM Ingresos i WHERE i.BancoId = b.Id AND i.IsDeleted = 0), 0)
+      - ISNULL((SELECT SUM(e.Monto) FROM Egresos  e WHERE e.BancoId = b.Id AND e.IsDeleted = 0), 0)
+FROM Bancos b
+WHERE b.EsActivo = 1;
+
 COMMIT TRANSACTION;
 
 -- ---------------------------------------------------------------------------
@@ -236,7 +269,17 @@ UNION ALL SELECT 'Conceptos de cobro', COUNT(*) FROM ConceptosCobro WHERE Nombre
 UNION ALL SELECT 'Cuentas por cobrar', COUNT(*) FROM CuentasPorCobrar cpc JOIN ConceptosCobro cc ON cc.Id = cpc.ConceptoCobroId WHERE cc.Nombre LIKE 'DEMO-%'
 UNION ALL SELECT 'Productos', COUNT(*) FROM Productos WHERE CodigoSKU LIKE 'DEMO-%'
 UNION ALL SELECT 'Donantes', COUNT(*) FROM Donantes WHERE NumeroDocumento LIKE 'DEMO-%'
-UNION ALL SELECT 'Donaciones', COUNT(*) FROM Donaciones WHERE CodigoVerificacion LIKE 'DEMO-%';
+UNION ALL SELECT 'Donaciones', COUNT(*) FROM Donaciones WHERE CodigoVerificacion LIKE 'DEMO-%'
+UNION ALL SELECT 'Ingresos de tesoreria', COUNT(*) FROM Ingresos i JOIN Comprobantes c ON c.Id = i.ComprobanteContableId WHERE c.NumeroConsecutivo LIKE 'DEMO-%'
+UNION ALL SELECT 'Egresos de tesoreria', COUNT(*) FROM Egresos e JOIN Comprobantes c ON c.Id = e.ComprobanteContableId WHERE c.NumeroConsecutivo LIKE 'DEMO-%';
+
+PRINT '';
+PRINT '--- Verificacion de integridad ---';
+
+SELECT 'CxC con periodo invalido' AS Concepto,
+       CAST(COUNT(*) AS VARCHAR) AS Valor
+FROM CuentasPorCobrar
+WHERE Periodo IS NULL OR Periodo NOT LIKE '[0-9][0-9][0-9][0-9]-[0-9][0-9]';
 
 PRINT '';
 PRINT '--- Verificacion de partida doble ---';

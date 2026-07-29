@@ -4,6 +4,7 @@ using LAMAMedellin.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LAMAMedellin.Infrastructure.Migrations
 {
     [DbContext(typeof(LamaDbContext))]
-    partial class LamaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260728142937_AgregarPeriodoContable")]
+    partial class AgregarPeriodoContable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,9 +110,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<decimal?>("CuotaAplicadaCOP")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
@@ -160,9 +160,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<Guid>("CuentaContableId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
@@ -170,18 +167,8 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("EsActivo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("NumeroCuenta")
                         .IsRequired()
@@ -200,8 +187,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CuentaContableId");
 
                     b.HasIndex("NumeroCuenta")
                         .IsUnique();
@@ -278,6 +263,59 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Beneficiarios", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Caja", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid>("CuentaContableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal>("SaldoActual")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TipoCaja")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CuentaContableId")
+                        .IsUnique();
+
+                    b.ToTable("Cajas", (string)null);
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CentroCosto", b =>
@@ -553,11 +591,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<Guid>("MiembroId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Periodo")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
                     b.Property<decimal>("SaldoPendiente")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(18,2)")
@@ -579,9 +612,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.HasIndex("ConceptoCobroId");
 
-                    b.HasIndex("MiembroId", "ConceptoCobroId", "Periodo")
+                    b.HasIndex("MiembroId", "ConceptoCobroId", "FechaEmision")
                         .IsUnique()
-                        .HasDatabaseName("IX_CuentasPorCobrar_MiembroConceptoPeriodo");
+                        .HasDatabaseName("IX_CuentasPorCobrar_MiembroConceptoFecha");
 
                     b.ToTable("CuentasPorCobrar", (string)null);
                 });
@@ -618,9 +651,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.Property<int>("MesInicioCobro")
                         .HasColumnType("int");
-
-                    b.Property<decimal?>("RenovacionMembresiaUSD")
-                        .HasColumnType("decimal(18,4)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -777,7 +807,7 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BancoId")
+                    b.Property<Guid>("CajaId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CentroCostoId")
@@ -814,9 +844,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MedioPago")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Monto")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -833,7 +860,7 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BancoId");
+                    b.HasIndex("CajaId");
 
                     b.HasIndex("CentroCostoId");
 
@@ -856,9 +883,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<decimal?>("CuotaLogisticaCOP")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -918,7 +942,7 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BancoId")
+                    b.Property<Guid>("CajaId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CentroCostoId")
@@ -955,9 +979,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MedioPago")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Monto")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -974,7 +995,7 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BancoId");
+                    b.HasIndex("CajaId");
 
                     b.HasIndex("CentroCostoId");
 
@@ -1068,11 +1089,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("TipoAfiliacion")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(3);
 
                     b.Property<int>("TipoSangre")
                         .HasColumnType("int");
@@ -1571,17 +1587,6 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Navigation("Miembro");
                 });
 
-            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Banco", b =>
-                {
-                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaContable")
-                        .WithMany()
-                        .HasForeignKey("CuentaContableId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CuentaContable");
-                });
-
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Beneficiario", b =>
                 {
                     b.HasOne("LAMAMedellin.Domain.Entities.ProyectoSocial", "ProyectoSocial")
@@ -1591,6 +1596,17 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ProyectoSocial");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.Caja", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaContable")
+                        .WithMany()
+                        .HasForeignKey("CuentaContableId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CuentaContable");
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.ConceptoCobro", b =>
@@ -1660,9 +1676,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Egreso", b =>
                 {
-                    b.HasOne("LAMAMedellin.Domain.Entities.Banco", "Banco")
+                    b.HasOne("LAMAMedellin.Domain.Entities.Caja", "Caja")
                         .WithMany()
-                        .HasForeignKey("BancoId")
+                        .HasForeignKey("CajaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1683,7 +1699,7 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Banco");
+                    b.Navigation("Caja");
 
                     b.Navigation("CentroCosto");
 
@@ -1694,9 +1710,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Ingreso", b =>
                 {
-                    b.HasOne("LAMAMedellin.Domain.Entities.Banco", null)
+                    b.HasOne("LAMAMedellin.Domain.Entities.Caja", null)
                         .WithMany()
-                        .HasForeignKey("BancoId")
+                        .HasForeignKey("CajaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
