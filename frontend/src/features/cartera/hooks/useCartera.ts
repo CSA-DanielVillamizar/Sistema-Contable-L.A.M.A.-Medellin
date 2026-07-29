@@ -1,8 +1,7 @@
 'use client';
 
-import apiClient, { type RespuestaApi } from '@/lib/apiClient';
+import apiClient, { type RespuestaApi, mensajeDeError } from '@/lib/apiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 
 export type CarteraPendienteItem = {
     id: string;
@@ -11,12 +10,6 @@ export type CarteraPendienteItem = {
     periodo: string;
     valorEsperadoCOP: number;
     saldoPendienteCOP: number;
-};
-
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-    errors?: Record<string, string[]>;
 };
 
 type RegistrarPagoPayload = {
@@ -32,15 +25,7 @@ type GenerarCarteraPayload = {
 };
 
 function getErrorMessage(error: unknown, fallback: string): string {
-    if (!axios.isAxiosError<ProblemDetails>(error)) {
-        return fallback;
-    }
-
-    const validationMessage = error.response?.data?.errors
-        ? Object.values(error.response.data.errors).flat()[0]
-        : undefined;
-
-    return validationMessage ?? error.response?.data?.detail ?? error.response?.data?.title ?? fallback;
+    return mensajeDeError(error, fallback);
 }
 
 export function useCarteraPendiente() {

@@ -1,32 +1,12 @@
 'use client';
 
+import { mensajeDeError } from '@/lib/apiClient';
 import { crearEvento, type CreateEventoPayload } from '@/features/eventos/services/eventosService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-    errors?: Record<string, string[]>;
-};
-
 function mapError(error: unknown, fallbackMessage: string): Error {
-    if (axios.isAxiosError<ProblemDetails>(error)) {
-        const validationErrors = error.response?.data?.errors;
-        const firstValidationError = validationErrors
-            ? Object.values(validationErrors).flat().find((message) => message)
-            : undefined;
-
-        return new Error(
-            firstValidationError
-            ?? error.response?.data?.detail
-            ?? error.response?.data?.title
-            ?? fallbackMessage,
-        );
-    }
-
-    return new Error(fallbackMessage);
+    return new Error(mensajeDeError(error, fallbackMessage));
 }
 
 export function useCrearEvento() {

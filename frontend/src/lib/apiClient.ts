@@ -69,6 +69,37 @@ export class ApiError extends Error {
     }
 }
 
+/**
+ * Mensaje presentable de un error salido de una llamada al API.
+ *
+ * El interceptor de abajo convierte toda respuesta de error en un `ApiError`,
+ * asi que para cuando el error llega a un hook ya NO es un error de axios.
+ * Veinte hooks comprobaban `axios.isAxiosError(error)` y, al dar siempre false,
+ * caian en su mensaje generico: el `detail` del backend —que es donde viaja la
+ * regla de negocio incumplida— nunca llegaba a la pantalla. Un 422 se veia como
+ * "No fue posible registrar el comprobante", sin decir por que.
+ *
+ * Se conserva la rama de axios por si algun consumidor usa una instancia sin
+ * este interceptor.
+ */
+export function mensajeDeError(error: unknown, respaldo: string): string {
+    if (error instanceof ApiError) {
+        const primerErrorDeValidacion = Object.values(error.validationErrors).flat()[0];
+        return primerErrorDeValidacion ?? error.message ?? respaldo;
+    }
+
+    if (axios.isAxiosError<ProblemDetails>(error)) {
+        const problem = error.response?.data;
+        const primerErrorDeValidacion = problem?.errors
+            ? Object.values(problem.errors).flat()[0]
+            : undefined;
+
+        return primerErrorDeValidacion ?? problem?.detail ?? problem?.title ?? respaldo;
+    }
+
+    return respaldo;
+}
+
 // ---------------------------------------------------------------------------
 // Interceptor de RESPUESTA — normaliza errores ProblemDetails del backend
 // ---------------------------------------------------------------------------

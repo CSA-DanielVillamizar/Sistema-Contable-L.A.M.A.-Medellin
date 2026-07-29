@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { mensajeDeError } from '@/lib/apiClient';
 
 export type CrearIngresoRequest = {
     MontoCOP: number;
@@ -19,12 +18,6 @@ type CrearIngresoResponse = {
     id: string;
 };
 
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-    errors?: Record<string, string[]>;
-};
-
 export const useCrearIngreso = () => {
     return useMutation<CrearIngresoResponse, Error, CrearIngresoRequest>({
         mutationFn: async (request) => {
@@ -36,21 +29,7 @@ export const useCrearIngreso = () => {
                 const response = await apiClient.post<CrearIngresoResponse>('/api/transacciones/ingreso', request);
                 return response.data;
             } catch (error) {
-                if (axios.isAxiosError<ProblemDetails>(error)) {
-                    const validationErrors = error.response?.data?.errors;
-                    const firstValidationError = validationErrors
-                        ? Object.values(validationErrors).flat().find((message) => message)
-                        : undefined;
-
-                    const mensaje =
-                        firstValidationError ??
-                        error.response?.data?.detail ??
-                        error.response?.data?.title ??
-                        'No fue posible registrar el ingreso.';
-                    throw new Error(mensaje);
-                }
-
-                throw new Error('No fue posible registrar el ingreso.');
+                throw new Error(mensajeDeError(error, 'No fue posible registrar el ingreso.'));
             }
         },
     });
