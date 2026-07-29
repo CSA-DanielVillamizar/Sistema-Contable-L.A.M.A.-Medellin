@@ -20,6 +20,7 @@ const defaultValues: IngresoFormInput = {
 
 type BancoCatalogo = {
     id: string;
+    nombre: string;
     numeroCuenta: string;
 };
 
@@ -40,6 +41,7 @@ export default function RegistroIngresoForm() {
             return (response.data ?? [])
                 .map((item): BancoCatalogo => ({
                     id: String(item?.id ?? ''),
+                    nombre: String(item?.nombre ?? ''),
                     numeroCuenta: String(item?.numeroCuenta ?? ''),
                 }))
                 .filter((item) => item.id.length > 0);
@@ -180,9 +182,9 @@ export default function RegistroIngresoForm() {
                         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
                         disabled={bancosQuery.isLoading || (bancosQuery.data?.length ?? 0) === 0}
                     >
-                        {[{ id: '', numeroCuenta: 'Seleccione...' }, ...(bancosQuery.data ?? [])].map((banco, index) => (
+                        {[{ id: '', nombre: 'Seleccione...', numeroCuenta: '' }, ...(bancosQuery.data ?? [])].map((banco, index) => (
                             <option key={`banco-${banco.id}-${index}`} value={banco.id}>
-                                {banco.numeroCuenta}
+                                {banco.nombre || banco.numeroCuenta}
                             </option>
                         ))}
                     </select>

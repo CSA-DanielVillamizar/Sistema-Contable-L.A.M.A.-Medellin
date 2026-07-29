@@ -13,10 +13,14 @@ public sealed class GetCatalogoBancosQueryHandler(
     {
         var bancos = await bancoRepository.GetAllAsync(cancellationToken);
 
+        // Una cuenta inactiva no puede recibir movimientos: ofrecerla en el
+        // desplegable solo consigue que el registro falle al guardar.
         return bancos
-            .Where(banco => !banco.IsDeleted)
+            .Where(banco => !banco.IsDeleted && banco.EsActivo)
+            .OrderBy(banco => banco.Nombre)
             .Select(banco => new CatalogoBancoDto(
                 banco.Id,
+                banco.Nombre,
                 banco.NumeroCuenta))
             .ToList();
     }

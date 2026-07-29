@@ -21,6 +21,7 @@ type ModalNuevaDonacionProps = {
 
 type BancoCatalogo = {
     id: string;
+    nombre: string;
     numeroCuenta: string;
 };
 
@@ -51,6 +52,7 @@ export default function ModalNuevaDonacion({ open, onClose }: ModalNuevaDonacion
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),
+                nombre: String(item?.nombre ?? ''),
                 numeroCuenta: String(item?.numeroCuenta ?? ''),
             }));
         },
@@ -171,7 +173,7 @@ export default function ModalNuevaDonacion({ open, onClose }: ModalNuevaDonacion
                                 <option value="">Seleccione...</option>
                                 {(bancosQuery.data ?? []).map((banco) => (
                                     <option key={banco.id} value={banco.id}>
-                                        {banco.numeroCuenta}
+                                        {banco.nombre || banco.numeroCuenta}
                                     </option>
                                 ))}
                             </select>
