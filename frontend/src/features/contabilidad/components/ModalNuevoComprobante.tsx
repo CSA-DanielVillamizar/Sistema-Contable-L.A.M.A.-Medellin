@@ -3,7 +3,9 @@
 import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useGetMiembrosLookup } from '@/features/cartera/hooks/useGetMiembrosLookup';
+import { useDonantes } from '@/features/donaciones/hooks/useDonaciones';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useCuentasContables } from '@/features/contabilidad/hooks/useCuentasContables';
 import { useRegistrarComprobante } from '@/features/contabilidad/hooks/useComprobantes';
@@ -84,6 +86,10 @@ export default function ModalNuevoComprobante({ open, onClose }: ModalNuevoCompr
         defaultValues,
     });
 
+    const miembrosQuery = useGetMiembrosLookup();
+    const donantesQuery = useDonantes();
+    const [errorTercero, setErrorTercero] = useState<string | null>(null);
+
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'Asientos',
@@ -103,7 +109,43 @@ export default function ModalNuevoComprobante({ open, onClose }: ModalNuevoCompr
 
     const cuentasAsentables = (cuentasQuery.data ?? []).filter((item) => item.permiteMovimiento);
 
+    // 16 de las 24 cuentas asentables exigen tercero, entre ellas las de uso
+    // diario (cuotas, donaciones, aportes). El backend rechaza el comprobante
+    // con un 422 si falta, asi que hay que poder elegirlo, no teclear su GUID.
+    const cuentaPorId = new Map(cuentasAsentables.map((item) => [item.id, item]));
+
+    const terceros = [
+        ...(miembrosQuery.data ?? []).map((item) => ({
+            id: item.id,
+            etiqueta: `${item.nombreCompleto} (miembro)`,
+        })),
+        ...(donantesQuery.data ?? []).map((item) => ({
+            id: item.id,
+            etiqueta: `${item.nombreORazonSocial} (donante)`,
+        })),
+    ];
+
+    const exigeTercero = (index: number) => {
+        const cuentaId = asientos?.[index]?.CuentaContableId;
+        return Boolean(cuentaId && cuentaPorId.get(cuentaId)?.exigeTercero);
+    };
+
     const onSubmit = async (values: ComprobanteFormValues) => {
+        // Se comprueba antes de enviar: el backend devuelve el mismo error, pero
+        // sin decir cual de las lineas lo incumple.
+        const lineaSinTercero = values.Asientos.findIndex(
+            (item) => cuentaPorId.get(item.CuentaContableId)?.exigeTercero && !item.TerceroId,
+        );
+
+        if (lineaSinTercero >= 0) {
+            setErrorTercero(
+                `La línea ${lineaSinTercero + 1} usa una cuenta que exige tercero. Selecciónalo antes de guardar.`,
+            );
+            return;
+        }
+
+        setErrorTercero(null);
+
         await registrarComprobante.mutateAsync({
             ...values,
             Asientos: values.Asientos.map((item) => ({
@@ -148,6 +190,12 @@ export default function ModalNuevoComprobante({ open, onClose }: ModalNuevoCompr
                         </div>
                     </div>
 
+                    {errorTercero ? (
+                        <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                            {errorTercero}
+                        </div>
+                    ) : null}
+
                     <div className="overflow-x-auto rounded-xl border border-slate-200">
                         <table className="min-w-full divide-y divide-slate-200">
                             <thead className="bg-slate-50">
@@ -170,6 +218,7 @@ export default function ModalNuevoComprobante({ open, onClose }: ModalNuevoCompr
                                                 {cuentasAsentables.map((cuenta) => (
                                                     <option key={cuenta.id} value={cuenta.id}>
                                                         {cuenta.codigo} - {cuenta.descripcion}
+                                                        {cuenta.exigeTercero ? ' (exige tercero)' : ''}
                                                     </option>
                                                 ))}
                                             </select>
@@ -185,7 +234,21 @@ export default function ModalNuevoComprobante({ open, onClose }: ModalNuevoCompr
                                         </td>
 
                                         <td className="px-3 py-2">
-                                            <input {...register(`Asientos.${index}.TerceroId`)} placeholder="GUID opcional" className="w-full rounded border border-slate-300 px-2 py-1 text-sm text-slate-900" />
+                                            <select
+                                                {...register(`Asientos.${index}.TerceroId`)}
+                                                className={`w-full rounded border px-2 py-1 text-sm text-slate-900 ${
+                                                    exigeTercero(index) ? 'border-amber-400 bg-amber-50' : 'border-slate-300'
+                                                }`}
+                                            >
+                                                <option value="">
+                                                    {exigeTercero(index) ? 'Obligatorio: seleccione...' : 'Opcional'}
+                                                </option>
+                                                {terceros.map((tercero) => (
+                                                    <option key={tercero.id} value={tercero.id}>
+                                                        {tercero.etiqueta}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </td>
 
                                         <td className="px-3 py-2">
