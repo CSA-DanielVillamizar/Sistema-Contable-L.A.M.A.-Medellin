@@ -1,3 +1,4 @@
+using LAMAMedellin.Application.Features.Eventos.Commands.ActualizarEvento;
 using LAMAMedellin.Application.Features.Eventos.Commands.CreateEvento;
 using LAMAMedellin.Application.Features.Eventos.Commands.EstablecerCuotaLogistica;
 using LAMAMedellin.Application.Features.Eventos.Commands.MarcarAsistencia;
@@ -46,6 +47,29 @@ public sealed class EventosController(ISender sender) : ControllerBase
             cancellationToken);
 
         return NoContent();
+    }
+
+    /// <summary>Corrige los datos de un evento que siga programado.</summary>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> Put(
+        Guid id,
+        [FromBody] ActualizarEventoRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(
+            new ActualizarEventoCommand(
+                id,
+                request.Nombre,
+                request.Descripcion,
+                request.FechaProgramada,
+                request.LugarEncuentro,
+                request.TipoEvento,
+                request.Destino),
+            cancellationToken);
+
+        return Ok(new { mensaje = "Evento actualizado." });
     }
 
     [HttpGet]
@@ -97,3 +121,11 @@ public sealed class EventosController(ISender sender) : ControllerBase
 
     public sealed record EstablecerCuotaLogisticaRequest(decimal? CuotaLogisticaCOP);
 }
+
+public sealed record ActualizarEventoRequest(
+    string Nombre,
+    string Descripcion,
+    DateTime FechaProgramada,
+    string LugarEncuentro,
+    TipoEvento TipoEvento,
+    string? Destino);
