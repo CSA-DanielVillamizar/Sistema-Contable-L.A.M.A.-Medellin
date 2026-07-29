@@ -32,6 +32,10 @@ public sealed class EventoConfiguration : IEntityTypeConfiguration<Evento>
             .HasMaxLength(200)
             .IsRequired(false);
 
+        builder.Property(e => e.CuotaLogisticaCOP)
+            .HasColumnType("decimal(18,2)")
+            .IsRequired(false);
+
         builder.Property(e => e.TipoEvento)
             .HasConversion<int>()
             .IsRequired();

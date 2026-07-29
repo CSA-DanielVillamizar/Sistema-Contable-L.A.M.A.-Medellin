@@ -14,4 +14,17 @@ public sealed class CuotaAsambleaRepository(LamaDbContext dbContext) : ICuotaAsa
             .ThenByDescending(c => c.MesInicioCobro)
             .FirstOrDefaultAsync(cancellationToken);
     }
+
+    public Task<CuotaAsamblea?> GetByAnioAsync(int anio, CancellationToken cancellationToken = default)
+    {
+        return dbContext.CuotasAsamblea
+            .Where(c => c.Anio == anio)
+            .OrderByDescending(c => c.MesInicioCobro)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return dbContext.SaveChangesAsync(cancellationToken);
+    }
 }

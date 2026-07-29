@@ -9,4 +9,5 @@ public sealed record EventoDetalleDto(
     string? Destino,
     string TipoEvento,
     string Estado,
+    decimal? CuotaLogisticaCOP,
     IReadOnlyList<AsistenciaDto> Asistencias);

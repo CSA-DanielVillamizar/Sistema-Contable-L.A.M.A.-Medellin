@@ -19,7 +19,7 @@ public sealed class MarcarAsistenciaCommandHandler(IEventoRepository eventoRepos
         var asistencia = await eventoRepository.GetAsistenciaAsync(request.EventoId, request.MiembroId, cancellationToken);
         if (asistencia is null)
         {
-            asistencia = new AsistenciaEvento(request.EventoId, request.MiembroId, request.Observaciones);
+            asistencia = new AsistenciaEvento(request.EventoId, request.MiembroId, request.Observaciones, evento.CuotaLogisticaCOP);
             await eventoRepository.AddAsistenciaAsync(asistencia, cancellationToken);
         }
 

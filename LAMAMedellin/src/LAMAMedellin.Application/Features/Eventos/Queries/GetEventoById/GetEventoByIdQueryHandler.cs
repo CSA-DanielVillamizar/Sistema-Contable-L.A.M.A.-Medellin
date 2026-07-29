@@ -20,7 +20,8 @@ public sealed class GetEventoByIdQueryHandler(IEventoRepository eventoRepository
                 a.Miembro is null
                     ? string.Empty
                     : $"{a.Miembro.Nombres} {a.Miembro.Apellidos}".Trim(),
-                a.Asistio))
+                a.Asistio,
+                a.CuotaAplicadaCOP))
             .ToList();
 
         return new EventoDetalleDto(
@@ -32,6 +33,7 @@ public sealed class GetEventoByIdQueryHandler(IEventoRepository eventoRepository
             evento.Destino,
             evento.TipoEvento.ToString(),
             evento.Estado.ToString(),
+            evento.CuotaLogisticaCOP,
             asistencias);
     }
 }
