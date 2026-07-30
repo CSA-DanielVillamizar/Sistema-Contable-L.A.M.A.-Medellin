@@ -219,12 +219,14 @@ export default function MiembrosPage() {
                 </section>
             )}
 
-            <MiembroUpsertModal
-                mode={modoFormulario === 'edit' ? 'edit' : 'create'}
-                isOpen={modoFormulario !== null}
-                miembro={modoFormulario === 'edit' ? miembroActivo : null}
-                onClose={cerrarFormulario}
-            />
+            {modoFormulario !== null ? (
+                <MiembroUpsertModal
+                    key={modoFormulario === 'edit' ? (miembroActivo?.id ?? 'edit') : 'create'}
+                    mode={modoFormulario === 'edit' ? 'edit' : 'create'}
+                    miembro={modoFormulario === 'edit' ? miembroActivo : null}
+                    onClose={cerrarFormulario}
+                />
+            ) : null}
         </main>
     );
 }

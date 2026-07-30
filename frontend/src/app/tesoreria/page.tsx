@@ -373,17 +373,21 @@ export default function TesoreriaPage() {
                 </section>
             </div>
 
-            <TesoreriaMovimientoModal
-                modo={modalActivo === 'egreso' ? 'egreso' : 'ingreso'}
-                abierto={modalActivo !== null}
+            {/* Montar y desmontar en vez de ocultar: el formulario arranca
+                limpio en cada apertura sin sincronizarlo por efecto. */}
+            {modalActivo !== null ? (
+                <TesoreriaMovimientoModal
+                    key={modalActivo}
+                    modo={modalActivo === 'egreso' ? 'egreso' : 'ingreso'}
                 cuentasBancarias={cuentasBancariasCatalogo}
                 cuentasContables={cuentasContablesCatalogo}
                 centrosCosto={centrosCostoCatalogo}
                 enviando={enviandoMovimiento}
                 error={errorMovimiento}
-                onCerrar={() => setModalActivo(null)}
-                onEnviar={onEnviarMovimiento}
-            />
+                    onCerrar={() => setModalActivo(null)}
+                    onEnviar={onEnviarMovimiento}
+                />
+            ) : null}
         </main>
     );
 }

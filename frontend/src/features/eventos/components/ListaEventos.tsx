@@ -193,7 +193,9 @@ export default function ListaEventos() {
                 </div>
             )}
 
-            <EventoUpsertModal mode="create" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            {isModalOpen ? (
+                <EventoUpsertModal mode="create" onClose={() => setIsModalOpen(false)} />
+            ) : null}
         </>
     );
 }

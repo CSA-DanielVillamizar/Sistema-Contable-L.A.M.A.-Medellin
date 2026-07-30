@@ -4,11 +4,10 @@ import { useActualizarMiembro } from '@/features/miembros/hooks/useActualizarMie
 import { useCrearMiembro } from '@/features/miembros/hooks/useCrearMiembro';
 import { gruposSanguineosOptions, mapGrupoSanguineoToValue, mapRangoClubToValue, rangosClubOptions } from '@/features/miembros/schemas/miembroSchema';
 import type { ActualizarMiembroPayload, CrearMiembroPayload, Miembro } from '@/features/miembros/services/miembrosService';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 type MiembroUpsertModalProps = {
     mode: 'create' | 'edit';
-    isOpen: boolean;
     miembro: Miembro | null;
     onClose: () => void;
 };
@@ -69,33 +68,20 @@ function toFormState(miembro: Miembro): FormState {
     };
 }
 
-export default function MiembroUpsertModal({ mode, isOpen, miembro, onClose }: MiembroUpsertModalProps) {
+/**
+ * El estado inicial se resuelve en el montaje: la pagina monta y desmonta este
+ * modal, y le pasa una `key` por miembro. Sincronizarlo con un efecto obligaba
+ * a un render intermedio con los datos del miembro anterior.
+ */
+export default function MiembroUpsertModal({ mode, miembro, onClose }: MiembroUpsertModalProps) {
     const crearMiembro = useCrearMiembro();
     const actualizarMiembro = useActualizarMiembro();
-    const [formData, setFormData] = useState<FormState>(defaultFormState);
-
-    useEffect(() => {
-        if (!isOpen) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
-            setFormData(defaultFormState);
-            return;
-        }
-
-        if (mode === 'edit' && miembro) {
-            setFormData(toFormState(miembro));
-            return;
-        }
-
-        setFormData(defaultFormState);
-    }, [isOpen, miembro, mode]);
-
-    if (!isOpen) {
-        return null;
-    }
+    const [formData, setFormData] = useState<FormState>(() =>
+        mode === 'edit' && miembro ? toFormState(miembro) : defaultFormState,
+    );
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target as HTMLInputElement;
-        const boolFields = ['esActivo'];
         const numFields = ['tipoSangre', 'cilindraje', 'rango'];
 
         setFormData((prev) => ({

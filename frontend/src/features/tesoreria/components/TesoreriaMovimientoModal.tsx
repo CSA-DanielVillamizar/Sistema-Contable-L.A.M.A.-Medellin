@@ -1,7 +1,7 @@
 'use client';
 
 import { MEDIOS_PAGO, MEDIO_PAGO_POR_DEFECTO } from '@/lib/mediosPago';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export type TesoreriaCatalogItem = {
     id: string;
@@ -20,7 +20,6 @@ export type TesoreriaMovimientoFormValues = {
 
 type TesoreriaMovimientoModalProps = {
     modo: 'ingreso' | 'egreso';
-    abierto: boolean;
     cuentasBancarias: TesoreriaCatalogItem[];
     cuentasContables: TesoreriaCatalogItem[];
     centrosCosto: TesoreriaCatalogItem[];
@@ -34,25 +33,34 @@ function getFechaActual(): string {
     return new Date().toISOString().slice(0, 10);
 }
 
-function buildInitialValues(
-    cuentasBancarias: TesoreriaCatalogItem[],
-    cuentasContables: TesoreriaCatalogItem[],
-    centrosCosto: TesoreriaCatalogItem[],
-): TesoreriaMovimientoFormValues {
+function buildInitialValues(): TesoreriaMovimientoFormValues {
     return {
         fecha: getFechaActual(),
         monto: '',
         concepto: '',
-        bancoId: cuentasBancarias[0]?.id ?? '',
+        bancoId: '',
         medioPago: String(MEDIO_PAGO_POR_DEFECTO),
-        cuentaContableId: cuentasContables[0]?.id ?? '',
-        centroCostoId: centrosCosto[0]?.id ?? '',
+        cuentaContableId: '',
+        centroCostoId: '',
     };
+}
+
+/**
+ * Valor efectivo de un desplegable alimentado por catalogo.
+ *
+ * Los catalogos llegan por red y pueden hacerlo despues de abrir el modal, o
+ * refrescarse mientras esta abierto. Antes la preseleccion se guardaba en el
+ * estado desde un efecto que dependia de los tres catalogos: cada refresco lo
+ * volvia a ejecutar y borraba lo que el usuario llevara escrito. Resolviendola
+ * en el render, la preseleccion aparece cuando el catalogo carga y la eleccion
+ * del usuario, una vez hecha, ya no se pisa.
+ */
+function valorEfectivo(seleccionado: string, catalogo: TesoreriaCatalogItem[]): string {
+    return seleccionado || catalogo[0]?.id || '';
 }
 
 export default function TesoreriaMovimientoModal({
     modo,
-    abierto,
     cuentasBancarias,
     cuentasContables,
     centrosCosto,
@@ -61,24 +69,17 @@ export default function TesoreriaMovimientoModal({
     onCerrar,
     onEnviar,
 }: TesoreriaMovimientoModalProps) {
-    const [values, setValues] = useState<TesoreriaMovimientoFormValues>(() =>
-        buildInitialValues(cuentasBancarias, cuentasContables, centrosCosto),
-    );
+    const [values, setValues] = useState<TesoreriaMovimientoFormValues>(buildInitialValues);
     const [validationError, setValidationError] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (!abierto) {
-            return;
-        }
-
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
-        setValues(buildInitialValues(cuentasBancarias, cuentasContables, centrosCosto));
-        setValidationError(null);
-    }, [abierto, cuentasBancarias, cuentasContables, centrosCosto, modo]);
-
-    if (!abierto) {
-        return null;
-    }
+    // Lo que se muestra y lo que se envia: el estado manda, y el catalogo solo
+    // aporta la preseleccion mientras el usuario no haya elegido.
+    const valoresEfectivos: TesoreriaMovimientoFormValues = {
+        ...values,
+        bancoId: valorEfectivo(values.bancoId, cuentasBancarias),
+        cuentaContableId: valorEfectivo(values.cuentaContableId, cuentasContables),
+        centroCostoId: valorEfectivo(values.centroCostoId, centrosCosto),
+    };
 
     const titulo = modo === 'ingreso' ? 'Registrar Ingreso' : 'Registrar Egreso';
     const accion = modo === 'ingreso' ? 'Registrar ingreso' : 'Registrar egreso';
@@ -91,19 +92,21 @@ export default function TesoreriaMovimientoModal({
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (!values.fecha || !values.monto || !values.concepto.trim() || !values.bancoId || !values.cuentaContableId || !values.centroCostoId || !values.medioPago) {
+        const v = valoresEfectivos;
+
+        if (!v.fecha || !v.monto || !v.concepto.trim() || !v.bancoId || !v.cuentaContableId || !v.centroCostoId || !v.medioPago) {
             setValidationError('Todos los campos son obligatorios para registrar el movimiento.');
             return;
         }
 
-        const montoNumero = Number(values.monto);
+        const montoNumero = Number(v.monto);
         if (!Number.isFinite(montoNumero) || montoNumero <= 0) {
             setValidationError('El monto debe ser un valor numérico mayor a cero.');
             return;
         }
 
         setValidationError(null);
-        await onEnviar(values);
+        await onEnviar(v);
     };
 
     return (
@@ -162,7 +165,7 @@ export default function TesoreriaMovimientoModal({
                     <div>
                         <label className="mb-1 block text-sm font-medium text-slate-700">Cuenta bancaria</label>
                         <select
-                            value={values.bancoId}
+                            value={valoresEfectivos.bancoId}
                             onChange={(event) => onChange('bancoId', event.target.value)}
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
                         >
@@ -178,7 +181,7 @@ export default function TesoreriaMovimientoModal({
                     <div>
                         <label className="mb-1 block text-sm font-medium text-slate-700">Cuenta contable</label>
                         <select
-                            value={values.cuentaContableId}
+                            value={valoresEfectivos.cuentaContableId}
                             onChange={(event) => onChange('cuentaContableId', event.target.value)}
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
                         >
@@ -209,7 +212,7 @@ export default function TesoreriaMovimientoModal({
                     <div className="md:col-span-2">
                         <label className="mb-1 block text-sm font-medium text-slate-700">Centro de costo</label>
                         <select
-                            value={values.centroCostoId}
+                            value={valoresEfectivos.centroCostoId}
                             onChange={(event) => onChange('centroCostoId', event.target.value)}
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900"
                         >

@@ -3,13 +3,12 @@
 import { useActualizarEvento } from '@/features/eventos/hooks/useActualizarEvento';
 import { useCrearEvento } from '@/features/eventos/hooks/useCrearEvento';
 import type { EventoDetalleDto } from '@/features/eventos/services/eventosService';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 
 type EventoUpsertMode = 'create' | 'edit';
 
 type EventoUpsertModalProps = {
     mode: EventoUpsertMode;
-    isOpen: boolean;
     onClose: () => void;
     evento?: EventoDetalleDto | null;
 };
@@ -89,25 +88,16 @@ function inputClassName(): string {
     return 'w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-red-100 focus:border-red-500 focus:ring-2';
 }
 
-export default function EventoUpsertModal({ mode, isOpen, onClose, evento = null }: EventoUpsertModalProps) {
+/**
+ * El formulario arranca con el evento recibido, resuelto en el montaje. Quien
+ * abre el modal lo monta y lo desmonta; sincronizar el estado con un efecto
+ * obligaba a un render intermedio con los datos del evento anterior.
+ */
+export default function EventoUpsertModal({ mode, onClose, evento = null }: EventoUpsertModalProps) {
     const crearEvento = useCrearEvento();
     const actualizarEvento = useActualizarEvento();
     const [error, setError] = useState<string>('');
-    const [formData, setFormData] = useState<FormState>(getInitialFormState(mode, evento));
-
-    useEffect(() => {
-        if (!isOpen) {
-            return;
-        }
-
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
-        setError('');
-        setFormData(getInitialFormState(mode, evento));
-    }, [mode, evento, isOpen]);
-
-    if (!isOpen) {
-        return null;
-    }
+    const [formData, setFormData] = useState<FormState>(() => getInitialFormState(mode, evento));
 
     const isPending = crearEvento.isPending || actualizarEvento.isPending;
 

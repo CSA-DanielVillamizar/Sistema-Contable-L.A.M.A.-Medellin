@@ -237,12 +237,14 @@ export default function DetalleEvento({ eventoId }: DetalleEventoProps) {
                 )}
             </section>
 
-            <EventoUpsertModal
-                mode="edit"
-                isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
-                evento={evento}
-            />
+            {isEditModalOpen ? (
+                <EventoUpsertModal
+                    key={evento?.id ?? 'nuevo'}
+                    mode="edit"
+                    onClose={() => setIsEditModalOpen(false)}
+                    evento={evento}
+                />
+            ) : null}
         </div>
     );
 }
