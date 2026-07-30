@@ -43,6 +43,21 @@ public sealed class CuentaPorPagar : BaseEntity
     public decimal SaldoPendiente { get; private set; }
     public EstadoCuentaPorPagar Estado { get; private set; }
 
+    /// <summary>
+    /// Valor en USD cuando la obligacion se pacto en esa moneda (historia
+    /// 1-17). Nulo para las obligaciones en pesos, que son la mayoria.
+    /// </summary>
+    public decimal? ValorUSD { get; private set; }
+
+    /// <summary>
+    /// Tasa a la que se reconocio la obligacion. Es la que fija el valor en
+    /// pesos del pasivo; al pagar, la diferencia contra la tasa de liquidacion
+    /// es lo que produce la ganancia o la perdida en cambio.
+    /// </summary>
+    public decimal? TasaCambioReconocida { get; private set; }
+
+    public bool EsEnMonedaExtranjera => ValorUSD.HasValue && TasaCambioReconocida.HasValue;
+
     public CuentaContable? CuentaContableGasto { get; private set; }
     public CentroCosto? CentroCosto { get; private set; }
 
@@ -59,7 +74,9 @@ public sealed class CuentaPorPagar : BaseEntity
         Guid centroCostoId,
         DateOnly fechaEmision,
         DateOnly fechaVencimiento,
-        decimal valorTotal)
+        decimal valorTotal,
+        decimal? valorUSD = null,
+        decimal? tasaCambioReconocida = null)
     {
         if (string.IsNullOrWhiteSpace(nombreProveedor))
         {
@@ -119,9 +136,60 @@ public sealed class CuentaPorPagar : BaseEntity
         CentroCostoId = centroCostoId;
         FechaEmision = fechaEmision;
         FechaVencimiento = fechaVencimiento;
+        // Una obligacion en USD necesita ambos datos: el valor y la tasa a la
+        // que se reconocio. Con uno solo no hay forma de calcular despues la
+        // diferencia en cambio.
+        if (valorUSD.HasValue != tasaCambioReconocida.HasValue)
+        {
+            throw new ReglaNegocioException(
+                "Una obligacion en USD exige valor en USD y tasa de reconocimiento; deben ir juntos.");
+        }
+
+        if (valorUSD is <= 0)
+        {
+            throw new ReglaNegocioException("ValorUSD debe ser mayor a cero.");
+        }
+
+        if (tasaCambioReconocida is <= 0)
+        {
+            throw new ReglaNegocioException("TasaCambioReconocida debe ser mayor a cero.");
+        }
+
         ValorTotal = valorTotal;
         SaldoPendiente = valorTotal;
         Estado = EstadoCuentaPorPagar.Pendiente;
+        ValorUSD = valorUSD;
+        TasaCambioReconocida = tasaCambioReconocida;
+    }
+
+    /// <summary>
+    /// Diferencia en cambio de un pago (historia 1-17).
+    ///
+    /// Positiva es perdida: se entregaron mas pesos de los que el pasivo tenia
+    /// reconocidos. Negativa es ganancia. Devuelve cero si la obligacion no es
+    /// en moneda extranjera o si las tasas coinciden.
+    /// </summary>
+    public decimal CalcularDiferenciaEnCambio(decimal montoUSDPagado, decimal tasaLiquidacion)
+    {
+        if (!EsEnMonedaExtranjera)
+        {
+            return 0m;
+        }
+
+        if (montoUSDPagado <= 0)
+        {
+            throw new ReglaNegocioException("El monto en USD debe ser mayor a cero.");
+        }
+
+        if (tasaLiquidacion <= 0)
+        {
+            throw new ReglaNegocioException("La tasa de liquidacion debe ser mayor a cero.");
+        }
+
+        var copLiquidacion = montoUSDPagado * tasaLiquidacion;
+        var copReconocido = montoUSDPagado * TasaCambioReconocida!.Value;
+
+        return decimal.Round(copLiquidacion - copReconocido, 2);
     }
 
     /// <summary>

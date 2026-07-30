@@ -47,6 +47,15 @@ public sealed class CuentaPorPagarConfiguration : IEntityTypeConfiguration<Cuent
         builder.Property(c => c.Estado)
             .IsRequired();
 
+        // Nulos para las obligaciones en pesos, que son la mayoria.
+        builder.Property(c => c.ValorUSD)
+            .HasColumnType("decimal(18,2)");
+
+        builder.Property(c => c.TasaCambioReconocida)
+            .HasColumnType("decimal(18,4)");
+
+        builder.Ignore(c => c.EsEnMonedaExtranjera);
+
         builder.HasOne(c => c.CuentaContableGasto)
             .WithMany()
             .HasForeignKey(c => c.CuentaContableGastoId)

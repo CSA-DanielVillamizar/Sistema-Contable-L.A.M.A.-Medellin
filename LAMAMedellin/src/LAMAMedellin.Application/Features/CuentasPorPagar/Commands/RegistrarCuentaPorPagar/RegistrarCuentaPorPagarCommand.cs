@@ -16,4 +16,8 @@ public sealed record RegistrarCuentaPorPagarCommand(
     Guid CentroCostoId,
     DateOnly FechaEmision,
     DateOnly FechaVencimiento,
-    decimal ValorTotal) : IRequest<Guid>;
+    decimal ValorTotal,
+    /// <summary>Valor pactado en USD, si la obligacion no es en pesos.</summary>
+    decimal? ValorUSD = null,
+    /// <summary>Tasa con la que se reconocio el pasivo en pesos.</summary>
+    decimal? TasaCambioReconocida = null) : IRequest<Guid>;

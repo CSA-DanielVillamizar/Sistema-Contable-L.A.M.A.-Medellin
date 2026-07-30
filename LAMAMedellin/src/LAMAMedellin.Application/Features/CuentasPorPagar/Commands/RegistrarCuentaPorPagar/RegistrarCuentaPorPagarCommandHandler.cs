@@ -49,7 +49,9 @@ public sealed class RegistrarCuentaPorPagarCommandHandler(
             request.CentroCostoId,
             request.FechaEmision,
             request.FechaVencimiento,
-            request.ValorTotal);
+            request.ValorTotal,
+            request.ValorUSD,
+            request.TasaCambioReconocida);
 
         await cuentaPorPagarRepository.AddAsync(cuenta, cancellationToken);
         await cuentaPorPagarRepository.SaveChangesAsync(cancellationToken);

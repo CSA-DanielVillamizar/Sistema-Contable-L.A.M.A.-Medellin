@@ -11,4 +11,8 @@ public sealed record PagarCuentaPorPagarCommand(
     Guid CuentaPorPagarId,
     decimal Monto,
     Guid BancoId,
-    MedioPago MedioPago) : IRequest;
+    MedioPago MedioPago,
+    /// <summary>Solo para obligaciones en USD: cuantos dolares se liquidaron.</summary>
+    decimal? MontoUSD = null,
+    /// <summary>Tasa a la que se liquido. Frente a la reconocida produce la diferencia.</summary>
+    decimal? TasaCambioLiquidacion = null) : IRequest;
