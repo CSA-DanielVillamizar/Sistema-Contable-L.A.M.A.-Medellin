@@ -138,14 +138,17 @@ public sealed class MatrizPermisosTests(FabricaApiPruebas fabrica) : IClassFixtu
         var sinRol = typeof(Program).Assembly
             .GetTypes()
             .Where(t => t.Name.EndsWith("Controller", StringComparison.Ordinal) && !t.IsAbstract)
-            .Where(t => t.Name != "EstadoController")
+            // EstadoController es el health check anonimo. UsuariosController
+            // declara el rol por accion y no a nivel de clase, porque el
+            // endpoint de arranque debe alcanzarse sin rol: es el unico camino
+            // para conseguir el primero.
+            .Where(t => t.Name is not "EstadoController" and not "UsuariosController")
             .Where(t => t.GetCustomAttributes(typeof(Microsoft.AspNetCore.Authorization.AuthorizeAttribute), true)
                 .Cast<Microsoft.AspNetCore.Authorization.AuthorizeAttribute>()
                 .All(a => string.IsNullOrWhiteSpace(a.Roles)))
             .Select(t => t.Name)
             .ToList();
 
-        // EstadoController queda fuera a proposito: es el health check anonimo.
         sinRol.Should().BeEmpty(
             "cada controlador debe declarar su fila de la matriz; sin rol, basta con estar autenticado");
     }
