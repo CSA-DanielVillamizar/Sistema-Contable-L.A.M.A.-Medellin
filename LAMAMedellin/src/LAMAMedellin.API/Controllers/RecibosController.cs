@@ -67,10 +67,13 @@ public sealed class RecibosController(
 
     private string ConstruirUrlVerificacion(string numeroConsecutivo)
     {
+        // Apunta a la pagina de verificacion, no al endpoint JSON: quien
+        // escanea el QR con el movil debe ver algo legible, no un objeto crudo.
+        //
         // La base es configurable porque el recibo se imprime y el enlace tiene
         // que seguir sirviendo desde fuera de la red del capitulo.
         var baseUrl = configuration["Recibos:UrlVerificacionBase"]
-            ?? $"{Request.Scheme}://{Request.Host}/api/recibos/verificar";
+            ?? "http://localhost:3000/verificar";
 
         return $"{baseUrl.TrimEnd('/')}/{numeroConsecutivo}";
     }

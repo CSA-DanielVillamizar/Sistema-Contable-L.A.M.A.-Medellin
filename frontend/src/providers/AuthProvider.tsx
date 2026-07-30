@@ -2,6 +2,7 @@
 
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { apiScope, msalInstance } from '@/lib/msalClient';
 import apiClient from '@/lib/apiClient';
@@ -46,12 +47,35 @@ type AuthProviderProps = {
     children: React.ReactNode;
 };
 
+/**
+ * Rutas que se sirven sin sesion.
+ *
+ * Hoy solo la verificacion de recibos: es a donde apunta el codigo QR, y quien
+ * recibe un recibo impreso no tiene cuenta en el sistema. Forzarle un login
+ * convertiria la verificacion en algo que solo los propios miembros pueden
+ * hacer, que es justo lo contrario de para que sirve.
+ */
+const RUTAS_PUBLICAS = ['/verificar'];
+
+function esRutaPublica(pathname: string | null): boolean {
+    return Boolean(pathname) && RUTAS_PUBLICAS.some((r) => pathname!.startsWith(r));
+}
+
 function TokenSync({ children }: AuthProviderProps) {
     const { instance, accounts, inProgress } = useMsal();
-    const [isAuthReady, setIsAuthReady] = useState(false);
+    const [sesionResuelta, setSesionResuelta] = useState(false);
     const hasTriggeredRedirectRef = useRef(false);
+    const pathname = usePathname();
+    const rutaPublica = esRutaPublica(pathname);
+
+    // Una ruta publica no espera a MSAL: no hay sesion que resolver.
+    const isAuthReady = rutaPublica || sesionResuelta;
 
     useEffect(() => {
+        if (rutaPublica) {
+            return;
+        }
+
         if (inProgress !== 'none') {
             return;
         }
@@ -137,7 +161,7 @@ function TokenSync({ children }: AuthProviderProps) {
                 hasTriggeredRedirectRef.current = false;
                 sessionStorage.setItem(authReadyKey, '1');
                 setLastAuthError(errorMessage);
-                setIsAuthReady(true);
+                setSesionResuelta(true);
             }
         };
 
@@ -152,7 +176,7 @@ function TokenSync({ children }: AuthProviderProps) {
             sessionStorage.setItem(authReadyKey, '1');
             sessionStorage.removeItem(authRetryKey);
             clearAuthError();
-            setIsAuthReady(true);
+            setSesionResuelta(true);
         };
 
         const ensureToken = async () => {
@@ -176,14 +200,14 @@ function TokenSync({ children }: AuthProviderProps) {
                     hasTriggeredRedirectRef.current = false;
                     sessionStorage.setItem(authReadyKey, '1');
                     setLastAuthError(callbackError);
-                    setIsAuthReady(true);
+                    setSesionResuelta(true);
                     return;
                 }
 
                 if (sessionStorage.getItem(redirectInFlightKey) === '1' || isHandlingAuthCallback()) {
                     sessionStorage.setItem(authReadyKey, '1');
                     notifyTokenStateChanged();
-                    setIsAuthReady(true);
+                    setSesionResuelta(true);
                     return;
                 }
 
@@ -216,7 +240,7 @@ function TokenSync({ children }: AuthProviderProps) {
                     if (sessionStorage.getItem(redirectInFlightKey) === '1' || isHandlingAuthCallback()) {
                         sessionStorage.setItem(authReadyKey, '1');
                         notifyTokenStateChanged();
-                        setIsAuthReady(true);
+                        setSesionResuelta(true);
                         return;
                     }
 
@@ -248,7 +272,7 @@ function TokenSync({ children }: AuthProviderProps) {
                 sessionStorage.setItem(authReadyKey, '1');
                 setLastAuthError(errorMessage);
                 notifyTokenStateChanged();
-                setIsAuthReady(true);
+                setSesionResuelta(true);
             }
         };
 
@@ -266,7 +290,7 @@ function TokenSync({ children }: AuthProviderProps) {
         return () => {
             window.removeEventListener(authManualLoginEvent, onManualLoginRequest);
         };
-    }, [accounts, inProgress, instance]);
+    }, [accounts, inProgress, instance, rutaPublica]);
 
     if (!isAuthReady) {
         return <div className="p-6 text-sm text-slate-600">Autenticando sesión...</div>;
