@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -53,12 +54,23 @@ public sealed class FabricaApiPruebas : WebApplicationFactory<Program>
     /// </summary>
     public const string CabeceraRoles = "X-Roles-Prueba";
 
+    /// <summary>Correo que las pruebas declaran como administrador inicial.</summary>
+    public const string CorreoAdministradorDeclarado = "admin.declarado@lamamedellin.org";
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // Cualquier entorno distinto de Development evita que Program aplique
         // migraciones contra SQL Server al arrancar. La siembra se hace aqui,
         // de forma explicita y contra la base en memoria.
         builder.UseEnvironment("Testing");
+
+        // Los administradores iniciales se leen de configuracion, no del
+        // codigo; las pruebas declaran el suyo igual que lo haria un despliegue.
+        builder.ConfigureAppConfiguration(config =>
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["Seguridad:AdministradoresIniciales:0"] = CorreoAdministradorDeclarado,
+            }));
 
         builder.ConfigureServices(services =>
         {

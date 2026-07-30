@@ -1,11 +1,14 @@
 using LAMAMedellin.Application.Common.Interfaces.Repositories;
+using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Domain.Entities;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
 
 namespace LAMAMedellin.Application.Features.Usuarios.Commands.SyncUsuario;
 
-public sealed class SyncUsuarioCommandHandler(IUsuarioRepository usuarioRepository)
+public sealed class SyncUsuarioCommandHandler(
+    IUsuarioRepository usuarioRepository,
+    IConfiguracionSeguridad configuracionSeguridad)
     : IRequestHandler<SyncUsuarioCommand, SyncUsuarioResponseDto>
 {
     public async Task<SyncUsuarioResponseDto> Handle(SyncUsuarioCommand request, CancellationToken cancellationToken)
@@ -17,20 +20,22 @@ public sealed class SyncUsuarioCommandHandler(IUsuarioRepository usuarioReposito
             return new SyncUsuarioResponseDto(usuario.Id, usuario.Rol.ToString());
         }
 
-        // Arranque del sistema: con la tabla vacia no existe ningun Admin que
-        // pueda repartir roles, de modo que el primero en entrar lo recibe. Es
-        // una puerta que se cierra sola: en cuanto hay un usuario, el siguiente
-        // entra con el rol mas bajo y depende de que alguien lo promueva.
-        //
-        // Sin esto, aplicar la matriz de permisos dejaba la aplicacion
-        // inaccesible para todos, porque hacia falta rol para cualquier cosa y
-        // no habia forma de conseguir el primero.
+        // Quien administra se declara en la configuracion del entorno, no en el
+        // codigo: el cargo cambia de persona con el tiempo y tener nombres
+        // propios compilados obligaria a un despliegue cada vez.
+        var esAdministradorDeclarado = configuracionSeguridad.EsAdministradorInicial(request.Email);
+
+        // Red de seguridad para cuando nadie configuro la lista: con la tabla
+        // vacia no existe ningun Admin que pueda repartir roles, asi que el
+        // primero en entrar lo recibe. Es una puerta que se cierra sola, y sin
+        // ella aplicar la matriz de permisos dejaba la aplicacion inaccesible
+        // para todos.
         var esPrimerUsuario = (await usuarioRepository.GetAllAsync(cancellationToken)).Count == 0;
 
         usuario = new Usuario(
             request.Email,
             request.EntraObjectId,
-            esPrimerUsuario ? RolSistema.Admin : RolSistema.Logistica,
+            esAdministradorDeclarado || esPrimerUsuario ? RolSistema.Admin : RolSistema.Logistica,
             true,
             null);
 

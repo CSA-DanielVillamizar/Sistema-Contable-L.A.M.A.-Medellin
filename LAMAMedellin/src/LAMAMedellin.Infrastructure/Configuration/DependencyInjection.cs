@@ -139,6 +139,7 @@ public static class DependencyInjection
         services.AddScoped<IDonanteRepository, DonanteRepository>();
         services.AddScoped<IDonacionRepository, DonacionRepository>();
         services.AddScoped<ICertificadoDonacionService, CertificadoDonacionService>();
+        services.AddSingleton<IConfiguracionSeguridad, ConfiguracionSeguridad>();
         services.AddScoped<IReciboService, ReciboService>();
         services.AddScoped<ITransactionManager, TransactionManager>();
         services.AddScoped<IGeneradorConsecutivos, GeneradorConsecutivos>();

@@ -107,5 +107,29 @@ public sealed class ArranqueDeUsuariosTests(FabricaApiPruebas fabrica) : IClassF
         respuesta.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
+    [Fact]
+    public async Task Un_correo_declarado_en_configuracion_recibe_Admin_aunque_no_sea_el_primero()
+    {
+        using var propia = new FabricaApiPruebas();
+        await propia.PrepararBaseAsync();
+        var cliente = propia.CreateClient();
+
+        // Alguien entra antes y agota la regla del primer usuario.
+        await cliente.PostAsJsonAsync(Ruta, Perfil("ocupa"));
+
+        var respuesta = await cliente.PostAsJsonAsync(Ruta, new
+        {
+            email = FabricaApiPruebas.CorreoAdministradorDeclarado,
+            entraObjectId = "oid-declarado",
+            nombres = "Administrador declarado",
+        });
+
+        var creado = await respuesta.Content.ReadFromJsonAsync<SyncRespuesta>();
+
+        // Quien administra se declara en configuracion, no depende del orden de
+        // llegada ni queda escrito en el codigo.
+        creado!.Rol.Should().Be("Admin");
+    }
+
     private sealed record SyncRespuesta(Guid Id, string Rol);
 }
