@@ -104,6 +104,25 @@ public sealed class LibrosContablesRepository(LamaDbContext dbContext) : ILibros
         return (totales?.Debe ?? 0m, totales?.Haber ?? 0m);
     }
 
+    public async Task<decimal> GetEjecutadoPorCentroCostoAsync(
+        Guid centroCostoId,
+        CancellationToken cancellationToken = default)
+    {
+        // Solo comprobantes asentados y solo cuentas de gasto (5) y costo (6):
+        // un ingreso imputado al mismo centro no es ejecucion del proyecto.
+        var movimientos = await dbContext.AsientosContables
+            .Include(a => a.Comprobante)
+            .Include(a => a.CuentaContable)
+            .Where(a => a.CentroCostoId == centroCostoId)
+            .Where(a => a.Comprobante!.EstadoComprobante == EstadoComprobante.Asentado)
+            .Where(a => a.CuentaContable!.Codigo.StartsWith("5") || a.CuentaContable!.Codigo.StartsWith("6"))
+            .Select(a => new { a.Debe, a.Haber })
+            .ToListAsync(cancellationToken);
+
+        // Los creditos sobre una cuenta de gasto son devoluciones y restan.
+        return movimientos.Sum(m => m.Debe) - movimientos.Sum(m => m.Haber);
+    }
+
     public async Task<IReadOnlyList<SaldoCuentaBalanceDto>> GetBalancePruebaAsync(
         int anio,
         int mes,

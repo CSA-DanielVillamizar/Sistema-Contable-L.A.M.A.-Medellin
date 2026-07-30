@@ -29,6 +29,7 @@ public sealed class LamaDbContext(
     public DbSet<Donante> Donantes => Set<Donante>();
     public DbSet<ProyectoSocial> ProyectosSociales => Set<ProyectoSocial>();
     public DbSet<Beneficiario> Beneficiarios => Set<Beneficiario>();
+    public DbSet<ActividadProyecto> ActividadesProyecto => Set<ActividadProyecto>();
     public DbSet<Miembro> Miembros => Set<Miembro>();
     public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<Evento> Eventos => Set<Evento>();

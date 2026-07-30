@@ -133,6 +133,7 @@ public static class DependencyInjection
         services.AddScoped<IMapeoContableRepository, MapeoContableRepository>();
         services.AddScoped<ISolicitudAnulacionRepository, SolicitudAnulacionRepository>();
         services.AddScoped<ICampanaDonacionRepository, CampanaDonacionRepository>();
+        services.AddScoped<IActividadProyectoRepository, ActividadProyectoRepository>();
         services.AddScoped<IConceptoCobroRepository, ConceptoCobroRepository>();
         services.AddScoped<ICuentaContableRepository, CuentaContableRepository>();
         services.AddScoped<IDonanteRepository, DonanteRepository>();
