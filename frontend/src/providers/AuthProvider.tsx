@@ -4,6 +4,37 @@ import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
 import { useEffect, useRef, useState } from 'react';
 import { apiScope, msalInstance } from '@/lib/msalClient';
+import apiClient from '@/lib/apiClient';
+import type { AccountInfo } from '@azure/msal-browser';
+
+/**
+ * Crea el perfil interno del usuario si aun no existe.
+ *
+ * Sin perfil, la transformacion de claims no concede ningun rol y la matriz de
+ * permisos responde 403 en toda la aplicacion. El endpoint es idempotente: si
+ * el perfil ya esta, devuelve el existente sin tocarlo.
+ *
+ * Un fallo aqui no bloquea el arranque: el usuario vera los 403 de la API, que
+ * es mas util que dejarlo mirando una pantalla en blanco sin explicacion.
+ */
+async function sincronizarPerfilInterno(cuenta: AccountInfo): Promise<void> {
+    const entraObjectId = (cuenta.idTokenClaims as { oid?: string } | undefined)?.oid
+        ?? cuenta.localAccountId;
+
+    if (!entraObjectId) {
+        return;
+    }
+
+    try {
+        await apiClient.post('/api/usuarios/sync', {
+            email: cuenta.username,
+            entraObjectId,
+            nombres: cuenta.name ?? cuenta.username,
+        });
+    } catch {
+        // Silencioso a proposito: ver arriba.
+    }
+}
 
 const redirectInFlightKey = 'msal_redirect_in_flight';
 const authReadyKey = 'auth_ready';
@@ -172,6 +203,13 @@ function TokenSync({ children }: AuthProviderProps) {
                 });
 
                 notifyTokenStateChanged();
+
+                // El perfil interno es lo que da rol al usuario, y sin rol la
+                // API responde 403 en todas las pantallas. Se sincroniza aqui
+                // porque es el unico momento en que se sabe que la sesion
+                // sirve y quien es el usuario.
+                await sincronizarPerfilInterno(accounts[0]);
+
                 resolveReady();
             } catch (error) {
                 if (error instanceof InteractionRequiredAuthError) {
