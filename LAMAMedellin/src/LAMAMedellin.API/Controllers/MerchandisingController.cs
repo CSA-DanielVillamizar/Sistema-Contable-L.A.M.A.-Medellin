@@ -1,5 +1,6 @@
 using LAMAMedellin.Application.Features.Merchandising.Commands.ActualizarImagenProducto;
 using LAMAMedellin.Application.Features.Merchandising.Commands.CrearProducto;
+using LAMAMedellin.Application.Features.Merchandising.Queries.GetReporteInventario;
 using LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarEntradaInventario;
 using LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarVentaProducto;
 using LAMAMedellin.Application.Features.Merchandising.Queries.GetMovimientosProducto;
@@ -19,6 +20,22 @@ namespace LAMAMedellin.API.Controllers;
 [Authorize(Roles = Roles.NegociosLectura)]
 public sealed class MerchandisingController(ISender sender) : ControllerBase
 {
+    /// <summary>
+    /// Inventario, ventas y utilidad (historia 4-3). El rango filtra las
+    /// ventas; el costo promedio se calcula sobre todas las entradas
+    /// historicas, porque la mercancia vendida hoy pudo entrar el mes pasado.
+    /// </summary>
+    [HttpGet("reporte")]
+    [ProducesResponseType(typeof(ReporteInventarioDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetReporte(
+        [FromQuery] DateOnly? desde,
+        [FromQuery] DateOnly? hasta,
+        CancellationToken cancellationToken)
+    {
+        var reporte = await sender.Send(new GetReporteInventarioQuery(desde, hasta), cancellationToken);
+        return Ok(reporte);
+    }
+
     [HttpGet("productos")]
     [ProducesResponseType(typeof(List<ProductoDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProductos(CancellationToken cancellationToken)

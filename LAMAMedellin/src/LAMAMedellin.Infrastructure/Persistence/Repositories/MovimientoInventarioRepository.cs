@@ -18,6 +18,14 @@ public sealed class MovimientoInventarioRepository(LamaDbContext context) : IMov
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<MovimientoInventario>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.MovimientosInventario
+            .AsNoTracking()
+            .OrderBy(m => m.Fecha)
+            .ToListAsync(cancellationToken);
+    }
+
     public Task<MovimientoInventario?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return context.MovimientosInventario

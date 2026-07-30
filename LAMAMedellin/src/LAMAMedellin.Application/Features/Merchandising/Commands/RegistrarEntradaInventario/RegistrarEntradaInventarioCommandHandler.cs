@@ -42,7 +42,8 @@ public sealed class RegistrarEntradaInventarioCommandHandler(
                 cantidad: request.Cantidad,
                 fecha: fechaMovimiento,
                 concepto: "Entrada de inventario",
-                observaciones: request.Observaciones);
+                observaciones: request.Observaciones,
+            request.CostoUnitario);
 
             await movimientoInventarioRepository.AddAsync(movimiento, ct);
 
