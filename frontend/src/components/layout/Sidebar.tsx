@@ -14,6 +14,7 @@ import {
     ClipboardCheck,
     FileBarChart,
     FileSpreadsheet,
+    FileText,
     FolderKanban,
     HandCoins,
     Landmark,
@@ -23,6 +24,7 @@ import {
     Receipt,
     Settings,
     Shield,
+    SlidersHorizontal,
     Store,
     UserSearch,
     UsersRound,
@@ -102,6 +104,12 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Cartera',
         href: '/cartera',
         icon: <WalletCards size={20} strokeWidth={2} />,
+        grupo: 'contable',
+    },
+    {
+        label: 'Cuentas por pagar',
+        href: '/cuentas-por-pagar',
+        icon: <FileText size={20} strokeWidth={2} />,
         grupo: 'contable',
     },
     {
@@ -194,6 +202,12 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Cuentas bancarias',
         href: '/administracion/cuentas-bancarias',
         icon: <Landmark size={20} strokeWidth={2} />,
+        grupo: 'admin',
+    },
+    {
+        label: 'Parámetros de cartera',
+        href: '/administracion/parametros-cartera',
+        icon: <SlidersHorizontal size={20} strokeWidth={2} />,
         grupo: 'admin',
     },
     {

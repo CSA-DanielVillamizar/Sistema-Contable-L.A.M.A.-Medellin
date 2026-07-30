@@ -19,6 +19,7 @@ public sealed class LamaDbContext(
     public DbSet<AsientoContable> AsientosContables => Set<AsientoContable>();
     public DbSet<ConceptoCobro> ConceptosCobro => Set<ConceptoCobro>();
     public DbSet<CuentaPorCobrar> CuentasPorCobrar => Set<CuentaPorCobrar>();
+    public DbSet<CuentaPorPagar> CuentasPorPagar => Set<CuentaPorPagar>();
     public DbSet<CuotaAsamblea> CuotasAsamblea => Set<CuotaAsamblea>();
     public DbSet<TarifaCuota> TarifasCuota => Set<TarifaCuota>();
     public DbSet<Donacion> Donaciones => Set<Donacion>();
