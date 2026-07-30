@@ -1,45 +1,34 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getUserRolesFromToken, hasAnyAllowedRole } from '@/lib/authRoles';
-import { getAccessToken } from '@/lib/msalClient';
+import { useSyncExternalStore } from 'react';
+import { tieneAcceso } from '@/lib/authRoles';
+import { leerSesion, leerSesionEnServidor, suscribirseASesion } from '@/lib/sesionInterna';
 
 /**
  * Resuelve si la sesion actual tiene alguno de los roles indicados.
  *
- * Obtener el token es asincrono desde que dejo de guardarse en localStorage, asi
- * que el consumidor debe esperar a `isRoleReady` antes de decidir que renderiza;
- * de lo contrario pintaria "sin permiso" durante el primer frame.
+ * Lee los roles que AuthProvider publico al resolver la sesion. Antes decodaba
+ * el access token de Entra en cada componente, y eso no podia funcionar: el rol
+ * de la aplicacion no viaja en ese token, se guarda en la base de datos. Todo
+ * usuario salia sin roles y cada pantalla con exigencia de rol mostraba "no
+ * tienes permiso", incluido el administrador.
  *
- * Esto es solo control de UI. La autorizacion real la impone el backend con
- * [Authorize(Roles = ...)]; aqui unicamente se evita mostrar pantallas inutiles.
+ * `isRoleReady` sigue existiendo porque la sesion se resuelve despues del primer
+ * render; sin esperarla se pintaria "sin permiso" durante un instante.
+ *
+ * Esto es solo control de interfaz. La autorizacion real la impone el backend
+ * con [Authorize(Roles = ...)]; aqui unicamente se evita ofrecer pantallas que
+ * el usuario no va a poder usar.
  */
 export function useRoleAccess(allowedRoles: readonly string[]) {
-    const [canAccess, setCanAccess] = useState(false);
-    const [isRoleReady, setIsRoleReady] = useState(false);
+    const { roles, resuelta } = useSyncExternalStore(
+        suscribirseASesion,
+        leerSesion,
+        leerSesionEnServidor,
+    );
 
-    useEffect(() => {
-        let cancelado = false;
-
-        const resolverAcceso = async () => {
-            const token = await getAccessToken();
-            const roles = getUserRolesFromToken(token);
-
-            if (cancelado) {
-                return;
-            }
-
-            setCanAccess(hasAnyAllowedRole(roles, allowedRoles));
-            setIsRoleReady(true);
-        };
-
-        void resolverAcceso();
-
-        return () => {
-            cancelado = true;
-        };
-        // allowedRoles se espera como constante a nivel de modulo (referencia estable).
-    }, [allowedRoles]);
-
-    return { canAccess, isRoleReady };
+    return {
+        canAccess: resuelta && tieneAcceso(roles, allowedRoles),
+        isRoleReady: resuelta,
+    };
 }

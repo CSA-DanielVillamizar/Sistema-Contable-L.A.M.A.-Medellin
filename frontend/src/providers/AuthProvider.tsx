@@ -6,34 +6,42 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { apiScope, msalInstance } from '@/lib/msalClient';
 import apiClient from '@/lib/apiClient';
+import { getUserRolesFromToken } from '@/lib/authRoles';
+import { marcarSesionResuelta, publicarSesion } from '@/lib/sesionInterna';
 import type { AccountInfo } from '@azure/msal-browser';
 
 /**
- * Crea el perfil interno del usuario si aun no existe.
+ * Crea el perfil interno del usuario si aun no existe y devuelve su rol.
  *
  * Sin perfil, la transformacion de claims no concede ningun rol y la matriz de
  * permisos responde 403 en toda la aplicacion. El endpoint es idempotente: si
  * el perfil ya esta, devuelve el existente sin tocarlo.
  *
+ * El rol que devuelve es ademas la unica forma que tiene el frontend de saber
+ * que puede hacer el usuario: no viaja en el token de Entra.
+ *
  * Un fallo aqui no bloquea el arranque: el usuario vera los 403 de la API, que
  * es mas util que dejarlo mirando una pantalla en blanco sin explicacion.
  */
-async function sincronizarPerfilInterno(cuenta: AccountInfo): Promise<void> {
+async function sincronizarPerfilInterno(cuenta: AccountInfo): Promise<string | null> {
     const entraObjectId = (cuenta.idTokenClaims as { oid?: string } | undefined)?.oid
         ?? cuenta.localAccountId;
 
     if (!entraObjectId) {
-        return;
+        return null;
     }
 
     try {
-        await apiClient.post('/api/usuarios/sync', {
+        const { data } = await apiClient.post<{ rol?: string }>('/api/usuarios/sync', {
             email: cuenta.username,
             entraObjectId,
             nombres: cuenta.name ?? cuenta.username,
         });
+
+        return typeof data?.rol === 'string' && data.rol.length > 0 ? data.rol : null;
     } catch {
         // Silencioso a proposito: ver arriba.
+        return null;
     }
 }
 
@@ -221,7 +229,7 @@ function TokenSync({ children }: AuthProviderProps) {
                 // Se pide el token para confirmar que la sesion sirve, pero NO se
                 // persiste: a partir de aqui MSAL es el unico que lo custodia y el
                 // cliente HTTP se lo pide cuando lo necesita.
-                await instance.acquireTokenSilent({
+                const resultado = await instance.acquireTokenSilent({
                     account: accounts[0],
                     scopes: [apiScope],
                 });
@@ -232,7 +240,12 @@ function TokenSync({ children }: AuthProviderProps) {
                 // API responde 403 en todas las pantallas. Se sincroniza aqui
                 // porque es el unico momento en que se sabe que la sesion
                 // sirve y quien es el usuario.
-                await sincronizarPerfilInterno(accounts[0]);
+                const rolInterno = await sincronizarPerfilInterno(accounts[0]);
+
+                // Los roles quedan disponibles para toda la aplicacion. Es el
+                // unico punto donde se conocen: el rol de la aplicacion lo
+                // devuelve la sincronizacion, no el token.
+                publicarSesion(rolInterno, getUserRolesFromToken(resultado.accessToken));
 
                 resolveReady();
             } catch (error) {
@@ -291,6 +304,15 @@ function TokenSync({ children }: AuthProviderProps) {
             window.removeEventListener(authManualLoginEvent, onManualLoginRequest);
         };
     }, [accounts, inProgress, instance, rutaPublica]);
+
+    // La sesion se da por resuelta tambien cuando la autenticacion termino mal.
+    // Sin esto las pantallas se quedarian esperando un rol que ya no va a
+    // llegar, mostrando "cargando" para siempre en vez del error.
+    useEffect(() => {
+        if (sesionResuelta) {
+            marcarSesionResuelta();
+        }
+    }, [sesionResuelta]);
 
     if (!isAuthReady) {
         return <div className="p-6 text-sm text-slate-600">Autenticando sesión...</div>;

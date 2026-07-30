@@ -1,5 +1,11 @@
 export const TRIBUTARIO_ALLOWED_ROLES = ['Contador', 'Admin'] as const;
 
+/**
+ * Administra el sistema completo. Aparece ademas en cada lista de roles
+ * permitidos, pero no se depende de eso: ver `tieneAcceso`.
+ */
+export const ROL_ADMIN = 'Admin';
+
 type JwtPayload = {
     roles?: string[];
     role?: string | string[];
@@ -50,4 +56,31 @@ export function getUserRolesFromToken(token: string | null): string[] {
 
 export function hasAnyAllowedRole(userRoles: string[], allowedRoles: readonly string[]): boolean {
     return userRoles.some((role) => allowedRoles.includes(role));
+}
+
+/**
+ * Decide si la sesion puede ver una pantalla que exige alguno de `permitidos`.
+ *
+ * Tres reglas, en este orden:
+ *
+ * 1. Si no se pudo averiguar el rol (`null`), se deja pasar. La autorizacion de
+ *    verdad la impone el backend, que responde 403 con un mensaje explicado;
+ *    esconder la pantalla por no haber podido preguntar dejaria al usuario sin
+ *    nada que hacer y sin saber por que.
+ * 2. Admin satisface cualquier exigencia. Es la misma regla que aplica el
+ *    backend en AdminSiempreAutorizadoHandler, y esta aqui por el mismo motivo:
+ *    una pantalla nueva que olvide incluir a Admin en su lista dejaria al
+ *    administrador fuera de su propio sistema.
+ * 3. En los demas casos, basta con tener uno de los roles permitidos.
+ */
+export function tieneAcceso(roles: string[] | null, permitidos: readonly string[]): boolean {
+    if (roles === null) {
+        return true;
+    }
+
+    if (roles.includes(ROL_ADMIN)) {
+        return true;
+    }
+
+    return hasAnyAllowedRole(roles, permitidos);
 }
