@@ -25,6 +25,16 @@ public sealed class ComprobanteRepository : IComprobanteRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public Task<List<Comprobante>> GetRecientesAsync(int limite, CancellationToken cancellationToken = default)
+    {
+        return _context.Comprobantes
+            .Include(x => x.AsientosContables)
+            .OrderByDescending(x => x.Fecha)
+            .ThenByDescending(x => x.NumeroConsecutivo)
+            .Take(limite)
+            .ToListAsync(cancellationToken);
+    }
+
     public Task<Comprobante?> GetPorConsecutivoAsync(
         string numeroConsecutivo,
         CancellationToken cancellationToken = default)

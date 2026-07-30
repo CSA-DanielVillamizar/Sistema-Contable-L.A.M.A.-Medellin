@@ -211,5 +211,33 @@ public sealed class ComprobantesTests(FabricaApiPruebas fabrica) : IClassFixture
         problema.Title.Should().NotBeNullOrWhiteSpace();
     }
 
+    [Fact]
+    public async Task Los_comprobantes_se_pueden_listar()
+    {
+        var c = await PrepararAsync();
+        var cliente = fabrica.CrearCliente();
+
+        await cliente.PostAsJsonAsync(Ruta,
+            ArmarComprobante(c.CuentaConTercero, c.CuentaConTercero, c.CentroCosto, c.MiembroId, c.MiembroId));
+
+        var listado = await cliente.GetFromJsonAsync<List<ComprobanteResumen>>(Ruta);
+
+        // No habia forma de consultarlos: se creaban y ninguna pantalla podia
+        // ofrecerlos para elegir ni descargar su recibo.
+        listado.Should().NotBeNull();
+        listado!.Should().NotBeEmpty();
+        listado.Should().OnlyContain(x => !string.IsNullOrWhiteSpace(x.NumeroConsecutivo));
+        listado.Should().Contain(x => x.Total == 50000m);
+    }
+
+    private sealed record ComprobanteResumen(
+        Guid Id,
+        string NumeroConsecutivo,
+        DateTime Fecha,
+        string TipoComprobante,
+        string Descripcion,
+        string Estado,
+        decimal Total);
+
     private sealed record DetalleProblema(string? Title, string? Detail, int? Status);
 }

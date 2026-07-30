@@ -11,6 +11,9 @@ public interface IComprobanteRepository
     /// solo conoce ese numero porque es lo que lleva el QR.
     /// </summary>
     Task<Comprobante?> GetPorConsecutivoAsync(string numeroConsecutivo, CancellationToken cancellationToken = default);
+    /// <summary>Los mas recientes primero, con sus asientos para poder totalizar.</summary>
+    Task<List<Comprobante>> GetRecientesAsync(int limite, CancellationToken cancellationToken = default);
+
     Task AddAsync(Comprobante comprobante, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -3,6 +3,7 @@
 import {
     ArrowDownCircle,
     ArrowUpCircle,
+    Ban,
     Bike,
     BookMarked,
     BookOpenText,
@@ -19,9 +20,11 @@ import {
     HandCoins,
     Landmark,
     LayoutDashboard,
+    Link2,
     ListTree,
     Menu,
     Receipt,
+    ReceiptText,
     Settings,
     Shield,
     SlidersHorizontal,
@@ -92,6 +95,18 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Cierre de periodo',
         href: '/contabilidad/cierre',
         icon: <CalendarCheck size={20} strokeWidth={2} />,
+        grupo: 'contable',
+    },
+    {
+        label: 'Recibos',
+        href: '/contabilidad/recibos',
+        icon: <ReceiptText size={20} strokeWidth={2} />,
+        grupo: 'contable',
+    },
+    {
+        label: 'Anulaciones',
+        href: '/contabilidad/anulaciones',
+        icon: <Ban size={20} strokeWidth={2} />,
         grupo: 'contable',
     },
     {
@@ -202,6 +217,12 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Cuentas bancarias',
         href: '/administracion/cuentas-bancarias',
         icon: <Landmark size={20} strokeWidth={2} />,
+        grupo: 'admin',
+    },
+    {
+        label: 'Mapeo contable',
+        href: '/administracion/mapeo-contable',
+        icon: <Link2 size={20} strokeWidth={2} />,
         grupo: 'admin',
     },
     {
