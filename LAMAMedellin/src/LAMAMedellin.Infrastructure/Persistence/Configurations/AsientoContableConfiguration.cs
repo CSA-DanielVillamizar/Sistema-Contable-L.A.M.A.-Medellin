@@ -42,7 +42,9 @@ public sealed class AsientoContableConfiguration : IEntityTypeConfiguration<Asie
             .HasForeignKey(x => x.CentroCostoId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasCheckConstraint("CK_AsientoContable_DebeHaber_Exclusivo", "(([Debe] > 0 AND [Haber] = 0) OR ([Debe] = 0 AND [Haber] > 0))");
+        builder.ToTable(t => t.HasCheckConstraint(
+            "CK_AsientoContable_DebeHaber_Exclusivo",
+            "(([Debe] > 0 AND [Haber] = 0) OR ([Debe] = 0 AND [Haber] > 0))"));
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

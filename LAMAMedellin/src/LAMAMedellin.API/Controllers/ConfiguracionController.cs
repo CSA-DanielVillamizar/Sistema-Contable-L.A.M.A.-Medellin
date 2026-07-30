@@ -1,3 +1,5 @@
+using LAMAMedellin.Application.Features.Configuracion.Commands.ActualizarCentroCosto;
+using LAMAMedellin.Application.Features.Configuracion.Commands.CrearCentroCosto;
 using LAMAMedellin.Application.Features.Configuracion.CuotasAsamblea.Commands.ActualizarRenovacionMembresia;
 using LAMAMedellin.Application.Features.Configuracion.Tarifas.Commands.ActualizarTarifasCuota;
 using LAMAMedellin.Application.Features.Configuracion.Tarifas.Queries.GetTarifasCuota;
@@ -13,6 +15,33 @@ namespace LAMAMedellin.API.Controllers;
 [Authorize(Roles = "Admin")]
 public sealed class ConfiguracionController(ISender sender) : ControllerBase
 {
+    [HttpPost("centros-costo")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+    public async Task<IActionResult> CrearCentroCosto(
+        [FromBody] CrearCentroCostoCommand command,
+        CancellationToken cancellationToken)
+    {
+        var id = await sender.Send(command, cancellationToken);
+        return Created($"/api/configuracion/centros-costo/{id}", new { id });
+    }
+
+    /// <summary>
+    /// No hay baja de centros de costo: los asientos ya imputados a uno deben
+    /// conservar su imputacion, y borrarlo dejaria huerfano el historico.
+    /// </summary>
+    [HttpPut("centros-costo/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> ActualizarCentroCosto(
+        Guid id,
+        [FromBody] ActualizarCentroCostoRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(new ActualizarCentroCostoCommand(id, request.Nombre, request.Tipo), cancellationToken);
+        return NoContent();
+    }
+
+    public sealed record ActualizarCentroCostoRequest(string Nombre, TipoCentroCosto Tipo);
+
     [HttpGet("tarifas")]
     [ProducesResponseType(typeof(List<TarifaCuotaResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTarifas(CancellationToken cancellationToken)
