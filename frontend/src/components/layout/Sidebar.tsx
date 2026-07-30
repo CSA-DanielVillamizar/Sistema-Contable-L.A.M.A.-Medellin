@@ -4,6 +4,7 @@ import {
     ArrowDownCircle,
     ArrowUpCircle,
     Ban,
+    Banknote,
     Bike,
     BookMarked,
     BookOpenText,
@@ -13,18 +14,21 @@ import {
     ChevronDown,
     ChevronLeft,
     ClipboardCheck,
+    CreditCard,
     FileBarChart,
     FileSpreadsheet,
     FileText,
     FolderKanban,
     HandCoins,
+    HeartHandshake,
     Landmark,
     LayoutDashboard,
-    Megaphone,
     Link2,
     ListTree,
+    Megaphone,
     Menu,
     PackageSearch,
+    PiggyBank,
     Receipt,
     ReceiptText,
     Settings,
@@ -44,273 +48,338 @@ import { TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
 import { useRoleAccess } from '@/lib/useRoleAccess';
 
 // ---------------------------------------------------------------------------
-// Navegación principal
+// Navegacion principal
 //
-// El alcance vigente es Phase 0 + Phase 1 del backlog: configuración base,
-// contabilidad general, tesorería y cuotas con cartera. Eso ocupa el menú
-// principal.
+// El menu esta agrupado por area de trabajo, no por pantalla. Antes eran
+// diecinueve enlaces sueltos uno detras de otro: para llegar a "Cierre de
+// periodo" habia que recorrer la lista entera, y con la barra contraida los
+// nombres largos se salian del ancho. Agrupado se ve una fila por area y solo
+// se despliega aquella en la que se esta trabajando.
 //
-// Los módulos de club (eventos, proyectos, merchandising) son Phase 3+ y están
-// construidos a medias. No se ocultan: quedan agrupados en una sección
-// desplegable y separada, para dejar claro que no forman parte del núcleo
-// contable y que sus cifras se apoyan en una contabilidad que apenas está
-// completando sus controles.
+// Cada grupo corresponde a una responsabilidad distinta dentro de la fundacion:
+// quien registra movimientos no entra a contabilidad, quien cierra el periodo no
+// administra catalogos. Por eso el corte es por area y no, por ejemplo,
+// alfabetico.
 //
-// La administración de catálogos va en su propio grupo y solo se muestra a
-// Admin y Tesorero: cambiar una cuenta bancaria o su cuenta contable altera la
-// contrapartida de todos los movimientos que se registren después.
+// Tributario y Administracion ademas exigen rol. Es control de interfaz: la
+// autorizacion real la impone el backend con [Authorize(Roles = ...)]; aqui solo
+// se evita ofrecer pantallas que el usuario no va a poder usar.
 // ---------------------------------------------------------------------------
-type Grupo = 'contable' | 'transacciones' | 'tributario' | 'club' | 'admin';
-
 type NavItem = {
     label: string;
     href: string;
     icon: React.ReactNode;
-    grupo: Grupo;
 };
 
-const NAV_ITEMS: NavItem[] = [
+type Seccion = {
+    id: string;
+    titulo: string;
+    icono: React.ReactNode;
+    items: NavItem[];
+    /** Cuando esta presente, la seccion solo se muestra a estos roles. */
+    roles?: readonly string[];
+    /** Aclaracion al pie del grupo. Solo donde el alcance no es evidente. */
+    nota?: string;
+};
+
+/** Enlaces que no pertenecen a ningun area: se entra a ellos desde cualquiera. */
+const NAV_SUELTOS: NavItem[] = [
     {
         label: 'Dashboard',
         href: '/',
         icon: <LayoutDashboard size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Contabilidad',
-        href: '/contabilidad/comprobantes',
-        icon: <BookOpenText size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Plan de cuentas',
-        href: '/contabilidad/cuentas',
-        icon: <ListTree size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Libros contables',
-        href: '/contabilidad/libros',
-        icon: <BookMarked size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Cierre de periodo',
-        href: '/contabilidad/cierre',
-        icon: <CalendarCheck size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Recibos',
-        href: '/contabilidad/recibos',
-        icon: <ReceiptText size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Anulaciones',
-        href: '/contabilidad/anulaciones',
-        icon: <Ban size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Tesorería',
-        href: '/tesoreria',
-        icon: <Wallet size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Cartera',
-        href: '/cartera',
-        icon: <WalletCards size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Cuentas por pagar',
-        href: '/cuentas-por-pagar',
-        icon: <FileText size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Donaciones',
-        href: '/donaciones',
-        icon: <HandCoins size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Campañas',
-        href: '/donaciones/campanas',
-        icon: <Megaphone size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Miembros',
-        href: '/miembros',
-        icon: <UsersRound size={20} strokeWidth={2} />,
-        grupo: 'contable',
     },
     {
         label: 'Reportes',
         href: '/reportes',
         icon: <FileBarChart size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-    {
-        label: 'Seguridad',
-        href: '/seguridad',
-        icon: <Shield size={20} strokeWidth={2} />,
-        grupo: 'contable',
-    },
-
-    // --- Transacciones: registro directo de movimientos ---
-    {
-        label: 'Registrar ingreso',
-        href: '/transacciones/ingreso',
-        icon: <ArrowDownCircle size={20} strokeWidth={2} />,
-        grupo: 'transacciones',
-    },
-    {
-        label: 'Registrar egreso',
-        href: '/transacciones/egreso',
-        icon: <ArrowUpCircle size={20} strokeWidth={2} />,
-        grupo: 'transacciones',
-    },
-    {
-        label: 'Listado',
-        href: '/transacciones/listado',
-        icon: <Receipt size={20} strokeWidth={2} />,
-        grupo: 'transacciones',
-    },
-
-    // --- Tributario: obligaciones ante la DIAN ---
-    {
-        label: 'Exógena',
-        href: '/tributario/exogena',
-        icon: <FileSpreadsheet size={20} strokeWidth={2} />,
-        grupo: 'tributario',
-    },
-    {
-        label: 'Calidad de datos',
-        href: '/tributario/calidad-datos',
-        icon: <ClipboardCheck size={20} strokeWidth={2} />,
-        grupo: 'tributario',
-    },
-    {
-        label: 'Beneficiarios finales',
-        href: '/tributario/beneficiarios-finales',
-        icon: <UserSearch size={20} strokeWidth={2} />,
-        grupo: 'tributario',
-    },
-
-    // --- Gestion del club: fuera del alcance contable (Phase 3+) ---
-    {
-        label: 'Merchandising',
-        href: '/merchandising',
-        icon: <Store size={20} strokeWidth={2} />,
-        grupo: 'club',
-    },
-    {
-        label: 'Reporte de inventario',
-        href: '/merchandising/reporte',
-        icon: <PackageSearch size={20} strokeWidth={2} />,
-        grupo: 'club',
-    },
-    {
-        label: 'Rendición de proyectos',
-        href: '/proyectos/rendicion',
-        icon: <Target size={20} strokeWidth={2} />,
-        grupo: 'club',
-    },
-    {
-        label: 'Eventos',
-        href: '/eventos',
-        icon: <CalendarDays size={20} strokeWidth={2} />,
-        grupo: 'club',
-    },
-    {
-        label: 'Proyectos',
-        href: '/proyectos',
-        icon: <FolderKanban size={20} strokeWidth={2} />,
-        grupo: 'club',
-    },
-
-    // --- Administracion de catalogos: solo Admin y Tesorero ---
-    {
-        label: 'Cuentas bancarias',
-        href: '/administracion/cuentas-bancarias',
-        icon: <Landmark size={20} strokeWidth={2} />,
-        grupo: 'admin',
-    },
-    {
-        label: 'Mapeo contable',
-        href: '/administracion/mapeo-contable',
-        icon: <Link2 size={20} strokeWidth={2} />,
-        grupo: 'admin',
-    },
-    {
-        label: 'Parámetros de cartera',
-        href: '/administracion/parametros-cartera',
-        icon: <SlidersHorizontal size={20} strokeWidth={2} />,
-        grupo: 'admin',
-    },
-    {
-        label: 'Centros de costo',
-        href: '/administracion/centros-costo',
-        icon: <Boxes size={20} strokeWidth={2} />,
-        grupo: 'admin',
     },
 ];
 
-const NAV_CONTABLE = NAV_ITEMS.filter((item) => item.grupo === 'contable');
-const NAV_TRANSACCIONES = NAV_ITEMS.filter((item) => item.grupo === 'transacciones');
-const NAV_TRIBUTARIO = NAV_ITEMS.filter((item) => item.grupo === 'tributario');
-const NAV_CLUB = NAV_ITEMS.filter((item) => item.grupo === 'club');
-const NAV_ADMIN = NAV_ITEMS.filter((item) => item.grupo === 'admin');
+const SECCIONES: Seccion[] = [
+    {
+        id: 'contabilidad',
+        titulo: 'Contabilidad',
+        icono: <BookOpenText size={20} strokeWidth={2} />,
+        items: [
+            {
+                label: 'Comprobantes',
+                href: '/contabilidad/comprobantes',
+                icon: <FileText size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Plan de cuentas',
+                href: '/contabilidad/cuentas',
+                icon: <ListTree size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Libros',
+                href: '/contabilidad/libros',
+                icon: <BookMarked size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Cierre de periodo',
+                href: '/contabilidad/cierre',
+                icon: <CalendarCheck size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Recibos',
+                href: '/contabilidad/recibos',
+                icon: <ReceiptText size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Anulaciones',
+                href: '/contabilidad/anulaciones',
+                icon: <Ban size={20} strokeWidth={2} />,
+            },
+        ],
+    },
+    {
+        id: 'tesoreria',
+        titulo: 'Tesorería',
+        icono: <Wallet size={20} strokeWidth={2} />,
+        items: [
+            {
+                label: 'Cuentas y saldos',
+                href: '/tesoreria',
+                icon: <PiggyBank size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Registrar ingreso',
+                href: '/transacciones/ingreso',
+                icon: <ArrowDownCircle size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Registrar egreso',
+                href: '/transacciones/egreso',
+                icon: <ArrowUpCircle size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Movimientos',
+                href: '/transacciones/listado',
+                icon: <Receipt size={20} strokeWidth={2} />,
+            },
+        ],
+    },
+    {
+        id: 'cobros-y-pagos',
+        titulo: 'Cobros y pagos',
+        icono: <CreditCard size={20} strokeWidth={2} />,
+        items: [
+            {
+                label: 'Cartera',
+                href: '/cartera',
+                icon: <WalletCards size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Cuentas por pagar',
+                href: '/cuentas-por-pagar',
+                icon: <Banknote size={20} strokeWidth={2} />,
+            },
+        ],
+    },
+    {
+        id: 'miembros-y-donaciones',
+        titulo: 'Miembros y donaciones',
+        icono: <HeartHandshake size={20} strokeWidth={2} />,
+        items: [
+            {
+                label: 'Miembros',
+                href: '/miembros',
+                icon: <UsersRound size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Donaciones',
+                href: '/donaciones',
+                icon: <HandCoins size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Campañas',
+                href: '/donaciones/campanas',
+                icon: <Megaphone size={20} strokeWidth={2} />,
+            },
+        ],
+    },
+    {
+        id: 'tributario',
+        titulo: 'Tributario',
+        icono: <FileSpreadsheet size={20} strokeWidth={2} />,
+        roles: TRIBUTARIO_ALLOWED_ROLES,
+        nota: 'Obligaciones ante la DIAN',
+        items: [
+            {
+                label: 'Exógena',
+                href: '/tributario/exogena',
+                icon: <FileSpreadsheet size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Calidad de datos',
+                href: '/tributario/calidad-datos',
+                icon: <ClipboardCheck size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Beneficiarios',
+                href: '/tributario/beneficiarios-finales',
+                icon: <UserSearch size={20} strokeWidth={2} />,
+            },
+        ],
+    },
+    {
+        id: 'club',
+        titulo: 'Gestión del club',
+        icono: <Bike size={20} strokeWidth={2} />,
+        nota: 'Fuera del alcance contable vigente',
+        items: [
+            {
+                label: 'Eventos',
+                href: '/eventos',
+                icon: <CalendarDays size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Proyectos',
+                href: '/proyectos',
+                icon: <FolderKanban size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Rendición',
+                href: '/proyectos/rendicion',
+                icon: <Target size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Merchandising',
+                href: '/merchandising',
+                icon: <Store size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Inventario',
+                href: '/merchandising/reporte',
+                icon: <PackageSearch size={20} strokeWidth={2} />,
+            },
+        ],
+    },
+    {
+        id: 'administracion',
+        titulo: 'Administración',
+        icono: <Settings size={20} strokeWidth={2} />,
+        roles: ['Admin', 'Tesorero'],
+        nota: 'Cambiar un catálogo afecta los movimientos que se registren después',
+        items: [
+            {
+                label: 'Cuentas bancarias',
+                href: '/administracion/cuentas-bancarias',
+                icon: <Landmark size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Centros de costo',
+                href: '/administracion/centros-costo',
+                icon: <Boxes size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Mapeo contable',
+                href: '/administracion/mapeo-contable',
+                icon: <Link2 size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Parámetros de cartera',
+                href: '/administracion/parametros-cartera',
+                icon: <SlidersHorizontal size={20} strokeWidth={2} />,
+            },
+            {
+                label: 'Accesos',
+                href: '/seguridad',
+                icon: <Shield size={20} strokeWidth={2} />,
+            },
+        ],
+    },
+];
+
+/** Un grupo sin exigencia de rol se evalua contra esta lista, que no se usa. */
+const SIN_EXIGENCIA_DE_ROL: readonly string[] = [];
+
+const TODOS_LOS_HREF = [
+    ...NAV_SUELTOS.map((item) => item.href),
+    ...SECCIONES.flatMap((seccion) => seccion.items.map((item) => item.href)),
+];
+
+function cubreLaRuta(href: string, pathname: string): boolean {
+    return href === '/'
+        ? pathname === '/'
+        : pathname === href || pathname.startsWith(`${href}/`);
+}
 
 /**
- * Solo estos roles ven la administración de catálogos. Es control de UI: la
- * autorización real la impone el backend con [Authorize(Roles = ...)].
+ * Enlace que corresponde a la ruta actual, uno solo.
+ *
+ * Se queda con la coincidencia mas larga porque hay rutas que son prefijo de
+ * otras: estando en /proyectos/rendicion, comparar por prefijo marcaba tambien
+ * "Proyectos", y el menu senalaba dos sitios a la vez. Pasaba igual con
+ * donaciones y merchandising.
  */
-const ROLES_ADMINISTRACION = ['Admin', 'Tesorero'] as const;
+function hrefActivo(pathname: string): string | null {
+    return TODOS_LOS_HREF
+        .filter((href) => cubreLaRuta(href, pathname))
+        .sort((a, b) => b.length - a.length)[0] ?? null;
+}
+
+/**
+ * Grupo al que pertenece la ruta actual, para abrirlo solo.
+ *
+ * Sin esto, entrar directo a una URL o recargar la pagina dejaba el menu
+ * cerrado y sin ninguna pista de donde estaba parado el usuario.
+ */
+function seccionDeLaRuta(activo: string | null): string | null {
+    if (!activo) {
+        return null;
+    }
+
+    return SECCIONES.find((seccion) => seccion.items.some((item) => item.href === activo))?.id
+        ?? null;
+}
 
 // ---------------------------------------------------------------------------
-// Sección desplegable del menú
+// Seccion desplegable del menu
 // ---------------------------------------------------------------------------
 type SeccionDesplegableProps = {
-    titulo: string;
-    icono: React.ReactNode;
-    items: NavItem[];
+    seccion: Seccion;
     abierta: boolean;
     onToggle: () => void;
     collapsed: boolean;
+    /** Href del enlace que corresponde a la ruta actual, si esta en el menu. */
+    activo: string | null;
     claseItem: (activo: boolean) => string;
-    esActivo: (href: string) => boolean;
-    nota: string;
 };
 
 function SeccionDesplegable({
-    titulo,
-    icono,
-    items,
+    seccion,
     abierta,
     onToggle,
     collapsed,
+    activo,
     claseItem,
-    esActivo,
-    nota,
 }: SeccionDesplegableProps) {
+    const { canAccess } = useRoleAccess(seccion.roles ?? SIN_EXIGENCIA_DE_ROL);
+
+    if (seccion.roles && !canAccess) {
+        return null;
+    }
+
+    // Con la seccion cerrada, el titulo es lo unico que indica donde esta el
+    // usuario: se resalta si la ruta actual vive dentro.
+    const contieneLaRuta = seccion.items.some((item) => item.href === activo);
+
     return (
-        <div className="mt-4 border-t border-slate-700 pt-3">
+        <div>
             <button
                 type="button"
                 onClick={onToggle}
-                title={collapsed ? titulo : undefined}
+                title={collapsed ? seccion.titulo : undefined}
                 aria-expanded={abierta}
-                className={claseItem(false) + ' w-full'}
+                className={`${claseItem(contieneLaRuta && !abierta)} w-full`}
             >
-                <span className="shrink-0">{icono}</span>
+                <span className="shrink-0">{seccion.icono}</span>
                 {!collapsed && (
                     <>
-                        <span className="flex-1 truncate text-left">{titulo}</span>
+                        <span className="min-w-0 flex-1 truncate text-left">{seccion.titulo}</span>
                         <ChevronDown
                             size={16}
                             strokeWidth={2}
@@ -321,20 +390,28 @@ function SeccionDesplegable({
             </button>
 
             {abierta && (
-                <div className={collapsed ? 'mt-1 flex flex-col gap-1' : 'mt-1 flex flex-col gap-1 pl-3'}>
-                    {items.map((item) => (
+                <div
+                    className={
+                        collapsed
+                            ? 'mt-0.5 flex flex-col gap-0.5'
+                            : 'mt-0.5 ml-4 flex flex-col gap-0.5 border-l border-slate-700 pl-2'
+                    }
+                >
+                    {seccion.items.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
                             title={collapsed ? item.label : undefined}
-                            className={claseItem(esActivo(item.href))}
+                            className={claseItem(item.href === activo)}
                         >
                             <span className="shrink-0">{item.icon}</span>
-                            {!collapsed && <span className="truncate">{item.label}</span>}
+                            {!collapsed && <span className="min-w-0 truncate">{item.label}</span>}
                         </Link>
                     ))}
-                    {!collapsed && (
-                        <p className="px-2.5 pt-1 text-[11px] leading-tight text-slate-500">{nota}</p>
+                    {!collapsed && seccion.nota && (
+                        <p className="px-2.5 pt-1 pb-2 text-[11px] leading-tight text-slate-500">
+                            {seccion.nota}
+                        </p>
                     )}
                 </div>
             )}
@@ -343,23 +420,32 @@ function SeccionDesplegable({
 }
 
 // ---------------------------------------------------------------------------
-// Sidebar Component
+// Sidebar
 // ---------------------------------------------------------------------------
 export default function Sidebar() {
     const pathname = usePathname();
     const [collapsed, setCollapsed] = useState(false);
-    const [clubAbierto, setClubAbierto] = useState(false);
-    const [adminAbierto, setAdminAbierto] = useState(false);
-    const [transaccionesAbierto, setTransaccionesAbierto] = useState(false);
-    const [tributarioAbierto, setTributarioAbierto] = useState(false);
-    const { canAccess: puedeAdministrar } = useRoleAccess(ROLES_ADMINISTRACION);
-    const { canAccess: puedeVerTributario } = useRoleAccess(TRIBUTARIO_ALLOWED_ROLES);
+    const activo = hrefActivo(pathname);
+    const seccionActiva = seccionDeLaRuta(activo);
+    // Por defecto solo esta abierta el area donde el usuario esta trabajando.
+    // Aqui se guarda unicamente lo que el decidio distinto, para poder olvidarlo
+    // al cambiar de area sin perder lo que abrio en el camino.
+    const [aperturaManual, setAperturaManual] = useState<Record<string, boolean>>({});
+    const [areaPrevia, setAreaPrevia] = useState(seccionActiva);
 
-    const esActivo = (href: string) =>
-        href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+    if (areaPrevia !== seccionActiva) {
+        setAreaPrevia(seccionActiva);
+        setAperturaManual({});
+    }
+
+    const estaAbierta = (id: string) => aperturaManual[id] ?? id === seccionActiva;
+
+    const alternar = (id: string) => {
+        setAperturaManual((previas) => ({ ...previas, [id]: !estaAbierta(id) }));
+    };
 
     const claseItem = (activo: boolean) => `
-        flex items-center gap-3 rounded-lg px-2.5 py-2.5 text-sm font-medium
+        flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium
         transition-colors duration-150
         ${activo ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}
         ${collapsed ? 'justify-center' : ''}
@@ -394,93 +480,36 @@ export default function Sidebar() {
                 </button>
             </div>
 
-            {/* Separador */}
             <div className="mx-3 border-t border-slate-700" />
 
-            {/* Navegación */}
-            <nav className="mt-3 flex flex-1 flex-col gap-1 overflow-y-auto px-2 pb-4">
-                {NAV_CONTABLE.map((item) => {
-                    // La ruta "/" solo está activa cuando el path es exactamente "/"
-                    const isActive =
-                        item.href === '/'
-                            ? pathname === '/'
-                            : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            {/* Navegacion. `overflow-x-hidden` evita que un nombre largo empuje
+                el ancho de la barra y aparezca desplazamiento horizontal. */}
+            <nav className="mt-3 flex flex-1 flex-col gap-0.5 overflow-x-hidden overflow-y-auto px-2 pb-4">
+                {NAV_SUELTOS.map((item) => (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        title={collapsed ? item.label : undefined}
+                        className={claseItem(item.href === activo)}
+                    >
+                        <span className="shrink-0">{item.icon}</span>
+                        {!collapsed && <span className="min-w-0 truncate">{item.label}</span>}
+                    </Link>
+                ))}
 
-                    return (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            title={collapsed ? item.label : undefined}
-                            className={`
-                                flex items-center gap-3 rounded-lg px-2.5 py-2.5 text-sm font-medium
-                                transition-colors duration-150
-                                ${isActive
-                                    ? 'bg-slate-700 text-white'
-                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                                }
-                                ${collapsed ? 'justify-center' : ''}
-                            `}
-                        >
-                            <span className="shrink-0">{item.icon}</span>
-                            {!collapsed && <span className="truncate">{item.label}</span>}
-                        </Link>
-                    );
-                })}
+                <div className="my-2 border-t border-slate-700" />
 
-                <SeccionDesplegable
-                    titulo="Transacciones"
-                    icono={<Receipt size={20} strokeWidth={2} />}
-                    items={NAV_TRANSACCIONES}
-                    abierta={transaccionesAbierto}
-                    onToggle={() => setTransaccionesAbierto((prev) => !prev)}
-                    collapsed={collapsed}
-                    claseItem={claseItem}
-                    esActivo={esActivo}
-                    nota="Registro directo de movimientos"
-                />
-
-                {/* Tributario: solo lo consulta quien responde ante la DIAN */}
-                {puedeVerTributario && (
+                {SECCIONES.map((seccion) => (
                     <SeccionDesplegable
-                        titulo="Tributario"
-                        icono={<FileSpreadsheet size={20} strokeWidth={2} />}
-                        items={NAV_TRIBUTARIO}
-                        abierta={tributarioAbierto}
-                        onToggle={() => setTributarioAbierto((prev) => !prev)}
+                        key={seccion.id}
+                        seccion={seccion}
+                        abierta={estaAbierta(seccion.id)}
+                        onToggle={() => alternar(seccion.id)}
                         collapsed={collapsed}
+                        activo={activo}
                         claseItem={claseItem}
-                        esActivo={esActivo}
-                        nota="Requiere rol Contador o Admin"
                     />
-                )}
-
-                {/* Administracion de catalogos: solo para Admin y Tesorero */}
-                {puedeAdministrar && (
-                    <SeccionDesplegable
-                        titulo="Administración"
-                        icono={<Settings size={20} strokeWidth={2} />}
-                        items={NAV_ADMIN}
-                        abierta={adminAbierto}
-                        onToggle={() => setAdminAbierto((prev) => !prev)}
-                        collapsed={collapsed}
-                        claseItem={claseItem}
-                        esActivo={esActivo}
-                        nota="Requiere rol Admin o Tesorero"
-                    />
-                )}
-
-                {/* Gestion del club: agrupada y fuera del nucleo contable */}
-                <SeccionDesplegable
-                    titulo="Gestión del club"
-                    icono={<Bike size={20} strokeWidth={2} />}
-                    items={NAV_CLUB}
-                    abierta={clubAbierto}
-                    onToggle={() => setClubAbierto((prev) => !prev)}
-                    collapsed={collapsed}
-                    claseItem={claseItem}
-                    esActivo={esActivo}
-                    nota="Fuera del alcance contable vigente"
-                />
+                ))}
             </nav>
 
             {/* Pie del sidebar */}
