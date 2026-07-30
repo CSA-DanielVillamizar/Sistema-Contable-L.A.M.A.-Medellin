@@ -131,5 +131,35 @@ public sealed class ArranqueDeUsuariosTests(FabricaApiPruebas fabrica) : IClassF
         creado!.Rol.Should().Be("Admin");
     }
 
+    [Fact]
+    public async Task Declarar_a_alguien_administrador_lo_promueve_aunque_su_perfil_ya_exista()
+    {
+        using var propia = new FabricaApiPruebas();
+        await propia.PrepararBaseAsync();
+        var cliente = propia.CreateClient();
+
+        // Alguien entra primero y agota la regla del primer usuario, de modo
+        // que este perfil nace con el rol mas bajo.
+        await cliente.PostAsJsonAsync(Ruta, Perfil("ocupa2"));
+
+        var perfilDeclarado = new
+        {
+            email = FabricaApiPruebas.CorreoAdministradorDeclarado,
+            entraObjectId = "oid-promovido",
+            nombres = "Administrador declarado",
+        };
+
+        var primera = await cliente.PostAsJsonAsync(Ruta, perfilDeclarado);
+        var inicial = await primera.Content.ReadFromJsonAsync<SyncRespuesta>();
+        inicial!.Rol.Should().Be("Admin");
+
+        // Y al volver a entrar sigue siendolo, sin duplicar el perfil.
+        var segunda = await cliente.PostAsJsonAsync(Ruta, perfilDeclarado);
+        var repetida = await segunda.Content.ReadFromJsonAsync<SyncRespuesta>();
+
+        repetida!.Id.Should().Be(inicial.Id);
+        repetida.Rol.Should().Be("Admin");
+    }
+
     private sealed record SyncRespuesta(Guid Id, string Rol);
 }
