@@ -11,4 +11,9 @@ public sealed record RegistrarDonacionCommand(
     MedioPago MedioPago,
     FormaDonacion FormaDonacion,
     string MedioPagoODescripcion,
-    string? Descripcion = null) : IRequest<Guid>;
+    string? Descripcion = null,
+    /// <summary>
+    /// Campana a la que se imputa (historia 2-2). Opcional: una donacion
+    /// espontanea no responde a ninguna convocatoria y sigue siendo valida.
+    /// </summary>
+    Guid? CampanaDonacionId = null) : IRequest<Guid>;

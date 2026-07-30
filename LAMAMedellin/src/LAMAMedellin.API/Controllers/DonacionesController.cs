@@ -2,6 +2,10 @@ using LAMAMedellin.Application.Features.Donaciones.Commands.CrearDonante;
 using LAMAMedellin.Application.Features.Donaciones.Commands.RegistrarDonacion;
 using LAMAMedellin.Application.Common.Interfaces.Services;
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetCertificadoDonacion;
+using LAMAMedellin.Application.Features.Donaciones.Commands.ActualizarCampana;
+using LAMAMedellin.Application.Features.Donaciones.Commands.CambiarEstadoCampana;
+using LAMAMedellin.Application.Features.Donaciones.Commands.CrearCampana;
+using LAMAMedellin.Application.Features.Donaciones.Queries.GetCampanas;
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetDonaciones;
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetDonantes;
 using MediatR;
@@ -28,6 +32,69 @@ public sealed class DonacionesController(ISender sender, ICertificadoDonacionSer
         var donaciones = await sender.Send(new GetDonacionesQuery(desde, hasta, donanteId, centroCostoId, certificadoEmitido), cancellationToken);
         return Ok(donaciones);
     }
+
+    /// <summary>Campanas de donacion con su avance frente a la meta (historia 2-1).</summary>
+    [HttpGet("campanas")]
+    [ProducesResponseType(typeof(IReadOnlyList<CampanaDonacionDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCampanas(
+        [FromQuery] bool incluirCerradas,
+        CancellationToken cancellationToken)
+    {
+        var campanas = await sender.Send(new GetCampanasQuery(incluirCerradas), cancellationToken);
+        return Ok(campanas);
+    }
+
+    [HttpPost("campanas")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+    public async Task<IActionResult> CrearCampana(
+        [FromBody] CrearCampanaCommand command,
+        CancellationToken cancellationToken)
+    {
+        var id = await sender.Send(command, cancellationToken);
+        return Created($"/api/donaciones/campanas/{id}", new { id });
+    }
+
+    [HttpPut("campanas/{id:guid}")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> ActualizarCampana(
+        Guid id,
+        [FromBody] ActualizarCampanaRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(
+            new ActualizarCampanaCommand(id, request.Nombre, request.Descripcion, request.MetaCOP,
+                request.FechaInicio, request.FechaFin),
+            cancellationToken);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Cierra o reabre. No hay borrado: lo recaudado bajo la campana debe
+    /// seguir existiendo.
+    /// </summary>
+    [HttpPatch("campanas/{id:guid}/estado")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> CambiarEstadoCampana(
+        Guid id,
+        [FromBody] CambiarEstadoCampanaRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(new CambiarEstadoCampanaCommand(id, request.Activa), cancellationToken);
+        return NoContent();
+    }
+
+    public sealed record ActualizarCampanaRequest(
+        string Nombre,
+        string Descripcion,
+        decimal MetaCOP,
+        DateOnly FechaInicio,
+        DateOnly FechaFin);
+
+    public sealed record CambiarEstadoCampanaRequest(bool Activa);
 
     [HttpGet("donantes")]
     [ProducesResponseType(typeof(List<DonanteDto>), StatusCodes.Status200OK)]
