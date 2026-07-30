@@ -1,5 +1,7 @@
 using LAMAMedellin.Application.Features.Configuracion.Commands.ActualizarCentroCosto;
 using LAMAMedellin.Application.Features.Configuracion.Commands.CrearCentroCosto;
+using LAMAMedellin.Application.Features.Configuracion.MapeoContable.Commands.ActualizarMapeoContable;
+using LAMAMedellin.Application.Features.Configuracion.MapeoContable.Queries.GetMapeosContables;
 using LAMAMedellin.Application.Features.Configuracion.CuotasAsamblea.Commands.ActualizarRenovacionMembresia;
 using LAMAMedellin.Application.Features.Configuracion.Tarifas.Commands.ActualizarTarifasCuota;
 using LAMAMedellin.Application.Features.Configuracion.Tarifas.Queries.GetTarifasCuota;
@@ -44,6 +46,36 @@ public sealed class ConfiguracionController(ISender sender) : ControllerBase
     }
 
     public sealed record ActualizarCentroCostoRequest(string Nombre, TipoCentroCosto Tipo);
+
+    /// <summary>
+    /// Que cuenta usa cada operacion (historia 1-2). Devuelve todas las
+    /// operaciones, incluidas las que aun no se han configurado.
+    /// </summary>
+    [HttpGet("mapeo-contable")]
+    [ProducesResponseType(typeof(IReadOnlyList<MapeoContableDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMapeoContable(CancellationToken cancellationToken)
+    {
+        var mapeos = await sender.Send(new GetMapeosContablesQuery(), cancellationToken);
+        return Ok(mapeos);
+    }
+
+    [HttpPut("mapeo-contable/{tipoOperacion:int}")]
+    [Authorize(Roles = Roles.ConfiguracionEscritura)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> PutMapeoContable(
+        int tipoOperacion,
+        [FromBody] ActualizarMapeoContableRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(
+            new ActualizarMapeoContableCommand((TipoOperacionContable)tipoOperacion, request.CuentaContableId),
+            cancellationToken);
+
+        return NoContent();
+    }
+
+    public sealed record ActualizarMapeoContableRequest(Guid CuentaContableId);
 
     [HttpGet("tarifas")]
     [ProducesResponseType(typeof(List<TarifaCuotaResponse>), StatusCodes.Status200OK)]

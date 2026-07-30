@@ -40,6 +40,32 @@ public sealed class Comprobante : BaseEntity
         EstadoComprobante = estadoComprobante;
     }
 
+    /// <summary>
+    /// Anula el comprobante (historia 1-8). Solo dentro del mismo mes contable:
+    /// pasado el mes, el movimiento ya entro en los informes que alguien vio, y
+    /// borrarlo hacia atras los desmiente. Lo que corresponde entonces es un
+    /// ajuste contable, que deja rastro de ambas cosas.
+    ///
+    /// Quien decide si procede es el caso de uso; aqui solo se impone la regla
+    /// del mes y la de no anular dos veces.
+    /// </summary>
+    public void Anular(DateTime fechaActualUtc)
+    {
+        if (EstadoComprobante == EstadoComprobante.Anulado)
+        {
+            throw new ReglaNegocioException("El comprobante ya esta anulado.");
+        }
+
+        if (Fecha.Year != fechaActualUtc.Year || Fecha.Month != fechaActualUtc.Month)
+        {
+            throw new ReglaNegocioException(
+                "Solo se puede anular un comprobante dentro de su mismo mes contable. "
+                + "Para un mes anterior corresponde un ajuste contable.");
+        }
+
+        EstadoComprobante = EstadoComprobante.Anulado;
+    }
+
     public void AgregarAsiento(AsientoContable asiento)
     {
         if (asiento is null)

@@ -162,10 +162,21 @@ public static class CuentaContableSeeder
             new("411505", "Donaciones No Condicionadas (Libres)", NaturalezaCuenta.Credito, true, true),
             new("411510", "Donaciones Condicionadas (Proyectos)", NaturalezaCuenta.Credito, true, true),
 
+            // Diferencia en cambio (historia 1-17). El PUC no las tenia, asi
+            // que una obligacion en USD liquidada a una tasa distinta de la
+            // reconocida no tenia donde registrar la ganancia ni la perdida.
+            new("4218", "Diferencia en Cambio", NaturalezaCuenta.Credito, false, false),
+            new("421805", "Ganancia por Diferencia en Cambio", NaturalezaCuenta.Credito, true, false),
+
             new("5", "GASTOS ADMINISTRATIVOS", NaturalezaCuenta.Debito, false, false),
             new("51", "Operación y Administración", NaturalezaCuenta.Debito, false, false),
             new("5130", "Servicios", NaturalezaCuenta.Debito, false, false),
             new("513015", "Transportes, Fletes y Acarreos", NaturalezaCuenta.Debito, true, true),
+            new("5305", "Financieros", NaturalezaCuenta.Debito, false, false),
+            new("530525", "Comisiones y Gastos Bancarios", NaturalezaCuenta.Debito, true, false),
+            new("530535", "Perdida por Diferencia en Cambio", NaturalezaCuenta.Debito, true, false),
+            new("53", "Gastos No Operacionales", NaturalezaCuenta.Debito, false, false),
+
             new("5195", "Diversos", NaturalezaCuenta.Debito, false, false),
             new("519520", "Actividades Deportivas", NaturalezaCuenta.Debito, true, false),
             new("519595", "Otros Gastos", NaturalezaCuenta.Debito, true, false),
