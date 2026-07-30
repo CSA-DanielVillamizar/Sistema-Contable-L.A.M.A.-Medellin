@@ -6,17 +6,18 @@ using LAMAMedellin.Application.Features.Eventos.Queries.GetEventoById;
 using LAMAMedellin.Application.Features.Eventos.Queries.GetEventos;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/eventos")]
-[Authorize]
+[Route("api/eventos")][Authorize(Roles = Roles.EventosLectura)]
 public sealed class EventosController(ISender sender) : ControllerBase
 {
     [HttpPost]
+    [Authorize(Roles = Roles.EventosEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post([FromBody] CreateEventoRequest request, CancellationToken cancellationToken)
     {
@@ -35,6 +36,7 @@ public sealed class EventosController(ISender sender) : ControllerBase
     }
 
     [HttpPost("{id:guid}/asistencia")]
+    [Authorize(Roles = Roles.EventosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> MarcarAsistencia(Guid id, [FromBody] MarcarAsistenciaRequest request, CancellationToken cancellationToken)
     {
@@ -51,6 +53,7 @@ public sealed class EventosController(ISender sender) : ControllerBase
 
     /// <summary>Corrige los datos de un evento que siga programado.</summary>
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = Roles.EventosEscritura)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Put(
@@ -95,6 +98,7 @@ public sealed class EventosController(ISender sender) : ControllerBase
     }
 
     [HttpPatch("{id:guid}/cuota-logistica")]
+    [Authorize(Roles = Roles.EventosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> EstablecerCuotaLogistica(Guid id, [FromBody] EstablecerCuotaLogisticaRequest request, CancellationToken cancellationToken)
     {

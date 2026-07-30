@@ -5,14 +5,14 @@ using LAMAMedellin.Application.Features.Miembros.Queries.GetMiembroById;
 using LAMAMedellin.Application.Features.Miembros.Queries.GetMiembros;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/miembros")]
-[Authorize]
+[Route("api/miembros")][Authorize(Roles = Roles.MiembrosLectura)]
 public sealed class MiembrosController(ISender sender) : ControllerBase
 {
     [HttpGet]
@@ -38,6 +38,7 @@ public sealed class MiembrosController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.MiembrosEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post([FromBody] UpsertMiembroRequest request, CancellationToken cancellationToken)
     {
@@ -62,6 +63,7 @@ public sealed class MiembrosController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = Roles.MiembrosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Put(Guid id, [FromBody] UpsertMiembroRequest request, CancellationToken cancellationToken)
     {
@@ -83,6 +85,7 @@ public sealed class MiembrosController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = Roles.MiembrosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {

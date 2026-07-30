@@ -5,6 +5,7 @@ using LAMAMedellin.Application.Features.Configuracion.Tarifas.Commands.Actualiza
 using LAMAMedellin.Application.Features.Configuracion.Tarifas.Queries.GetTarifasCuota;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,11 @@ namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
 [Route("api/configuracion")]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = Roles.ConfiguracionLectura)]
 public sealed class ConfiguracionController(ISender sender) : ControllerBase
 {
     [HttpPost("centros-costo")]
+    [Authorize(Roles = Roles.ConfiguracionEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> CrearCentroCosto(
         [FromBody] CrearCentroCostoCommand command,
@@ -30,6 +32,7 @@ public sealed class ConfiguracionController(ISender sender) : ControllerBase
     /// conservar su imputacion, y borrarlo dejaria huerfano el historico.
     /// </summary>
     [HttpPut("centros-costo/{id:guid}")]
+    [Authorize(Roles = Roles.ConfiguracionEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> ActualizarCentroCosto(
         Guid id,
@@ -58,6 +61,7 @@ public sealed class ConfiguracionController(ISender sender) : ControllerBase
     }
 
     [HttpPut("tarifas")]
+    [Authorize(Roles = Roles.ConfiguracionEscritura)]
     [ProducesResponseType(typeof(List<TarifaCuotaResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> PutTarifas(
         [FromBody] ActualizarTarifasRequest request,
@@ -80,6 +84,7 @@ public sealed class ConfiguracionController(ISender sender) : ControllerBase
     }
 
     [HttpPatch("cuotas-asamblea/{anio:int}/renovacion-membresia")]
+    [Authorize(Roles = Roles.ConfiguracionEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> PatchRenovacionMembresia(
         int anio,

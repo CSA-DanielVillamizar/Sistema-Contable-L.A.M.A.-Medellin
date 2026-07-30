@@ -2,14 +2,14 @@ using LAMAMedellin.Application.Features.Dashboard.Queries.GetResumenCartera;
 using LAMAMedellin.Application.Features.Dashboard.Queries.GetResumen;
 using LAMAMedellin.Application.Features.Dashboard.Queries.GetSaldosBancos;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/dashboard")]
-[Authorize]
+[Route("api/dashboard")][Authorize(Roles = Roles.TodosLosRoles)]
 public sealed class DashboardController(ISender sender) : ControllerBase
 {
     [HttpGet("bancos")]

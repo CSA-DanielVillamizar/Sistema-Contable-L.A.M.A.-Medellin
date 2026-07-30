@@ -5,14 +5,14 @@ using LAMAMedellin.Application.Features.Donaciones.Queries.GetCertificadoDonacio
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetDonaciones;
 using LAMAMedellin.Application.Features.Donaciones.Queries.GetDonantes;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/donaciones")]
-[Authorize]
+[Route("api/donaciones")][Authorize(Roles = Roles.TesoreriaLectura)]
 public sealed class DonacionesController(ISender sender, ICertificadoDonacionService certificadoDonacionService) : ControllerBase
 {
     [HttpGet]
@@ -32,6 +32,7 @@ public sealed class DonacionesController(ISender sender, ICertificadoDonacionSer
     }
 
     [HttpPost("donantes")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> CrearDonante([FromBody] CrearDonanteCommand command, CancellationToken cancellationToken)
     {
@@ -40,6 +41,7 @@ public sealed class DonacionesController(ISender sender, ICertificadoDonacionSer
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarDonacion([FromBody] RegistrarDonacionCommand command, CancellationToken cancellationToken)
     {

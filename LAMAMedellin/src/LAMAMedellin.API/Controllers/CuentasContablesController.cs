@@ -1,13 +1,13 @@
 using LAMAMedellin.Application.Features.Contabilidad.Queries.GetCuentasContables;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/cuentas-contables")]
-[Authorize]
+[Route("api/cuentas-contables")][Authorize(Roles = Roles.ContabilidadLectura)]
 public sealed class CuentasContablesController(ISender sender) : ControllerBase
 {
     [HttpGet]

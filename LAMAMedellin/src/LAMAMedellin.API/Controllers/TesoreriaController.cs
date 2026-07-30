@@ -6,6 +6,7 @@ using LAMAMedellin.Application.Features.Tesoreria.Commands.RegistrarIngreso;
 using LAMAMedellin.Application.Features.Tesoreria.Queries.GetCuentasBancarias;
 using LAMAMedellin.Application.Features.Tesoreria.Queries.GetEgresos;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
 [Route("api/tesoreria")]
-[Authorize(Roles = "Admin,Tesorero")]
+[Authorize(Roles = Roles.TesoreriaLectura)]
 public sealed class TesoreriaController(ISender sender) : ControllerBase
 {
     /// <summary>
@@ -32,6 +33,7 @@ public sealed class TesoreriaController(ISender sender) : ControllerBase
     }
 
     [HttpPost("cuentas-bancarias")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> CrearCuentaBancaria(
         [FromBody] CrearCuentaBancariaCommand command,
@@ -42,6 +44,7 @@ public sealed class TesoreriaController(ISender sender) : ControllerBase
     }
 
     [HttpPut("cuentas-bancarias/{id:guid}")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> ActualizarCuentaBancaria(
         Guid id,
@@ -60,6 +63,7 @@ public sealed class TesoreriaController(ISender sender) : ControllerBase
     /// cuenta deben seguir existiendo para que el libro cuadre.
     /// </summary>
     [HttpPatch("cuentas-bancarias/{id:guid}/estado")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> CambiarEstadoCuentaBancaria(
         Guid id,
@@ -86,6 +90,7 @@ public sealed class TesoreriaController(ISender sender) : ControllerBase
     }
 
     [HttpPost("egresos")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarEgreso([FromBody] RegistrarEgresoCommand command, CancellationToken cancellationToken)
     {
@@ -94,6 +99,7 @@ public sealed class TesoreriaController(ISender sender) : ControllerBase
     }
 
     [HttpPost("ingresos")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarIngreso([FromBody] RegistrarIngresoCommand command, CancellationToken cancellationToken)
     {

@@ -2,6 +2,7 @@ using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteBeneficiari
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteCalidadDatos;
 using LAMAMedellin.Application.Features.Tributario.Queries.GetReporteExogena;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
 [Route("api/tributario")]
-[Authorize(Roles = "Contador,Admin")]
+[Authorize(Roles = Roles.ContabilidadLectura)]
 public sealed class TributarioController(ISender sender) : ControllerBase
 {
     [HttpGet("calidad-datos")]

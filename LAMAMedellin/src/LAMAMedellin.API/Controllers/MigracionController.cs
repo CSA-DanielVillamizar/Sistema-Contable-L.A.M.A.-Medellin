@@ -1,5 +1,6 @@
 using LAMAMedellin.Application.Features.Migracion.Commands.ImportarHistorico;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace LAMAMedellin.WebApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = Roles.SoloAdmin)]
 public class MigracionController : ControllerBase
 {
     private readonly ISender _sender;

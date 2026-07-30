@@ -3,14 +3,14 @@ using LAMAMedellin.Application.Features.Usuarios.Commands.SyncUsuario;
 using LAMAMedellin.Application.Features.Usuarios.Queries.GetUsuarios;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/usuarios")]
-[Authorize]
+[Route("api/usuarios")][Authorize(Roles = Roles.SoloAdmin)]
 public sealed class UsuariosController(ISender sender) : ControllerBase
 {
     [HttpPost("sync")]

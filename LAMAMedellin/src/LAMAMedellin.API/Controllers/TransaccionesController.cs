@@ -4,14 +4,14 @@ using LAMAMedellin.Application.Features.Transacciones.Queries.GetCatalogoBancos;
 using LAMAMedellin.Application.Features.Transacciones.Queries.GetCatalogoCentrosCosto;
 using LAMAMedellin.Application.Features.Transacciones.Queries.GetTransacciones;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/transacciones")]
-[Authorize]
+[Route("api/transacciones")][Authorize(Roles = Roles.TesoreriaLectura)]
 public sealed class TransaccionesController(ISender sender) : ControllerBase
 {
     [HttpGet]
@@ -39,6 +39,7 @@ public sealed class TransaccionesController(ISender sender) : ControllerBase
     }
 
     [HttpPost("ingreso")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarIngreso([FromBody] RegistrarIngresoCommand command, CancellationToken cancellationToken)
     {
@@ -48,6 +49,7 @@ public sealed class TransaccionesController(ISender sender) : ControllerBase
     }
 
     [HttpPost("egreso")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarEgreso([FromBody] RegistrarEgresoCommand command, CancellationToken cancellationToken)
     {

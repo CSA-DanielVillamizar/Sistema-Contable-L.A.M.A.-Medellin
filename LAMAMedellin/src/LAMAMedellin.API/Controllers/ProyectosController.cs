@@ -5,14 +5,14 @@ using LAMAMedellin.Application.Features.Proyectos.Queries.GetProyectoSocialById;
 using LAMAMedellin.Application.Features.Proyectos.Queries.GetProyectosSociales;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/proyectos")]
-[Authorize]
+[Route("api/proyectos")][Authorize(Roles = Roles.ProyectosLectura)]
 public sealed class ProyectosController(ISender sender) : ControllerBase
 {
     [HttpGet]
@@ -38,6 +38,7 @@ public sealed class ProyectosController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.ProyectosEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post([FromBody] UpsertProyectoRequest request, CancellationToken cancellationToken)
     {
@@ -56,6 +57,7 @@ public sealed class ProyectosController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = Roles.ProyectosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Put(Guid id, [FromBody] UpsertProyectoRequest request, CancellationToken cancellationToken)
     {
@@ -75,6 +77,7 @@ public sealed class ProyectosController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = Roles.ProyectosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {

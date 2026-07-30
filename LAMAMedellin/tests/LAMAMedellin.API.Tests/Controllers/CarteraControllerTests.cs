@@ -247,7 +247,14 @@ internal sealed class TestAuthHandler : AuthenticationHandler<AuthenticationSche
             return Task.FromResult(AuthenticateResult.Fail("Authorization header missing."));
         }
 
-        var claims = new[] { new Claim(ClaimTypes.NameIdentifier, "integration-test-user") };
+        // Cartera exige rol desde que se aplico la matriz del BRD: sin esto el
+        // principal quedaba autenticado pero sin permiso, y el endpoint responde
+        // 403 antes de llegar al controlador.
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, "integration-test-user"),
+            new Claim(ClaimTypes.Role, "Tesorero"),
+        };
         var identity = new ClaimsIdentity(claims, SchemeName);
         var principal = new ClaimsPrincipal(identity);
         var ticket = new AuthenticationTicket(principal, SchemeName);

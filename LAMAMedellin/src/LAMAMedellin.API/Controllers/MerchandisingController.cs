@@ -5,6 +5,7 @@ using LAMAMedellin.Application.Features.Merchandising.Commands.RegistrarVentaPro
 using LAMAMedellin.Application.Features.Merchandising.Queries.GetMovimientosProducto;
 using LAMAMedellin.Application.Features.Merchandising.Queries.GetProductos;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,7 @@ namespace LAMAMedellin.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/merchandising")]
-[Authorize(Roles = "Admin,Tesorero,Inventario")]
+[Authorize(Roles = Roles.NegociosLectura)]
 public sealed class MerchandisingController(ISender sender) : ControllerBase
 {
     [HttpGet("productos")]
@@ -41,6 +42,7 @@ public sealed class MerchandisingController(ISender sender) : ControllerBase
     /// <param name="cancellationToken">Token de cancelación</param>
     /// <returns>Id del producto creado</returns>
     [HttpPost("productos")]
+    [Authorize(Roles = Roles.NegociosEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> CrearProducto(
         [FromBody] CrearProductoCommand command,
@@ -59,6 +61,7 @@ public sealed class MerchandisingController(ISender sender) : ControllerBase
     /// <param name="cancellationToken">Token de cancelación</param>
     /// <returns>Id del movimiento registrado</returns>
     [HttpPost("productos/{productoId}/entradas")]
+    [Authorize(Roles = Roles.NegociosEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarEntrada(
         Guid productoId,
@@ -72,6 +75,7 @@ public sealed class MerchandisingController(ISender sender) : ControllerBase
     }
 
     [HttpPost("productos/{productoId}/ventas")]
+    [Authorize(Roles = Roles.NegociosEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegistrarVenta(
         Guid productoId,
@@ -93,6 +97,7 @@ public sealed class MerchandisingController(ISender sender) : ControllerBase
     /// <param name="cancellationToken">Token de cancelación</param>
     /// <returns>URL pública del blob</returns>
     [HttpPost("productos/{productoId}/imagen")]
+    [Authorize(Roles = Roles.NegociosEscritura)]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

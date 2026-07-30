@@ -174,10 +174,12 @@ public sealed class CuentasBancariasTests(FabricaApiPruebas fabrica) : IClassFix
     }
 
     [Fact]
-    public async Task Un_rol_sin_permiso_no_puede_administrar_cuentas()
+    public async Task Un_rol_fuera_de_la_matriz_no_puede_administrar_cuentas()
     {
         await fabrica.PrepararBaseAsync();
-        var cliente = fabrica.CrearCliente("Contador");
+        // Logistica no figura en la fila de Tesoreria de la matriz. El Contador
+        // si tiene lectura ahi, asi que no sirve para comprobar el bloqueo.
+        var cliente = fabrica.CrearCliente("Logistica");
 
         var respuesta = await cliente.GetAsync(Ruta);
 
