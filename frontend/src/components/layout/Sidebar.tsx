@@ -1,20 +1,28 @@
 'use client';
 
 import {
+    ArrowDownCircle,
+    ArrowUpCircle,
     Bike,
     BookOpenText,
+    Boxes,
     CalendarDays,
     ChevronDown,
     ChevronLeft,
+    ClipboardCheck,
     FileBarChart,
+    FileSpreadsheet,
     FolderKanban,
+    HandCoins,
     Landmark,
     LayoutDashboard,
     ListTree,
     Menu,
+    Receipt,
     Settings,
     Shield,
     Store,
+    UserSearch,
     UsersRound,
     Wallet,
     WalletCards,
@@ -22,6 +30,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { TRIBUTARIO_ALLOWED_ROLES } from '@/lib/authRoles';
 import { useRoleAccess } from '@/lib/useRoleAccess';
 
 // ---------------------------------------------------------------------------
@@ -41,7 +50,7 @@ import { useRoleAccess } from '@/lib/useRoleAccess';
 // Admin y Tesorero: cambiar una cuenta bancaria o su cuenta contable altera la
 // contrapartida de todos los movimientos que se registren después.
 // ---------------------------------------------------------------------------
-type Grupo = 'contable' | 'club' | 'admin';
+type Grupo = 'contable' | 'transacciones' | 'tributario' | 'club' | 'admin';
 
 type NavItem = {
     label: string;
@@ -82,6 +91,12 @@ const NAV_ITEMS: NavItem[] = [
         grupo: 'contable',
     },
     {
+        label: 'Donaciones',
+        href: '/donaciones',
+        icon: <HandCoins size={20} strokeWidth={2} />,
+        grupo: 'contable',
+    },
+    {
         label: 'Miembros',
         href: '/miembros',
         icon: <UsersRound size={20} strokeWidth={2} />,
@@ -98,6 +113,46 @@ const NAV_ITEMS: NavItem[] = [
         href: '/seguridad',
         icon: <Shield size={20} strokeWidth={2} />,
         grupo: 'contable',
+    },
+
+    // --- Transacciones: registro directo de movimientos ---
+    {
+        label: 'Registrar ingreso',
+        href: '/transacciones/ingreso',
+        icon: <ArrowDownCircle size={20} strokeWidth={2} />,
+        grupo: 'transacciones',
+    },
+    {
+        label: 'Registrar egreso',
+        href: '/transacciones/egreso',
+        icon: <ArrowUpCircle size={20} strokeWidth={2} />,
+        grupo: 'transacciones',
+    },
+    {
+        label: 'Listado',
+        href: '/transacciones/listado',
+        icon: <Receipt size={20} strokeWidth={2} />,
+        grupo: 'transacciones',
+    },
+
+    // --- Tributario: obligaciones ante la DIAN ---
+    {
+        label: 'Exógena',
+        href: '/tributario/exogena',
+        icon: <FileSpreadsheet size={20} strokeWidth={2} />,
+        grupo: 'tributario',
+    },
+    {
+        label: 'Calidad de datos',
+        href: '/tributario/calidad-datos',
+        icon: <ClipboardCheck size={20} strokeWidth={2} />,
+        grupo: 'tributario',
+    },
+    {
+        label: 'Beneficiarios finales',
+        href: '/tributario/beneficiarios-finales',
+        icon: <UserSearch size={20} strokeWidth={2} />,
+        grupo: 'tributario',
     },
 
     // --- Gestion del club: fuera del alcance contable (Phase 3+) ---
@@ -127,9 +182,17 @@ const NAV_ITEMS: NavItem[] = [
         icon: <Landmark size={20} strokeWidth={2} />,
         grupo: 'admin',
     },
+    {
+        label: 'Centros de costo',
+        href: '/administracion/centros-costo',
+        icon: <Boxes size={20} strokeWidth={2} />,
+        grupo: 'admin',
+    },
 ];
 
 const NAV_CONTABLE = NAV_ITEMS.filter((item) => item.grupo === 'contable');
+const NAV_TRANSACCIONES = NAV_ITEMS.filter((item) => item.grupo === 'transacciones');
+const NAV_TRIBUTARIO = NAV_ITEMS.filter((item) => item.grupo === 'tributario');
 const NAV_CLUB = NAV_ITEMS.filter((item) => item.grupo === 'club');
 const NAV_ADMIN = NAV_ITEMS.filter((item) => item.grupo === 'admin');
 
@@ -217,7 +280,10 @@ export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);
     const [clubAbierto, setClubAbierto] = useState(false);
     const [adminAbierto, setAdminAbierto] = useState(false);
+    const [transaccionesAbierto, setTransaccionesAbierto] = useState(false);
+    const [tributarioAbierto, setTributarioAbierto] = useState(false);
     const { canAccess: puedeAdministrar } = useRoleAccess(ROLES_ADMINISTRACION);
+    const { canAccess: puedeVerTributario } = useRoleAccess(TRIBUTARIO_ALLOWED_ROLES);
 
     const esActivo = (href: string) =>
         href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
@@ -290,6 +356,33 @@ export default function Sidebar() {
                         </Link>
                     );
                 })}
+
+                <SeccionDesplegable
+                    titulo="Transacciones"
+                    icono={<Receipt size={20} strokeWidth={2} />}
+                    items={NAV_TRANSACCIONES}
+                    abierta={transaccionesAbierto}
+                    onToggle={() => setTransaccionesAbierto((prev) => !prev)}
+                    collapsed={collapsed}
+                    claseItem={claseItem}
+                    esActivo={esActivo}
+                    nota="Registro directo de movimientos"
+                />
+
+                {/* Tributario: solo lo consulta quien responde ante la DIAN */}
+                {puedeVerTributario && (
+                    <SeccionDesplegable
+                        titulo="Tributario"
+                        icono={<FileSpreadsheet size={20} strokeWidth={2} />}
+                        items={NAV_TRIBUTARIO}
+                        abierta={tributarioAbierto}
+                        onToggle={() => setTributarioAbierto((prev) => !prev)}
+                        collapsed={collapsed}
+                        claseItem={claseItem}
+                        esActivo={esActivo}
+                        nota="Requiere rol Contador o Admin"
+                    />
+                )}
 
                 {/* Administracion de catalogos: solo para Admin y Tesorero */}
                 {puedeAdministrar && (
