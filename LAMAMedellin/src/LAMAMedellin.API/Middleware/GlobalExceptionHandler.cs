@@ -17,13 +17,14 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
                 "Error de validación",
                 "La solicitud contiene errores de validación."),
 
-            ExcepcionNegocio => (
+            // Las dos excepciones significan lo mismo: la peticion esta bien
+            // formada pero incumple una regla del negocio. Devolvian codigos
+            // distintos (422 y 400) solo por venir de capas distintas, asi que
+            // el mismo tipo de fallo se veia diferente segun donde se detectara.
+            // 422 es el codigo que corresponde; 400 queda para lo que el
+            // binding o la validacion de formato rechazan.
+            ExcepcionNegocio or ReglaNegocioException => (
                 StatusCodes.Status422UnprocessableEntity,
-                "Regla de negocio no cumplida",
-                exception.Message),
-
-            ReglaNegocioException => (
-                StatusCodes.Status400BadRequest,
                 "Regla de negocio no cumplida",
                 exception.Message),
 
