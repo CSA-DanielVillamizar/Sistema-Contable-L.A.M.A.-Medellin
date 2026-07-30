@@ -1,8 +1,14 @@
 'use client';
 
 import VistaCertificado from '@/features/donaciones/components/VistaCertificado';
+import FiltrosDonaciones from '@/features/donaciones/components/FiltrosDonaciones';
 import EstadoDeError from '@/components/layout/EstadoDeError';
-import { useCertificadoDonacion, useDonaciones } from '@/features/donaciones/hooks/useDonaciones';
+import {
+    useCertificadoDonacion,
+    useDonaciones,
+    type FiltrosDonaciones as Filtros,
+} from '@/features/donaciones/hooks/useDonaciones';
+import { exportDonacionesCsv } from '@/features/donaciones/utils/exportDonacionesCsv';
 import apiClient from '@/lib/apiClient';
 import { useState } from 'react';
 
@@ -19,22 +25,17 @@ function formatFecha(value: string): string {
     return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString('es-CO');
 }
 
+/** Nombre del archivo exportado, con el rango consultado si se acoto. */
+function nombreArchivo(filtros: Filtros): string {
+    const rango = [filtros.desde, filtros.hasta].filter(Boolean).join('_a_');
+    return rango ? `donaciones-${rango}.csv` : 'donaciones.csv';
+}
+
 export default function TablaDonaciones() {
-    const { data, isLoading, isError, error } = useDonaciones();
+    const [filtros, setFiltros] = useState<Filtros>({});
+    const { data, isLoading, isError, error } = useDonaciones(filtros);
     const [donacionSeleccionadaId, setDonacionSeleccionadaId] = useState<string | null>(null);
     const certificadoQuery = useCertificadoDonacion(donacionSeleccionadaId ?? undefined);
-
-    if (isLoading) {
-        return <p className="text-sm text-slate-600">Cargando donaciones...</p>;
-    }
-
-    if (isError) {
-        return <EstadoDeError error={error} contexto="ver las donaciones" />;
-    }
-
-    if (!data?.length) {
-        return <p className="text-sm text-slate-600">No hay donaciones registradas.</p>;
-    }
 
     const descargarPdf = async (donacionId: string) => {
         const response = await apiClient.get(`/api/donaciones/${donacionId}/certificado/pdf`, {
@@ -52,8 +53,51 @@ export default function TablaDonaciones() {
         URL.revokeObjectURL(url);
     };
 
+    // Los filtros se pintan siempre, tambien mientras carga o cuando no hay
+    // resultados. Si desaparecieran al no encontrar nada, el usuario quedaria
+    // atrapado en un filtro que no puede cambiar ni limpiar.
+    const filtrosBar = (
+        <FiltrosDonaciones
+            filtros={filtros}
+            onCambiar={setFiltros}
+            onExportar={() => exportDonacionesCsv(data ?? [], nombreArchivo(filtros))}
+            puedeExportar={Boolean(data?.length)}
+        />
+    );
+
+    if (isLoading) {
+        return (
+            <>
+                {filtrosBar}
+                <p className="text-sm text-slate-600">Cargando donaciones...</p>
+            </>
+        );
+    }
+
+    if (isError) {
+        return (
+            <>
+                {filtrosBar}
+                <EstadoDeError error={error} contexto="ver las donaciones" />
+            </>
+        );
+    }
+
+    if (!data?.length) {
+        return (
+            <>
+                {filtrosBar}
+                <p className="text-sm text-slate-600">
+                    No hay donaciones que coincidan con los filtros.
+                </p>
+            </>
+        );
+    }
+
     return (
         <>
+            {filtrosBar}
+
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-slate-200">
