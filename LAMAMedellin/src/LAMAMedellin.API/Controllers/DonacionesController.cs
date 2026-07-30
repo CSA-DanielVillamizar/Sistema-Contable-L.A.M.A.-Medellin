@@ -17,9 +17,15 @@ public sealed class DonacionesController(ISender sender, ICertificadoDonacionSer
 {
     [HttpGet]
     [ProducesResponseType(typeof(List<DonacionDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetDonaciones(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDonaciones(
+        [FromQuery] DateOnly? desde,
+        [FromQuery] DateOnly? hasta,
+        [FromQuery] Guid? donanteId,
+        [FromQuery] Guid? centroCostoId,
+        [FromQuery] bool? certificadoEmitido,
+        CancellationToken cancellationToken)
     {
-        var donaciones = await sender.Send(new GetDonacionesQuery(), cancellationToken);
+        var donaciones = await sender.Send(new GetDonacionesQuery(desde, hasta, donanteId, centroCostoId, certificadoEmitido), cancellationToken);
         return Ok(donaciones);
     }
 

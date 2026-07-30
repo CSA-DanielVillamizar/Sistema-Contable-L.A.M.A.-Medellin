@@ -13,4 +13,6 @@ public sealed record RegistrarEgresoCommand(
     decimal? MontoMonedaOrigen = null,
     decimal? TasaCambioUsada = null,
     DateTime? FechaTasaCambio = null,
-    FuenteTasaCambio? FuenteTasaCambio = null) : IRequest<Guid>;
+    FuenteTasaCambio? FuenteTasaCambio = null,
+    /// <summary>Documento que respalda la tasa aplicada (historia fx-01).</summary>
+    string? ReferenciaSoporte = null) : IRequest<Guid>;

@@ -35,7 +35,8 @@ public sealed class RegistrarIngresoCommandHandler(
                 request.MontoMonedaOrigen ?? throw new ExcepcionNegocio("MontoMonedaOrigen es obligatorio cuando MonedaOrigen es USD."),
                 request.TasaCambioUsada ?? throw new ExcepcionNegocio("TasaCambioUsada es obligatoria cuando MonedaOrigen es USD."),
                 request.FechaTasaCambio ?? throw new ExcepcionNegocio("FechaTasaCambio es obligatoria cuando MonedaOrigen es USD."),
-                request.FuenteTasaCambio ?? throw new ExcepcionNegocio("FuenteTasaCambio es obligatoria cuando MonedaOrigen es USD."));
+                request.FuenteTasaCambio ?? throw new ExcepcionNegocio("FuenteTasaCambio es obligatoria cuando MonedaOrigen es USD."),
+                request.ReferenciaSoporte);
         }
 
         var transaccion = new Transaccion(

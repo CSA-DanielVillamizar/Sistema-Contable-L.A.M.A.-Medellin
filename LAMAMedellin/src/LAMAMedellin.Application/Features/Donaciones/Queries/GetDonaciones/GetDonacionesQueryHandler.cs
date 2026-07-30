@@ -11,6 +11,11 @@ public sealed class GetDonacionesQueryHandler(IDonacionRepository donacionReposi
         var donaciones = await donacionRepository.GetAllWithDetallesAsync(cancellationToken);
 
         return donaciones
+            .Where(x => request.Desde is null || DateOnly.FromDateTime(x.Fecha) >= request.Desde)
+            .Where(x => request.Hasta is null || DateOnly.FromDateTime(x.Fecha) <= request.Hasta)
+            .Where(x => request.DonanteId is null || x.DonanteId == request.DonanteId)
+            .Where(x => request.CentroCostoId is null || x.CentroCostoId == request.CentroCostoId)
+            .Where(x => request.CertificadoEmitido is null || x.CertificadoEmitido == request.CertificadoEmitido)
             .OrderByDescending(x => x.Fecha)
             .Select(x => new DonacionDto(
                 x.Id,
