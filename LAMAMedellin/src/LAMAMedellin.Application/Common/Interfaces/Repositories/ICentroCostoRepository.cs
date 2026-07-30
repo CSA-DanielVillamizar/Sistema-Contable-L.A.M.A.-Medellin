@@ -6,5 +6,6 @@ public interface ICentroCostoRepository
 {
     Task<List<CentroCosto>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<CentroCosto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(CentroCosto centroCosto, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
