@@ -262,3 +262,9 @@ secrets/
 # - Project files (*.csproj, package.json)
 
 .fake
+# Configuracion local de Claude Code.
+#
+# launch.json si se versiona: describe como levantar el frontend y le sirve a
+# todo el equipo. settings.local.json no: son los permisos que cada quien
+# concede en su maquina.
+.claude/settings.local.json
