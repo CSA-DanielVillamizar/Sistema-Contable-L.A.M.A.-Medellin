@@ -115,6 +115,36 @@ public static class CuentaContableSeeder
             new("3205", "Excedente del Ejercicio", NaturalezaCuenta.Credito, true, false),
             new("3210", "Déficit del Ejercicio", NaturalezaCuenta.Debito, true, false),
 
+            // Deudores. La cartera emite cuentas por cobrar desde el primer mes,
+            // pero no existia ninguna cuenta donde registrarlas: el derecho de
+            // cobro quedaba fuera del balance hasta que el miembro pagaba.
+            new("13", "Deudores", NaturalezaCuenta.Debito, false, false),
+            new("1305", "Cuotas por Cobrar a Miembros", NaturalezaCuenta.Debito, false, false),
+            new("130505", "Cuotas de Sostenimiento por Cobrar", NaturalezaCuenta.Debito, true, true),
+            new("130510", "Cuotas de Afiliación por Cobrar", NaturalezaCuenta.Debito, true, true),
+            new("1380", "Deudores Varios", NaturalezaCuenta.Debito, false, false),
+            new("138005", "Otros Deudores", NaturalezaCuenta.Debito, true, true),
+
+            // Pasivo. El catalogo no tenia ni una sola cuenta de clase 2, asi
+            // que ninguna obligacion podia registrarse y el balance no podia
+            // cuadrar en cuanto hubiera algo pendiente de pagar.
+            new("2", "PASIVO", NaturalezaCuenta.Credito, false, false),
+            new("23", "Cuentas por Pagar", NaturalezaCuenta.Credito, false, false),
+            new("2335", "Costos y Gastos por Pagar", NaturalezaCuenta.Credito, true, true),
+            new("2380", "Acreedores Varios", NaturalezaCuenta.Credito, false, false),
+            new("238005", "Otros Acreedores", NaturalezaCuenta.Credito, true, true),
+            new("28", "Otros Pasivos", NaturalezaCuenta.Credito, false, false),
+            new("2805", "Anticipos y Avances Recibidos", NaturalezaCuenta.Credito, false, false),
+            new("280505", "Anticipos de Miembros", NaturalezaCuenta.Credito, true, true),
+
+            // Ingresos recibidos para terceros. Es la figura que pidio el
+            // cliente para la renovacion de membresia internacional de 20 USD
+            // que se recauda en diciembre: el capitulo solo hace de puente
+            // hacia el comite internacional, asi que ese dinero no es ingreso
+            // propio (clase 4) sino una obligacion con un tercero.
+            new("2815", "Ingresos Recibidos para Terceros", NaturalezaCuenta.Credito, false, false),
+            new("281505", "Renovación Membresía Internacional L.A.M.A.", NaturalezaCuenta.Credito, true, true),
+
             new("4", "INGRESOS", NaturalezaCuenta.Credito, false, false),
             new("41", "Ingresos de Actividades Ordinarias", NaturalezaCuenta.Credito, false, false),
             new("4130", "Ventas", NaturalezaCuenta.Credito, false, false),
