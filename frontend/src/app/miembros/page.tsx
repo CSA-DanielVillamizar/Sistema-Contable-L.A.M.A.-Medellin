@@ -1,6 +1,7 @@
 'use client';
 
 import MiembroUpsertModal from '@/features/miembros/components/MiembroUpsertModal';
+import EstadoDeError from '@/components/layout/EstadoDeError';
 import { useGetMiembros } from '@/features/miembros/hooks/useGetMiembros';
 import type { Miembro } from '@/features/miembros/services/miembrosService';
 import { useMemo, useState } from 'react';
@@ -75,7 +76,7 @@ export default function MiembrosPage() {
             </header>
 
             {isLoading && <p className="text-sm text-slate-600">Cargando directorio de miembros...</p>}
-            {isError && <p className="text-sm text-red-600">{(error as Error).message}</p>}
+            {isError ? <EstadoDeError error={error} contexto="ver los miembros" /> : null}
 
             {!isLoading && !isError && (
                 <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.05fr_1fr]">

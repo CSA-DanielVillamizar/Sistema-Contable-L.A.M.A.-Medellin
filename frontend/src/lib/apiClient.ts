@@ -70,6 +70,34 @@ export class ApiError extends Error {
 }
 
 /**
+ * Texto para un error que llego sin cuerpo.
+ *
+ * La tuberia de autorizacion de ASP.NET responde 401 y 403 vacios, de modo que
+ * no hay `detail` que mostrar. Antes se caia a "HTTP 403", que no le dice nada
+ * a quien lo lee.
+ */
+function mensajePorEstado(status: number): string {
+    switch (status) {
+        case 401:
+            return 'Tu sesión expiró. Vuelve a iniciar sesión.';
+        case 403:
+            return 'No tienes permiso para esta operación. Si crees que deberías tenerlo, pídeselo a un administrador.';
+        case 404:
+            return 'No encontramos lo que buscabas.';
+        case 408:
+            return 'La operación tardó demasiado. Intenta de nuevo.';
+        case 502:
+        case 503:
+        case 504:
+            return 'El servicio no está disponible en este momento. Intenta en unos minutos.';
+        default:
+            return status >= 500
+                ? 'Ocurrió un error en el servidor. Si se repite, avísale al equipo.'
+                : 'No fue posible completar la operación.';
+    }
+}
+
+/**
  * Mensaje presentable de un error salido de una llamada al API.
  *
  * El interceptor de abajo convierte toda respuesta de error en un `ApiError`,
@@ -151,7 +179,9 @@ apiClient.interceptors.response.use(
             return Promise.reject(new ApiError(normalized, status));
         }
 
-        // Respuesta de error sin cuerpo ProblemDetails (p.ej. 502 de la nube)
-        return Promise.reject(new ApiError({ title: `HTTP ${status}` }, status));
+        // Respuesta de error sin cuerpo. Pasa siempre con 401 y 403, que los
+        // emite la tuberia de autorizacion antes de llegar al controlador, y
+        // con los errores de la nube. Sin esto el usuario veia "HTTP 403".
+        return Promise.reject(new ApiError({ title: mensajePorEstado(status) }, status));
     },
 );

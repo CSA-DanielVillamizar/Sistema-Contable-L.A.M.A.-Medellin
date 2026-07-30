@@ -1,6 +1,7 @@
 'use client';
 
 import { useRegistrarPago } from '@/features/cartera/hooks/useRegistrarPago';
+import EstadoDeError from '@/components/layout/EstadoDeError';
 import { registrarPagoCarteraSchema } from '@/features/cartera/schemas/carteraSchemas';
 import type { CuentaPorCobrarItem } from '@/features/cartera/services/carteraService';
 import { useGetCuentasBancarias } from '@/features/tesoreria/hooks/useGetCuentasBancarias';
@@ -113,11 +114,7 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
     }
 
     if (error) {
-        return (
-            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                Error al cargar cuentas por cobrar: {error.message}
-            </div>
-        );
+        return <EstadoDeError error={error} contexto="ver la cartera" />;
     }
 
     if (cuentas.length === 0) {

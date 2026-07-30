@@ -1,6 +1,7 @@
 'use client';
 
 import VistaCertificado from '@/features/donaciones/components/VistaCertificado';
+import EstadoDeError from '@/components/layout/EstadoDeError';
 import { useCertificadoDonacion, useDonaciones } from '@/features/donaciones/hooks/useDonaciones';
 import apiClient from '@/lib/apiClient';
 import { useState } from 'react';
@@ -28,7 +29,7 @@ export default function TablaDonaciones() {
     }
 
     if (isError) {
-        return <p className="text-sm text-red-600">{(error as Error).message}</p>;
+        return <EstadoDeError error={error} contexto="ver las donaciones" />;
     }
 
     if (!data?.length) {
