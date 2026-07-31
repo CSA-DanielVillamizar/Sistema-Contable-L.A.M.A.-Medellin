@@ -18,6 +18,11 @@ public sealed class CentroCostoRepository(LamaDbContext dbContext) : ICentroCost
         return dbContext.CentrosCosto.FirstOrDefaultAsync(centroCosto => centroCosto.Id == id, cancellationToken);
     }
 
+    public async Task AddAsync(CentroCosto centroCosto, CancellationToken cancellationToken = default)
+    {
+        await dbContext.CentrosCosto.AddAsync(centroCosto, cancellationToken);
+    }
+
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return dbContext.SaveChangesAsync(cancellationToken);

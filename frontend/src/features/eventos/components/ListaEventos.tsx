@@ -1,6 +1,7 @@
 'use client';
 
 import EventoUpsertModal from '@/features/eventos/components/EventoUpsertModal';
+import EstadoDeError from '@/components/layout/EstadoDeError';
 import { useGetEventos } from '@/features/eventos/hooks/useGetEventos';
 import type { EventoDto } from '@/features/eventos/services/eventosService';
 import Link from 'next/link';
@@ -110,7 +111,7 @@ export default function ListaEventos() {
     }
 
     if (isError) {
-        return <p className="text-sm text-red-600">{(error as Error).message}</p>;
+        return <EstadoDeError error={error} contexto="ver los eventos" />;
     }
 
     const eventosFiltrados = getVistaEventos(data ?? [], vistaActiva);
@@ -193,7 +194,9 @@ export default function ListaEventos() {
                 </div>
             )}
 
-            <EventoUpsertModal mode="create" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            {isModalOpen ? (
+                <EventoUpsertModal mode="create" onClose={() => setIsModalOpen(false)} />
+            ) : null}
         </>
     );
 }

@@ -1,3 +1,4 @@
+using LAMAMedellin.API.Authorization;
 using LAMAMedellin.API.Middleware;
 using LAMAMedellin.API.Services;
 using LAMAMedellin.Application;
@@ -50,6 +51,11 @@ builder.Services
 builder.Services.AddScoped<IClaimsTransformation, RolInternoClaimsTransformation>();
 
 builder.Services.AddAuthorization();
+
+// Admin satisface cualquier exigencia de rol. Se registra como handler y no
+// repitiendo "Admin" en cada politica para que la regla valga tambien para los
+// controladores que se agreguen despues, sin que nadie tenga que acordarse.
+builder.Services.AddSingleton<IAuthorizationHandler, AdminSiempreAutorizadoHandler>();
 
 // Un usuario dado de baja debe quedar bloqueado tambien en los endpoints que se
 // conforman con [Authorize] sin exigir rol. Se aplica como filtro global para

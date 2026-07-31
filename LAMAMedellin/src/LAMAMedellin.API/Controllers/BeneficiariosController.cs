@@ -4,14 +4,14 @@ using LAMAMedellin.Application.Features.Beneficiarios.Commands.UpdateBeneficiari
 using LAMAMedellin.Application.Features.Beneficiarios.Queries.GetBeneficiarioById;
 using LAMAMedellin.Application.Features.Beneficiarios.Queries.GetBeneficiarios;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/beneficiarios")]
-[Authorize]
+[Route("api/beneficiarios")][Authorize(Roles = Roles.BeneficiariosLectura)]
 public sealed class BeneficiariosController(ISender sender) : ControllerBase
 {
     [HttpGet]
@@ -37,6 +37,7 @@ public sealed class BeneficiariosController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.BeneficiariosEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post([FromBody] UpsertBeneficiarioRequest request, CancellationToken cancellationToken)
     {
@@ -55,6 +56,7 @@ public sealed class BeneficiariosController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = Roles.BeneficiariosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Put(Guid id, [FromBody] UpsertBeneficiarioRequest request, CancellationToken cancellationToken)
     {
@@ -74,6 +76,7 @@ public sealed class BeneficiariosController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = Roles.BeneficiariosEscritura)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {

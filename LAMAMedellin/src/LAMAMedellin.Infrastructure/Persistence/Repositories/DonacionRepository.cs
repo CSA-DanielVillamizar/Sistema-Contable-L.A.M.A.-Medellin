@@ -29,6 +29,8 @@ public sealed class DonacionRepository : IDonacionRepository
         return await _context.Donaciones
             .AsNoTracking()
             .Include(x => x.Donante)
+            .Include(x => x.Banco)
+            .Include(x => x.CentroCosto)
             .OrderByDescending(x => x.Fecha)
             .ToListAsync(cancellationToken);
     }

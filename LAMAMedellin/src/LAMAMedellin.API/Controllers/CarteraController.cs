@@ -9,17 +9,18 @@ using LAMAMedellin.Application.Features.Cartera.Queries.GetCuentasPorCobrar;
 using LAMAMedellin.Application.Features.Cartera.Queries.GetMiembrosLookup;
 using LAMAMedellin.Domain.Enums;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/cartera")]
-[Authorize]
+[Route("api/cartera")][Authorize(Roles = Roles.TesoreriaLectura)]
 public sealed class CarteraController(ISender sender) : ControllerBase
 {
     [HttpPost("miembros")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CrearMiembro(
@@ -45,6 +46,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
     }
 
     [HttpPost("conceptos-cobro")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CrearConceptoCobro(
@@ -61,6 +63,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
     }
 
     [HttpPost("cuentas-por-cobrar")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CrearCuentaPorCobrar(
@@ -79,6 +82,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
     }
 
     [HttpPost("generar-mensual")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     public async Task<IActionResult> GenerarCarteraMensual(
         [FromBody] GenerarCarteraMensualRequest request,
@@ -133,6 +137,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
     }
 
     [HttpPost("cuentas-por-cobrar/{id:guid}/pagos")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     public async Task<IActionResult> RegistrarPago(
         Guid id,

@@ -15,9 +15,16 @@ public sealed class Donacion : BaseEntity
     public FormaDonacion FormaDonacion { get; private set; }
     public string MedioPagoODescripcion { get; private set; }
 
+    /// <summary>
+    /// Campana a la que se imputa (historia 2-2). Opcional: una donacion
+    /// espontanea no responde a ninguna convocatoria y sigue siendo valida.
+    /// </summary>
+    public Guid? CampanaDonacionId { get; private set; }
+
     public Donante? Donante { get; private set; }
     public Banco? Banco { get; private set; }
     public CentroCosto? CentroCosto { get; private set; }
+    public CampanaDonacion? CampanaDonacion { get; private set; }
 
 #pragma warning disable CS8618
     private Donacion() { }
@@ -31,7 +38,8 @@ public sealed class Donacion : BaseEntity
         Guid centroCostoId,
         string codigoVerificacion,
         FormaDonacion formaDonacion,
-        string medioPagoODescripcion)
+        string medioPagoODescripcion,
+        Guid? campanaDonacionId = null)
     {
         if (donanteId == Guid.Empty)
         {
@@ -72,6 +80,7 @@ public sealed class Donacion : BaseEntity
         CodigoVerificacion = codigoVerificacion.Trim();
         FormaDonacion = formaDonacion;
         MedioPagoODescripcion = medioPagoODescripcion.Trim();
+        CampanaDonacionId = campanaDonacionId;
     }
 
     public void MarcarCertificadoEmitido()

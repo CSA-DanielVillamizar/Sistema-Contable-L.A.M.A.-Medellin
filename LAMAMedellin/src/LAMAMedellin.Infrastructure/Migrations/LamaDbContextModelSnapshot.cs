@@ -22,6 +22,72 @@ namespace LAMAMedellin.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.ActividadProyecto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("FechaFinPlanificada")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("FechaInicioPlanificada")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("PresupuestoAsignado")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ProyectoSocialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProyectoSocialId");
+
+                    b.ToTable("ActividadesProyecto", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.AsientoContable", b =>
                 {
                     b.Property<Guid>("Id")
@@ -278,6 +344,63 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Beneficiarios", (string)null);
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CampanaDonacion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("EstaActiva")
+                        .HasColumnType("bit");
+
+                    b.Property<DateOnly>("FechaFin")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("FechaInicio")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("MetaCOP")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CampanasDonacion", (string)null);
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CentroCosto", b =>
@@ -586,6 +709,96 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("CuentasPorCobrar", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaPorPagar", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CentroCostoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Concepto")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid>("CuentaContableGastoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("FechaEmision")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("FechaVencimiento")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NitProveedor")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("NombreProveedor")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NumeroFactura")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("SaldoPendiente")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("TasaCambioReconocida")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ValorUSD")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CentroCostoId");
+
+                    b.HasIndex("CuentaContableGastoId");
+
+                    b.HasIndex("NitProveedor", "NumeroFactura")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.ToTable("CuentasPorPagar", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuotaAsamblea", b =>
                 {
                     b.Property<Guid>("Id")
@@ -646,6 +859,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Property<Guid>("BancoId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CampanaDonacionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("CentroCostoId")
                         .HasColumnType("uniqueidentifier");
 
@@ -701,6 +917,8 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BancoId");
+
+                    b.HasIndex("CampanaDonacionId");
 
                     b.HasIndex("CentroCostoId");
 
@@ -985,6 +1203,53 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("Ingresos", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.MapeoContable", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid>("CuentaContableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TipoOperacion")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CuentaContableId");
+
+                    b.HasIndex("TipoOperacion")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.ToTable("MapeosContables", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Miembro", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1105,6 +1370,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal?>("CostoUnitario")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1354,6 +1622,65 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("ProyectosSociales", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.SolicitudAnulacion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ComprobanteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("FechaResolucion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MotivoResolucion")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("MotivoSolicitud")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ResueltaPor")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComprobanteId");
+
+                    b.ToTable("SolicitudesAnulacion", (string)null);
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.TarifaCuota", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1525,6 +1852,17 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.ToTable("Usuarios", (string)null);
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.ActividadProyecto", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.ProyectoSocial", "ProyectoSocial")
+                        .WithMany()
+                        .HasForeignKey("ProyectoSocialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProyectoSocial");
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.AsientoContable", b =>
                 {
                     b.HasOne("LAMAMedellin.Domain.Entities.CentroCosto", "CentroCosto")
@@ -1631,6 +1969,25 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Navigation("Miembro");
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CuentaPorPagar", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.CentroCosto", "CentroCosto")
+                        .WithMany()
+                        .HasForeignKey("CentroCostoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaContableGasto")
+                        .WithMany()
+                        .HasForeignKey("CuentaContableGastoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CentroCosto");
+
+                    b.Navigation("CuentaContableGasto");
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Donacion", b =>
                 {
                     b.HasOne("LAMAMedellin.Domain.Entities.Banco", "Banco")
@@ -1638,6 +1995,11 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .HasForeignKey("BancoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("LAMAMedellin.Domain.Entities.CampanaDonacion", "CampanaDonacion")
+                        .WithMany("Donaciones")
+                        .HasForeignKey("CampanaDonacionId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("LAMAMedellin.Domain.Entities.CentroCosto", "CentroCosto")
                         .WithMany()
@@ -1652,6 +2014,8 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Banco");
+
+                    b.Navigation("CampanaDonacion");
 
                     b.Navigation("CentroCosto");
 
@@ -1718,6 +2082,17 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.MapeoContable", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.CuentaContable", "CuentaContable")
+                        .WithMany()
+                        .HasForeignKey("CuentaContableId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CuentaContable");
+                });
+
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.MovimientoInventario", b =>
                 {
                     b.HasOne("LAMAMedellin.Domain.Entities.Producto", "Producto")
@@ -1751,6 +2126,17 @@ namespace LAMAMedellin.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("CentroCosto");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.SolicitudAnulacion", b =>
+                {
+                    b.HasOne("LAMAMedellin.Domain.Entities.Comprobante", "Comprobante")
+                        .WithMany()
+                        .HasForeignKey("ComprobanteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Comprobante");
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.Transaccion", b =>
@@ -1791,6 +2177,9 @@ namespace LAMAMedellin.Infrastructure.Migrations
                                 .HasColumnType("decimal(18,2)")
                                 .HasColumnName("MontoMonedaOrigen");
 
+                            b1.Property<string>("ReferenciaSoporte")
+                                .HasColumnType("nvarchar(max)");
+
                             b1.Property<decimal>("TasaCambioUsada")
                                 .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
@@ -1809,6 +2198,11 @@ namespace LAMAMedellin.Infrastructure.Migrations
                     b.Navigation("CentroCosto");
 
                     b.Navigation("TransaccionMultimoneda");
+                });
+
+            modelBuilder.Entity("LAMAMedellin.Domain.Entities.CampanaDonacion", b =>
+                {
+                    b.Navigation("Donaciones");
                 });
 
             modelBuilder.Entity("LAMAMedellin.Domain.Entities.CentroCosto", b =>

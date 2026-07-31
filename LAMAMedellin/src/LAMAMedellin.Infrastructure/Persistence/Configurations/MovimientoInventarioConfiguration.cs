@@ -46,6 +46,11 @@ public sealed class MovimientoInventarioConfiguration : IEntityTypeConfiguration
             .IsRequired()
             .HasDefaultValue(false);
 
+        // Nulo en las salidas: el costo de lo vendido se deriva del promedio
+        // de las entradas, no se repite en cada movimiento.
+        builder.Property(m => m.CostoUnitario)
+            .HasColumnType("decimal(18,2)");
+
         builder.HasQueryFilter(m => !m.IsDeleted);
 
         builder.ToTable("MovimientosInventario");

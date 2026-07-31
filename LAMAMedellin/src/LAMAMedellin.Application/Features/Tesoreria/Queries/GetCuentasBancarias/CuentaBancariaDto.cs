@@ -5,4 +5,5 @@ public sealed record CuentaBancariaDto(
     string Nombre,
     string NumeroCuenta,
     decimal SaldoActual,
-    bool EsActivo);
+    bool EsActivo,
+    Guid CuentaContableId);

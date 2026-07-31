@@ -1,11 +1,12 @@
 'use client';
 
 import { useRegistrarPago } from '@/features/cartera/hooks/useRegistrarPago';
+import EstadoDeError from '@/components/layout/EstadoDeError';
 import { registrarPagoCarteraSchema } from '@/features/cartera/schemas/carteraSchemas';
 import type { CuentaPorCobrarItem } from '@/features/cartera/services/carteraService';
 import { useGetCuentasBancarias } from '@/features/tesoreria/hooks/useGetCuentasBancarias';
 import { MEDIOS_PAGO, MEDIO_PAGO_POR_DEFECTO } from '@/lib/mediosPago';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type ListaCuentasPorCobrarProps = {
     cuentas: CuentaPorCobrarItem[];
@@ -78,17 +79,10 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
         setErrorMonto(null);
     };
 
-    useEffect(() => {
-        if (!cuentaActivaId || cuentas.length === 0) {
-            return;
-        }
-
-        const sigueVisible = cuentas.some((cuenta) => cuenta.id === cuentaActivaId);
-        if (!sigueVisible) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
-            cerrarPago();
-        }
-    }, [cuentaActivaId, cuentas]);
+    // No hace falta cerrar el panel desde un efecto cuando la cuenta deja de
+    // estar en el listado (por ejemplo, al quedar saldada tras el pago):
+    // `cuentaActiva` ya es null en ese render y el panel no se pinta. El resto
+    // del estado lo reinicia seleccionarCuenta en la siguiente apertura.
 
     const onSubmitPago = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -120,11 +114,7 @@ export default function ListaCuentasPorCobrar({ cuentas, isLoading, error }: Lis
     }
 
     if (error) {
-        return (
-            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                Error al cargar cuentas por cobrar: {error.message}
-            </div>
-        );
+        return <EstadoDeError error={error} contexto="ver la cartera" />;
     }
 
     if (cuentas.length === 0) {

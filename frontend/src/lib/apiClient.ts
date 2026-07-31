@@ -69,6 +69,65 @@ export class ApiError extends Error {
     }
 }
 
+/**
+ * Texto para un error que llego sin cuerpo.
+ *
+ * La tuberia de autorizacion de ASP.NET responde 401 y 403 vacios, de modo que
+ * no hay `detail` que mostrar. Antes se caia a "HTTP 403", que no le dice nada
+ * a quien lo lee.
+ */
+function mensajePorEstado(status: number): string {
+    switch (status) {
+        case 401:
+            return 'Tu sesión expiró. Vuelve a iniciar sesión.';
+        case 403:
+            return 'No tienes permiso para esta operación. Si crees que deberías tenerlo, pídeselo a un administrador.';
+        case 404:
+            return 'No encontramos lo que buscabas.';
+        case 408:
+            return 'La operación tardó demasiado. Intenta de nuevo.';
+        case 502:
+        case 503:
+        case 504:
+            return 'El servicio no está disponible en este momento. Intenta en unos minutos.';
+        default:
+            return status >= 500
+                ? 'Ocurrió un error en el servidor. Si se repite, avísale al equipo.'
+                : 'No fue posible completar la operación.';
+    }
+}
+
+/**
+ * Mensaje presentable de un error salido de una llamada al API.
+ *
+ * El interceptor de abajo convierte toda respuesta de error en un `ApiError`,
+ * asi que para cuando el error llega a un hook ya NO es un error de axios.
+ * Veinte hooks comprobaban `axios.isAxiosError(error)` y, al dar siempre false,
+ * caian en su mensaje generico: el `detail` del backend —que es donde viaja la
+ * regla de negocio incumplida— nunca llegaba a la pantalla. Un 422 se veia como
+ * "No fue posible registrar el comprobante", sin decir por que.
+ *
+ * Se conserva la rama de axios por si algun consumidor usa una instancia sin
+ * este interceptor.
+ */
+export function mensajeDeError(error: unknown, respaldo: string): string {
+    if (error instanceof ApiError) {
+        const primerErrorDeValidacion = Object.values(error.validationErrors).flat()[0];
+        return primerErrorDeValidacion ?? error.message ?? respaldo;
+    }
+
+    if (axios.isAxiosError<ProblemDetails>(error)) {
+        const problem = error.response?.data;
+        const primerErrorDeValidacion = problem?.errors
+            ? Object.values(problem.errors).flat()[0]
+            : undefined;
+
+        return primerErrorDeValidacion ?? problem?.detail ?? problem?.title ?? respaldo;
+    }
+
+    return respaldo;
+}
+
 // ---------------------------------------------------------------------------
 // Interceptor de RESPUESTA — normaliza errores ProblemDetails del backend
 // ---------------------------------------------------------------------------
@@ -120,7 +179,9 @@ apiClient.interceptors.response.use(
             return Promise.reject(new ApiError(normalized, status));
         }
 
-        // Respuesta de error sin cuerpo ProblemDetails (p.ej. 502 de la nube)
-        return Promise.reject(new ApiError({ title: `HTTP ${status}` }, status));
+        // Respuesta de error sin cuerpo. Pasa siempre con 401 y 403, que los
+        // emite la tuberia de autorizacion antes de llegar al controlador, y
+        // con los errores de la nube. Sin esto el usuario veia "HTTP 403".
+        return Promise.reject(new ApiError({ title: mensajePorEstado(status) }, status));
     },
 );

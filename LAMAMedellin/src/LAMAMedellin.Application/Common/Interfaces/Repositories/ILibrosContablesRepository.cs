@@ -34,6 +34,15 @@ public interface ILibrosContablesRepository
         Guid? centroCostoId,
         CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Gasto ejecutado contra un centro de costo (historia 3-4). Suma los
+    /// debitos de cuentas de gasto y costo, que es lo que representa dinero
+    /// aplicado al proyecto; los creditos son devoluciones y restan.
+    /// </summary>
+    Task<decimal> GetEjecutadoPorCentroCostoAsync(
+        Guid centroCostoId,
+        CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<SaldoCuentaBalanceDto>> GetBalancePruebaAsync(
         int anio,
         int mes,

@@ -1,5 +1,5 @@
 import type { BeneficiarioFinalItem } from '@/features/tributario/hooks/useReporteBeneficiariosFinales';
-import { downloadCsv } from '@/features/tributario/utils/exportExogenaCsv';
+import { downloadCsv } from '@/lib/csv';
 
 export function exportBeneficiariosFinalesCsv(rows: BeneficiarioFinalItem[], fileName: string) {
     const headers = [

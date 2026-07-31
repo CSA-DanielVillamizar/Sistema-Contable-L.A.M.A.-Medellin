@@ -2,6 +2,7 @@ using LAMAMedellin.Application.Features.Contabilidad.Commands.CerrarPeriodo;
 using LAMAMedellin.Application.Features.Contabilidad.Commands.ValidarPeriodoTesoreria;
 using LAMAMedellin.Application.Features.Contabilidad.Queries.GetPeriodosContables;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,7 @@ namespace LAMAMedellin.API.Controllers;
 /// no un detalle de permisos.
 /// </summary>
 [ApiController]
-[Route("api/periodos-contables")]
-[Authorize]
+[Route("api/periodos-contables")][Authorize(Roles = Roles.CierreLectura)]
 public sealed class PeriodosContablesController(ISender sender) : ControllerBase
 {
     [HttpGet]
@@ -27,7 +27,7 @@ public sealed class PeriodosContablesController(ISender sender) : ControllerBase
 
     /// <summary>Paso 1: el Tesorero da por revisado el mes.</summary>
     [HttpPost("{anio:int}/{mes:int}/validar")]
-    [Authorize(Roles = "Tesorero,Admin")]
+    [Authorize(Roles = Roles.CierreValidar)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Validar(int anio, int mes, CancellationToken cancellationToken)
@@ -39,7 +39,7 @@ public sealed class PeriodosContablesController(ISender sender) : ControllerBase
 
     /// <summary>Paso 2: el Contador cierra y el periodo queda bloqueado.</summary>
     [HttpPost("{anio:int}/{mes:int}/cerrar")]
-    [Authorize(Roles = "Contador,Admin")]
+    [Authorize(Roles = Roles.CierreEjecutar)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Cerrar(int anio, int mes, CancellationToken cancellationToken)

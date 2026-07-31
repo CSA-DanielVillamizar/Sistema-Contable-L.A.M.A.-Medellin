@@ -129,11 +129,18 @@ public static class DependencyInjection
         services.AddScoped<ICuotaAsambleaRepository, CuotaAsambleaRepository>();
         services.AddScoped<ITarifaCuotaRepository, TarifaCuotaRepository>();
         services.AddScoped<ICuentaPorCobrarRepository, CuentaPorCobrarRepository>();
+        services.AddScoped<ICuentaPorPagarRepository, CuentaPorPagarRepository>();
+        services.AddScoped<IMapeoContableRepository, MapeoContableRepository>();
+        services.AddScoped<ISolicitudAnulacionRepository, SolicitudAnulacionRepository>();
+        services.AddScoped<ICampanaDonacionRepository, CampanaDonacionRepository>();
+        services.AddScoped<IActividadProyectoRepository, ActividadProyectoRepository>();
         services.AddScoped<IConceptoCobroRepository, ConceptoCobroRepository>();
         services.AddScoped<ICuentaContableRepository, CuentaContableRepository>();
         services.AddScoped<IDonanteRepository, DonanteRepository>();
         services.AddScoped<IDonacionRepository, DonacionRepository>();
         services.AddScoped<ICertificadoDonacionService, CertificadoDonacionService>();
+        services.AddSingleton<IConfiguracionSeguridad, ConfiguracionSeguridad>();
+        services.AddScoped<IReciboService, ReciboService>();
         services.AddScoped<ITransactionManager, TransactionManager>();
         services.AddScoped<IGeneradorConsecutivos, GeneradorConsecutivos>();
         services.AddScoped<IComprobanteRepository, ComprobanteRepository>();

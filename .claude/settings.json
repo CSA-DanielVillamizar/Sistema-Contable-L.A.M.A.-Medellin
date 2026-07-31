@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(dotnet test *)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npm run build)",
+      "Bash(npx eslint src)",
+      "Bash(npm run lint)",
+      "Bash(nslookup *)",
+      "mcp__claude_ai_Microsoft_Learn__microsoft_docs_search",
+      "mcp__Claude_Browser__get_page_text",
+      "mcp__Claude_Browser__read_console_messages"
+    ]
+  }
+}

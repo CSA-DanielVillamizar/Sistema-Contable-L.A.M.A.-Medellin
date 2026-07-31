@@ -1,15 +1,8 @@
 'use client';
 
 import type { ProyectoFormValues } from '@/features/proyectos/schemas/proyectoSchema';
-import apiClient, { type RespuestaApi } from '@/lib/apiClient';
+import apiClient, { type RespuestaApi, mensajeDeError } from '@/lib/apiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-    errors?: Record<string, string[]>;
-};
 
 type CrearResponse = {
     id: string;
@@ -28,15 +21,7 @@ export type ProyectoItem = {
 };
 
 function mapError(error: unknown, fallback: string): Error {
-    if (axios.isAxiosError<ProblemDetails>(error)) {
-        const firstValidationError = error.response?.data?.errors
-            ? Object.values(error.response.data.errors).flat()[0]
-            : undefined;
-
-        return new Error(firstValidationError ?? error.response?.data?.detail ?? error.response?.data?.title ?? fallback);
-    }
-
-    return new Error(fallback);
+    return new Error(mensajeDeError(error, fallback));
 }
 
 export function useProyectos() {

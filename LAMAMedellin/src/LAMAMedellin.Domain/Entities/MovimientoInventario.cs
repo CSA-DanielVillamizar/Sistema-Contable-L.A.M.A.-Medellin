@@ -13,6 +13,16 @@ public sealed class MovimientoInventario : BaseEntity
     public string Concepto { get; private set; } = string.Empty;
     public string? Observaciones { get; private set; }
 
+    /// <summary>
+    /// Costo unitario de la mercancia (historia 4-3). Se captura en la entrada,
+    /// que es cuando se conoce lo que costo; en una salida queda nulo porque el
+    /// costo de lo vendido se deriva del promedio de las entradas.
+    ///
+    /// Sin este dato la utilidad no se puede calcular: solo se sabria cuanto se
+    /// vendio, no cuanto se gano.
+    /// </summary>
+    public decimal? CostoUnitario { get; private set; }
+
     public Producto? Producto { get; private set; }
 
     private MovimientoInventario() { }
@@ -23,7 +33,8 @@ public sealed class MovimientoInventario : BaseEntity
         int cantidad,
         DateTime fecha,
         string concepto,
-        string? observaciones = null)
+        string? observaciones = null,
+        decimal? costoUnitario = null)
     {
         if (productoId == Guid.Empty) throw new ArgumentException("ProductoId es obligatorio.", nameof(productoId));
         if (cantidad <= 0) throw new ArgumentOutOfRangeException(nameof(cantidad), "Cantidad debe ser mayor a cero.");
@@ -37,5 +48,12 @@ public sealed class MovimientoInventario : BaseEntity
         Fecha = fecha;
         Concepto = concepto.Trim();
         Observaciones = string.IsNullOrWhiteSpace(observaciones) ? null : observaciones.Trim();
+
+        if (costoUnitario is <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(costoUnitario), "CostoUnitario debe ser mayor a cero.");
+        }
+
+        CostoUnitario = costoUnitario;
     }
 }

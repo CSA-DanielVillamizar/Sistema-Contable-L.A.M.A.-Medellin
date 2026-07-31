@@ -2,8 +2,48 @@
 
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { apiScope, msalInstance } from '@/lib/msalClient';
+import apiClient from '@/lib/apiClient';
+import { getUserRolesFromToken } from '@/lib/authRoles';
+import { marcarSesionResuelta, publicarSesion } from '@/lib/sesionInterna';
+import type { AccountInfo } from '@azure/msal-browser';
+
+/**
+ * Crea el perfil interno del usuario si aun no existe y devuelve su rol.
+ *
+ * Sin perfil, la transformacion de claims no concede ningun rol y la matriz de
+ * permisos responde 403 en toda la aplicacion. El endpoint es idempotente: si
+ * el perfil ya esta, devuelve el existente sin tocarlo.
+ *
+ * El rol que devuelve es ademas la unica forma que tiene el frontend de saber
+ * que puede hacer el usuario: no viaja en el token de Entra.
+ *
+ * Un fallo aqui no bloquea el arranque: el usuario vera los 403 de la API, que
+ * es mas util que dejarlo mirando una pantalla en blanco sin explicacion.
+ */
+async function sincronizarPerfilInterno(cuenta: AccountInfo): Promise<string | null> {
+    const entraObjectId = (cuenta.idTokenClaims as { oid?: string } | undefined)?.oid
+        ?? cuenta.localAccountId;
+
+    if (!entraObjectId) {
+        return null;
+    }
+
+    try {
+        const { data } = await apiClient.post<{ rol?: string }>('/api/usuarios/sync', {
+            email: cuenta.username,
+            entraObjectId,
+            nombres: cuenta.name ?? cuenta.username,
+        });
+
+        return typeof data?.rol === 'string' && data.rol.length > 0 ? data.rol : null;
+    } catch {
+        // Silencioso a proposito: ver arriba.
+        return null;
+    }
+}
 
 const redirectInFlightKey = 'msal_redirect_in_flight';
 const authReadyKey = 'auth_ready';
@@ -15,12 +55,35 @@ type AuthProviderProps = {
     children: React.ReactNode;
 };
 
+/**
+ * Rutas que se sirven sin sesion.
+ *
+ * Hoy solo la verificacion de recibos: es a donde apunta el codigo QR, y quien
+ * recibe un recibo impreso no tiene cuenta en el sistema. Forzarle un login
+ * convertiria la verificacion en algo que solo los propios miembros pueden
+ * hacer, que es justo lo contrario de para que sirve.
+ */
+const RUTAS_PUBLICAS = ['/verificar'];
+
+function esRutaPublica(pathname: string | null): boolean {
+    return Boolean(pathname) && RUTAS_PUBLICAS.some((r) => pathname!.startsWith(r));
+}
+
 function TokenSync({ children }: AuthProviderProps) {
     const { instance, accounts, inProgress } = useMsal();
-    const [isAuthReady, setIsAuthReady] = useState(false);
+    const [sesionResuelta, setSesionResuelta] = useState(false);
     const hasTriggeredRedirectRef = useRef(false);
+    const pathname = usePathname();
+    const rutaPublica = esRutaPublica(pathname);
+
+    // Una ruta publica no espera a MSAL: no hay sesion que resolver.
+    const isAuthReady = rutaPublica || sesionResuelta;
 
     useEffect(() => {
+        if (rutaPublica) {
+            return;
+        }
+
         if (inProgress !== 'none') {
             return;
         }
@@ -106,7 +169,7 @@ function TokenSync({ children }: AuthProviderProps) {
                 hasTriggeredRedirectRef.current = false;
                 sessionStorage.setItem(authReadyKey, '1');
                 setLastAuthError(errorMessage);
-                setIsAuthReady(true);
+                setSesionResuelta(true);
             }
         };
 
@@ -121,7 +184,7 @@ function TokenSync({ children }: AuthProviderProps) {
             sessionStorage.setItem(authReadyKey, '1');
             sessionStorage.removeItem(authRetryKey);
             clearAuthError();
-            setIsAuthReady(true);
+            setSesionResuelta(true);
         };
 
         const ensureToken = async () => {
@@ -145,14 +208,14 @@ function TokenSync({ children }: AuthProviderProps) {
                     hasTriggeredRedirectRef.current = false;
                     sessionStorage.setItem(authReadyKey, '1');
                     setLastAuthError(callbackError);
-                    setIsAuthReady(true);
+                    setSesionResuelta(true);
                     return;
                 }
 
                 if (sessionStorage.getItem(redirectInFlightKey) === '1' || isHandlingAuthCallback()) {
                     sessionStorage.setItem(authReadyKey, '1');
                     notifyTokenStateChanged();
-                    setIsAuthReady(true);
+                    setSesionResuelta(true);
                     return;
                 }
 
@@ -166,19 +229,31 @@ function TokenSync({ children }: AuthProviderProps) {
                 // Se pide el token para confirmar que la sesion sirve, pero NO se
                 // persiste: a partir de aqui MSAL es el unico que lo custodia y el
                 // cliente HTTP se lo pide cuando lo necesita.
-                await instance.acquireTokenSilent({
+                const resultado = await instance.acquireTokenSilent({
                     account: accounts[0],
                     scopes: [apiScope],
                 });
 
                 notifyTokenStateChanged();
+
+                // El perfil interno es lo que da rol al usuario, y sin rol la
+                // API responde 403 en todas las pantallas. Se sincroniza aqui
+                // porque es el unico momento en que se sabe que la sesion
+                // sirve y quien es el usuario.
+                const rolInterno = await sincronizarPerfilInterno(accounts[0]);
+
+                // Los roles quedan disponibles para toda la aplicacion. Es el
+                // unico punto donde se conocen: el rol de la aplicacion lo
+                // devuelve la sincronizacion, no el token.
+                publicarSesion(rolInterno, getUserRolesFromToken(resultado.accessToken));
+
                 resolveReady();
             } catch (error) {
                 if (error instanceof InteractionRequiredAuthError) {
                     if (sessionStorage.getItem(redirectInFlightKey) === '1' || isHandlingAuthCallback()) {
                         sessionStorage.setItem(authReadyKey, '1');
                         notifyTokenStateChanged();
-                        setIsAuthReady(true);
+                        setSesionResuelta(true);
                         return;
                     }
 
@@ -210,7 +285,7 @@ function TokenSync({ children }: AuthProviderProps) {
                 sessionStorage.setItem(authReadyKey, '1');
                 setLastAuthError(errorMessage);
                 notifyTokenStateChanged();
-                setIsAuthReady(true);
+                setSesionResuelta(true);
             }
         };
 
@@ -228,7 +303,16 @@ function TokenSync({ children }: AuthProviderProps) {
         return () => {
             window.removeEventListener(authManualLoginEvent, onManualLoginRequest);
         };
-    }, [accounts, inProgress, instance]);
+    }, [accounts, inProgress, instance, rutaPublica]);
+
+    // La sesion se da por resuelta tambien cuando la autenticacion termino mal.
+    // Sin esto las pantallas se quedarian esperando un rol que ya no va a
+    // llegar, mostrando "cargando" para siempre en vez del error.
+    useEffect(() => {
+        if (sesionResuelta) {
+            marcarSesionResuelta();
+        }
+    }, [sesionResuelta]);
 
     if (!isAuthReady) {
         return <div className="p-6 text-sm text-slate-600">Autenticando sesión...</div>;

@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import apiClient from '@/lib/apiClient';
+import apiClient, { mensajeDeError } from '@/lib/apiClient';
 
 type GenerarObligacionesRequest = {
     Periodo: string;
@@ -13,11 +12,6 @@ type GenerarObligacionesResponse = {
     periodo: string;
     cuotasGeneradas: number;
     mensaje?: string;
-};
-
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
 };
 
 export default function GenerarCarteraForm() {
@@ -34,12 +28,7 @@ export default function GenerarCarteraForm() {
                 const response = await apiClient.post<GenerarObligacionesResponse>('/api/cartera/generar-mensual', request);
                 return response.data;
             } catch (err) {
-                if (axios.isAxiosError<ProblemDetails>(err)) {
-                    const mensaje = err.response?.data?.detail ?? err.response?.data?.title ?? 'No fue posible generar las cuotas.';
-                    throw new Error(mensaje);
-                }
-
-                throw new Error('No fue posible generar las cuotas.');
+                throw new Error(mensajeDeError(err, 'No fue posible generar las cuotas.'));
             }
         },
     });

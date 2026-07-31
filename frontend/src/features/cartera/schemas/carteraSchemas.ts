@@ -139,6 +139,11 @@ export const crearCuentaPorCobrarSchema = z
             .trim()
             .min(1, 'ConceptoCobroId es obligatorio.')
             .regex(uuidRegex, 'ConceptoCobroId debe tener formato UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).'),
+        periodo: z
+            .string()
+            .trim()
+            .min(1, 'Periodo es obligatorio.')
+            .regex(/^\d{4}-(0[1-9]|1[0-2])$/, 'Periodo debe tener formato AAAA-MM.'),
         fechaEmision: z
             .string()
             .trim()

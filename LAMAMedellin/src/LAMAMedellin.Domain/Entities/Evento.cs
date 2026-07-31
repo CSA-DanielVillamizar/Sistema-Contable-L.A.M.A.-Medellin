@@ -82,6 +82,38 @@ public sealed class Evento : BaseEntity
         CuotaLogisticaCOP = cuotaCop;
     }
 
+    /// <summary>
+    /// Corrige los datos del evento. Solo mientras siga programado: una vez
+    /// iniciado, finalizado o cancelado ya hubo asistencias registradas contra
+    /// el, y cambiarle la fecha o el lugar falsearia esa historia.
+    /// </summary>
+    public void ActualizarDatos(
+        string nombre,
+        string descripcion,
+        DateTime fechaProgramadaUtc,
+        string lugarEncuentro,
+        TipoEvento tipoEvento,
+        string? destino = null)
+    {
+        if (Estado != EstadoEvento.Programado)
+        {
+            throw new ReglaNegocioException(
+                "Solo se pueden editar los datos de un evento que siga programado.");
+        }
+
+        if (fechaProgramadaUtc == default)
+        {
+            throw new ReglaNegocioException("FechaProgramada es obligatoria.");
+        }
+
+        Nombre = ValidarTextoRequerido(nombre, nameof(nombre), 150);
+        Descripcion = ValidarTextoRequerido(descripcion, nameof(descripcion), 1000);
+        LugarEncuentro = ValidarTextoRequerido(lugarEncuentro, nameof(lugarEncuentro), 200);
+        Destino = ValidarTextoOpcional(destino, 200);
+        FechaProgramada = fechaProgramadaUtc;
+        TipoEvento = tipoEvento;
+    }
+
     public void IniciarEvento(DateTime fechaInicioUtc)
     {
         if (Estado != EstadoEvento.Programado)

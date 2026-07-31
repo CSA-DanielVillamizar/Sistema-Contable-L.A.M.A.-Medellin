@@ -1,26 +1,11 @@
 'use client';
 
-import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import apiClient, { type RespuestaApi } from '@/lib/apiClient';
+import apiClient, { type RespuestaApi, mensajeDeError } from '@/lib/apiClient';
 import type { DonacionFormValues, DonanteFormValues } from '@/features/donaciones/schemas/donacionSchema';
 
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-    errors?: Record<string, string[]>;
-};
-
 function mapError(error: unknown, fallback: string): Error {
-    if (axios.isAxiosError<ProblemDetails>(error)) {
-        const firstValidationError = error.response?.data?.errors
-            ? Object.values(error.response.data.errors).flat()[0]
-            : undefined;
-
-        return new Error(firstValidationError ?? error.response?.data?.detail ?? error.response?.data?.title ?? fallback);
-    }
-
-    return new Error(fallback);
+    return new Error(mensajeDeError(error, fallback));
 }
 
 export type DonanteItem = {
@@ -93,11 +78,42 @@ export function useDonantes() {
     });
 }
 
-export function useDonaciones() {
+/**
+ * Filtros de la consulta de donaciones (historia 2-4).
+ *
+ * Todos son opcionales y se combinan entre si. Las fechas van en formato
+ * ISO (aaaa-mm-dd), que es lo que produce un <input type="date"> y lo que
+ * espera el DateOnly del backend.
+ */
+export type FiltrosDonaciones = {
+    desde?: string;
+    hasta?: string;
+    donanteId?: string;
+    centroCostoId?: string;
+    certificadoEmitido?: boolean;
+};
+
+/** Deja fuera los filtros vacios para no mandar parametros sin valor. */
+function aParametros(filtros: FiltrosDonaciones): Record<string, string> {
+    return Object.fromEntries(
+        Object.entries(filtros)
+            .filter(([, valor]) => valor !== undefined && valor !== '')
+            .map(([clave, valor]) => [clave, String(valor)]),
+    );
+}
+
+export function useDonaciones(filtros: FiltrosDonaciones = {}) {
+    const parametros = aParametros(filtros);
+
     return useQuery<DonacionItem[]>({
-        queryKey: ['donaciones', 'listado'],
+        // Los filtros forman parte de la clave: sin ellos, React Query servia
+        // el resultado de un filtro anterior desde la cache al cambiar de
+        // criterio, y la tabla mostraba datos que no correspondian.
+        queryKey: ['donaciones', 'listado', parametros],
         queryFn: async () => {
-            const response = await apiClient.get<RespuestaApi[]>('/api/donaciones');
+            const response = await apiClient.get<RespuestaApi[]>('/api/donaciones', {
+                params: parametros,
+            });
 
             return (response.data ?? []).map((item) => ({
                 id: String(item?.id ?? ''),

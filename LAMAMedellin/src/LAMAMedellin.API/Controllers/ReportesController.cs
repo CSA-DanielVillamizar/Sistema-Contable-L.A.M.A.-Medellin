@@ -4,14 +4,14 @@ using LAMAMedellin.Application.Features.Contabilidad.Queries.GetLibroMayor;
 using LAMAMedellin.Application.Features.Reportes.Queries.GetCarteraMora;
 using LAMAMedellin.Application.Features.Reportes.Queries.GetEstadoResultados;
 using MediatR;
+using LAMAMedellin.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LAMAMedellin.API.Controllers;
 
 [ApiController]
-[Route("api/reportes")]
-[Authorize]
+[Route("api/reportes")][Authorize(Roles = Roles.ContabilidadLectura)]
 public sealed class ReportesController(ISender sender) : ControllerBase
 {
     // ------------------------------------------------------------------

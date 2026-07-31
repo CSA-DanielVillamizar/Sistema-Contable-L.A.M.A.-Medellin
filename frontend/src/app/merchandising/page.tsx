@@ -6,7 +6,7 @@ import ModalVenta from '@/features/merchandising/components/ModalVenta';
 import { useGetMovimientosProducto } from '@/features/merchandising/hooks/useGetMovimientosProducto';
 import { useGetProductos } from '@/features/merchandising/hooks/useGetProductos';
 import { useSubirImagenProducto } from '@/features/merchandising/hooks/useSubirImagenProducto';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type DetailTab = 'info' | 'kardex';
 
@@ -49,24 +49,16 @@ export default function MerchandisingPage() {
 
     const productos = useMemo(() => productosQuery.data ?? [], [productosQuery.data]);
 
-    const productoSeleccionado = useMemo(
-        () => productos.find((producto) => producto.id === selectedProductId) ?? null,
-        [productos, selectedProductId],
-    );
+    // La seleccion se deriva en el render en vez de corregirse con un efecto:
+    // si no hay ninguna, o la elegida desaparecio del listado tras recargar,
+    // vale la primera. Guardarlo en el estado obligaba a un render intermedio
+    // apuntando a un producto que ya no existe.
+    const productoSeleccionado = useMemo(() => {
+        const elegido = productos.find((producto) => producto.id === selectedProductId);
+        return elegido ?? productos[0] ?? null;
+    }, [productos, selectedProductId]);
 
     const movimientosQuery = useGetMovimientosProducto(productoSeleccionado?.id ?? null);
-
-    useEffect(() => {
-        if (!selectedProductId && productos.length > 0) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- Deuda conocida: reinicio de estado al cambiar props. La correccion idiomatica (remontar por key o derivar en render) cambia el comportamiento del componente y requiere verificarse en la interfaz.
-            setSelectedProductId(productos[0].id);
-            return;
-        }
-
-        if (selectedProductId && !productos.some((producto) => producto.id === selectedProductId)) {
-            setSelectedProductId(productos[0]?.id ?? null);
-        }
-    }, [selectedProductId, productos]);
 
     const onSubirImagen = async () => {
         if (!productoSeleccionado || !archivoImagen) {

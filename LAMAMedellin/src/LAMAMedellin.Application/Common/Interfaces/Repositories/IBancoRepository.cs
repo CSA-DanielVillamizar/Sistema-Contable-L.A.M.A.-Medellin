@@ -8,6 +8,14 @@ public interface IBancoRepository
 
     Task<Banco?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
+    Task AddAsync(Banco banco, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// El numero de cuenta identifica la cuenta ante el banco: repetirlo haria
+    /// que dos registros compitan por los mismos movimientos de extracto.
+    /// </summary>
+    Task<bool> ExisteNumeroCuentaAsync(string numeroCuenta, Guid? excluyendoId = null, CancellationToken cancellationToken = default);
+
     /// <summary>Primera cuenta bancaria activa. Hoy la operacion usa una sola.</summary>
     Task<Banco?> GetDefaultAsync(CancellationToken cancellationToken = default);
 

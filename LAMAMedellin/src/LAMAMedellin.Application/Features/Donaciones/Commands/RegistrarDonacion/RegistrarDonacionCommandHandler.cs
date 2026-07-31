@@ -14,6 +14,7 @@ public sealed class RegistrarDonacionCommandHandler(
     ICentroCostoRepository centroCostoRepository,
     ITransaccionRepository transaccionRepository,
     ICuentaContableRepository cuentaContableRepository,
+    ICampanaDonacionRepository campanaRepository,
     ISender sender)
     : IRequestHandler<RegistrarDonacionCommand, Guid>
 {
@@ -37,17 +38,35 @@ public sealed class RegistrarDonacionCommandHandler(
             throw new ExcepcionNegocio("El centro de costo indicado no existe.");
         }
 
+        // La campana se comprueba contra la fecha de la donacion y no contra
+        // hoy: registrar tarde una donacion que si ocurrio dentro de la
+        // vigencia es normal y no deberia rechazarse.
+        var fechaDonacion = DateTime.UtcNow;
+
+        if (request.CampanaDonacionId is not null)
+        {
+            var campana = await campanaRepository.GetByIdAsync(request.CampanaDonacionId.Value, cancellationToken)
+                ?? throw new ExcepcionNegocio("La campana indicada no existe.");
+
+            if (!campana.AdmiteDonacionEn(DateOnly.FromDateTime(fechaDonacion)))
+            {
+                throw new ExcepcionNegocio(
+                    $"La campana '{campana.Nombre}' esta cerrada o fuera de vigencia para esa fecha.");
+            }
+        }
+
         var codigoVerificacion = await GenerarCodigoUnicoAsync(donacionRepository, cancellationToken);
 
         var donacion = new Donacion(
             request.DonanteId,
             request.MontoCOP,
-            DateTime.UtcNow,
+            fechaDonacion,
             request.BancoId,
             request.CentroCostoId,
             codigoVerificacion,
             request.FormaDonacion,
-            request.MedioPagoODescripcion);
+            request.MedioPagoODescripcion,
+            request.CampanaDonacionId);
 
         banco.AplicarIngreso(request.MontoCOP);
 

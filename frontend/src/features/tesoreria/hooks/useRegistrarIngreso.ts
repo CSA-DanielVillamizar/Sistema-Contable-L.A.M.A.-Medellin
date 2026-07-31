@@ -1,32 +1,14 @@
 'use client';
 
+import { mensajeDeError } from '@/lib/apiClient';
 import {
     registrarIngreso,
     type RegistrarMovimientoTesoreriaPayload,
 } from '@/features/tesoreria/services/tesoreriaService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-    errors?: Record<string, string[]>;
-};
 
 function getErrorMessage(error: unknown): string {
-    if (!axios.isAxiosError<ProblemDetails>(error)) {
-        return 'No fue posible registrar el ingreso.';
-    }
-
-    const validationErrors = error.response?.data?.errors;
-    const firstValidationError = validationErrors
-        ? Object.values(validationErrors).flat().find((message) => message)
-        : undefined;
-
-    return firstValidationError
-        ?? error.response?.data?.detail
-        ?? error.response?.data?.title
-        ?? 'No fue posible registrar el ingreso.';
+    return mensajeDeError(error, 'No fue posible registrar el ingreso.');
 }
 
 export function useRegistrarIngreso() {

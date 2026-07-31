@@ -80,6 +80,34 @@ public sealed class Banco : BaseEntity
         SaldoActual -= monto;
     }
 
+    /// <summary>
+    /// Corrige los datos identificatorios de la cuenta. El saldo queda fuera a
+    /// proposito: es el resultado de los movimientos registrados, y dejar que
+    /// se escriba a mano desde una pantalla lo desligaria del libro. Para
+    /// ajustarlo hay que registrar el movimiento que lo explique.
+    /// </summary>
+    public void ActualizarDatos(string nombre, string numeroCuenta, Guid cuentaContableId)
+    {
+        if (string.IsNullOrWhiteSpace(nombre))
+        {
+            throw new ReglaNegocioException("Nombre es obligatorio.");
+        }
+
+        if (string.IsNullOrWhiteSpace(numeroCuenta))
+        {
+            throw new ReglaNegocioException("NumeroCuenta es obligatorio.");
+        }
+
+        if (cuentaContableId == Guid.Empty)
+        {
+            throw new ReglaNegocioException("CuentaContableId es obligatorio.");
+        }
+
+        Nombre = nombre.Trim();
+        NumeroCuenta = numeroCuenta.Trim();
+        CuentaContableId = cuentaContableId;
+    }
+
     public void Desactivar() => EsActivo = false;
 
     public void Activar() => EsActivo = true;

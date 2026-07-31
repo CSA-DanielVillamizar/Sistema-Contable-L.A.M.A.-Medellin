@@ -22,7 +22,7 @@ namespace LAMAMedellin.API.Tests.Controllers;
 public sealed class TesoreriaControllerExceptionTests
 {
     [Fact]
-    public async Task PostEgreso_ReglaNegocioException_DebeRetornarBadRequest()
+    public async Task PostEgreso_ReglaNegocioException_DebeRetornar422()
     {
         await using var factory = new TesoreriaApiFactory();
         factory.Sender.ExceptionToThrow = new ReglaNegocioException("Saldo insuficiente en caja para registrar el egreso.");
@@ -43,7 +43,12 @@ public sealed class TesoreriaControllerExceptionTests
 
         var response = await client.PostAsync("/api/tesoreria/egresos", JsonContent(payload));
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        // Antes devolvia 400. Las dos excepciones de negocio del sistema,
+        // ReglaNegocioException y ExcepcionNegocio, significan lo mismo (la
+        // peticion esta bien formada pero incumple una regla) y devolvian
+        // codigos distintos solo por venir de capas distintas. Se unificaron en
+        // 422; el 400 queda para lo que el binding o el formato rechazan.
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
 
         var body = await response.Content.ReadAsStringAsync();
         body.Should().Contain("Saldo insuficiente en caja para registrar el egreso.");

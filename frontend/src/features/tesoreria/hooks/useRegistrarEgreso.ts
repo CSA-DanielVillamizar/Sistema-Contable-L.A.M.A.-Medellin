@@ -1,32 +1,14 @@
 'use client';
 
+import { mensajeDeError } from '@/lib/apiClient';
 import {
     registrarEgreso,
     type RegistrarMovimientoTesoreriaPayload,
 } from '@/features/tesoreria/services/tesoreriaService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-
-type ProblemDetails = {
-    title?: string;
-    detail?: string;
-    errors?: Record<string, string[]>;
-};
 
 function getErrorMessage(error: unknown): string {
-    if (!axios.isAxiosError<ProblemDetails>(error)) {
-        return 'No fue posible registrar el egreso.';
-    }
-
-    const validationErrors = error.response?.data?.errors;
-    const firstValidationError = validationErrors
-        ? Object.values(validationErrors).flat().find((message) => message)
-        : undefined;
-
-    return firstValidationError
-        ?? error.response?.data?.detail
-        ?? error.response?.data?.title
-        ?? 'No fue posible registrar el egreso.';
+    return mensajeDeError(error, 'No fue posible registrar el egreso.');
 }
 
 export function useRegistrarEgreso() {

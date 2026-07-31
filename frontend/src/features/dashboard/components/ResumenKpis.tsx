@@ -1,6 +1,7 @@
 'use client';
 
 import { useGetResumenDashboard } from '@/features/dashboard/hooks/useGetResumenDashboard';
+import EstadoDeError from '@/components/layout/EstadoDeError';
 import { Banknote, CalendarDays, Users } from 'lucide-react';
 
 function formatCOP(value: number): string {
@@ -40,7 +41,7 @@ export default function ResumenKpis() {
     }
 
     if (isError) {
-        return <p className="text-sm text-red-600">{(error as Error).message}</p>;
+        return <EstadoDeError error={error} contexto="ver el resumen" />;
     }
 
     const resumen = data;
