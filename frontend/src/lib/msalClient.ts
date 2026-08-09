@@ -18,11 +18,14 @@ import {
 //  - nada guarda el token crudo en disco ni lo expone en `window`
 // ---------------------------------------------------------------------------
 
-const tenantId = process.env.NEXT_PUBLIC_AZURE_AD_TENANT_ID ?? '95bb5dd0-a2fa-4336-9db4-fee9c5cbe8ae';
-const clientId = process.env.NEXT_PUBLIC_AZURE_AD_CLIENT_ID ?? '3805c7ed-4245-4578-9ee1-85d48a2232fd';
+// Tenant CIAM (Entra External ID): worldlama.onmicrosoft.com. Usa el dominio
+// ciamlogin.com, no login.microsoftonline.com (ese es para tenants workforce).
+const ciamSubdomain = process.env.NEXT_PUBLIC_AZURE_AD_CIAM_SUBDOMAIN ?? 'worldlama';
+const tenantId = process.env.NEXT_PUBLIC_AZURE_AD_TENANT_ID ?? 'f372e858-1f5a-4ad8-8d3e-13a3926affb2';
+const clientId = process.env.NEXT_PUBLIC_AZURE_AD_CLIENT_ID ?? '8e85ca27-48fa-4a35-84d6-1df1b4861606';
 
 export const apiScope =
-    process.env.NEXT_PUBLIC_API_SCOPE ?? 'api://b81ee2ee-5417-4aa0-8000-e470aec5543e/user_impersonation';
+    process.env.NEXT_PUBLIC_API_SCOPE ?? 'api://ca154993-2258-4814-975e-edc583caa9b7/user_impersonation';
 
 const fallbackRedirectUri = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
 export const redirectUri = process.env.NEXT_PUBLIC_AZURE_AD_REDIRECT_URI ?? fallbackRedirectUri;
@@ -30,7 +33,7 @@ export const redirectUri = process.env.NEXT_PUBLIC_AZURE_AD_REDIRECT_URI ?? fall
 export const msalInstance = new PublicClientApplication({
     auth: {
         clientId,
-        authority: `https://login.microsoftonline.com/${tenantId}`,
+        authority: `https://${ciamSubdomain}.ciamlogin.com/${tenantId}`,
         redirectUri,
     },
     cache: {

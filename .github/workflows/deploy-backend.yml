@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AZURE_WEBAPP_NAME: app-lamamedellin-backend-prod
+      AZURE_WEBAPP_NAME: app-lamamedellin-backend-cap01
       SOLUTION_PATH: LAMAMedellin/LAMAMedellin.slnx
       PROJECT_PATH: LAMAMedellin/src/LAMAMedellin.API/LAMAMedellin.API.csproj
       PUBLISH_PATH: ./publish

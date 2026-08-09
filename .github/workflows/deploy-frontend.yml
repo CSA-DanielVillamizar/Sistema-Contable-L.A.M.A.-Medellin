@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AZURE_WEBAPP_NAME: tesorerialamamedellin
+      AZURE_WEBAPP_NAME: app-lamamedellin-frontend-cap01
       APP_PATH: frontend
       DEPLOY_PATH: frontend-deploy
-      NEXT_PUBLIC_API_BASE_URL: https://app-lamamedellin-backend-prod.azurewebsites.net
+      NEXT_PUBLIC_API_BASE_URL: https://app-lamamedellin-backend-cap01.azurewebsites.net
 
     steps:
       - name: Checkout
