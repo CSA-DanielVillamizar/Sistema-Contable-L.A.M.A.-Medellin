@@ -5,12 +5,16 @@ namespace LAMAMedellin.Domain.Entities;
 
 public sealed class Miembro : BaseEntity
 {
-    public string DocumentoIdentidad { get; private set; }
+    // Documento y fecha de ingreso son la identidad natural del miembro, pero
+    // no siempre se conocen al momento de registrarlo (ver Miembro(...)):
+    // quedan nulos hasta que alguien los complete, en vez de bloquear el
+    // registro o inventar un valor.
+    public string? DocumentoIdentidad { get; private set; }
     public string Nombres { get; private set; }
     public string Apellidos { get; private set; }
     public string Apodo { get; private set; }
 
-    public DateOnly FechaIngreso { get; private set; }
+    public DateOnly? FechaIngreso { get; private set; }
     public RangoClub Rango { get; private set; }
 
     /// <summary>
@@ -35,11 +39,11 @@ public sealed class Miembro : BaseEntity
 #pragma warning restore CS8618
 
     public Miembro(
-        string documentoIdentidad,
+        string? documentoIdentidad,
         string nombres,
         string apellidos,
         string apodo,
-        DateOnly fechaIngreso,
+        DateOnly? fechaIngreso,
         GrupoSanguineo? tipoSangre,
         string? nombreContactoEmergencia,
         string? telefonoContactoEmergencia,
@@ -50,17 +54,14 @@ public sealed class Miembro : BaseEntity
         RangoClub rango = RangoClub.Aspirante,
         TipoAfiliacion tipoAfiliacion = TipoAfiliacion.Prospect)
     {
-        DocumentoIdentidad = ValidarTextoRequerido(documentoIdentidad, nameof(documentoIdentidad), 50);
+        DocumentoIdentidad = string.IsNullOrWhiteSpace(documentoIdentidad)
+            ? null
+            : ValidarTextoRequerido(documentoIdentidad, nameof(documentoIdentidad), 50);
         Nombres = ValidarTextoRequerido(nombres, nameof(nombres), 150);
         Apellidos = ValidarTextoRequerido(apellidos, nameof(apellidos), 150);
         Apodo = ValidarTextoOpcional(apodo, 100);
 
-        if (fechaIngreso == default)
-        {
-            throw new ArgumentException("FechaIngreso es obligatoria.", nameof(fechaIngreso));
-        }
-
-        FechaIngreso = fechaIngreso;
+        FechaIngreso = fechaIngreso == default ? null : fechaIngreso;
         EsActivo = true;
         Rango = rango;
         TipoAfiliacion = tipoAfiliacion;

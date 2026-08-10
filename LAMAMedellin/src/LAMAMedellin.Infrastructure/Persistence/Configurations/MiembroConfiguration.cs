@@ -13,9 +13,10 @@ public sealed class MiembroConfiguration : IEntityTypeConfiguration<Miembro>
 
         builder.HasKey(m => m.Id);
 
+        // Nulo hasta que se conozca el documento; SQL Server permite varios
+        // NULL en un indice unico, asi que no choca entre miembros pendientes.
         builder.Property(m => m.DocumentoIdentidad)
-            .HasMaxLength(50)
-            .IsRequired();
+            .HasMaxLength(50);
 
         builder.HasIndex(m => m.DocumentoIdentidad)
             .IsUnique();
@@ -33,8 +34,7 @@ public sealed class MiembroConfiguration : IEntityTypeConfiguration<Miembro>
             .IsRequired();
 
         builder.Property(m => m.FechaIngreso)
-            .HasColumnType("date")
-            .IsRequired();
+            .HasColumnType("date");
 
         builder.Property(m => m.Rango)
             .HasConversion<int>()
