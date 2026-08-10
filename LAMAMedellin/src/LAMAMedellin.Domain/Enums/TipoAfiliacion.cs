@@ -20,16 +20,25 @@ public enum TipoAfiliacion
 
     /// <summary>Lady L.A.M.A. Paga cuota como el resto de miembros.</summary>
     LadyLama = 6,
+
+    /// <summary>
+    /// Hijos menores de un miembro (ej. Amelia Villamizar en el capitulo
+    /// Medellin). No paga cuota mensual, pero el capitulo gestiona a su
+    /// nombre la renovacion anual de membresia internacional (cuenta
+    /// 281505 - Renovacion Membresia Internacional L.A.M.A.), igual que
+    /// para el resto de miembros con esa renovacion.
+    /// </summary>
+    Youth = 7,
 }
 
 public static class TipoAfiliacionExtensions
 {
     /// <summary>
-    /// Quien esta exento de la cuota mensual. Hoy solo Spousal, confirmado por
+    /// Quien esta exento de la cuota mensual. Spousal y Youth, confirmado por
     /// el capitulo. Se expresa aqui y no como una tarifa en cero para que la
     /// exencion sea una regla explicita y no un valor que alguien pueda editar
     /// sin darse cuenta de lo que significa.
     /// </summary>
     public static bool ExentoDeCuotaMensual(this TipoAfiliacion tipo) =>
-        tipo == TipoAfiliacion.Esposa;
+        tipo is TipoAfiliacion.Esposa or TipoAfiliacion.Youth;
 }
