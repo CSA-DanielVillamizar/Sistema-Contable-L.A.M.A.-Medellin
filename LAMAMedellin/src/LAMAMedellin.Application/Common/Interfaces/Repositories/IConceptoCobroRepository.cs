@@ -12,4 +12,6 @@ public interface IConceptoCobroRepository
     /// <summary>Concepto con el que se genera la cuota mensual.</summary>
     Task<ConceptoCobro?> GetCuotaMensualAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>Concepto con el que se genera la renovacion anual de membresia internacional.</summary>
+    Task<ConceptoCobro?> GetRenovacionAnualAsync(CancellationToken cancellationToken = default);
 }

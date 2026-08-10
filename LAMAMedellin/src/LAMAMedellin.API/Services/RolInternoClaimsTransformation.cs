@@ -82,7 +82,13 @@ public sealed class RolInternoClaimsTransformation(
             // concede ningun rol, asi que solo alcanza endpoints que se
             // conformen con estar autenticado, entre ellos el de sincronizacion
             // que le creara el perfil.
-            logger.LogInformation("Usuario autenticado sin perfil interno; no se conceden roles.");
+            //
+            // El oid no es PII (es un identificador tecnico, no un dato
+            // personal) asi que se registra en claro para poder diagnosticar
+            // desajustes de identidad sin activar sensitive data logging.
+            logger.LogInformation(
+                "Usuario autenticado sin perfil interno; no se conceden roles. ObjectId={ObjectId}",
+                objectId);
             return principal;
         }
 

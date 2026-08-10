@@ -36,4 +36,10 @@ public sealed class ConceptoCobroRepository(LamaDbContext dbContext) : IConcepto
         return dbContext.ConceptosCobro
             .FirstOrDefaultAsync(c => c.Nombre == ConceptoCobroSeeder.NombreCuotaMensual, cancellationToken);
     }
+
+    public Task<ConceptoCobro?> GetRenovacionAnualAsync(CancellationToken cancellationToken = default)
+    {
+        return dbContext.ConceptosCobro
+            .FirstOrDefaultAsync(c => c.Nombre == ConceptoCobroSeeder.NombreRenovacionAnual, cancellationToken);
+    }
 }

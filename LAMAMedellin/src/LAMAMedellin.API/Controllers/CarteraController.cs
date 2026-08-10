@@ -1,4 +1,5 @@
 using LAMAMedellin.Application.Features.Cartera.Commands.GenerarCarteraMensual;
+using LAMAMedellin.Application.Features.Cartera.Commands.GenerarRenovacionAnual;
 using LAMAMedellin.Application.Features.Cartera.Commands.CrearConceptoCobro;
 using LAMAMedellin.Application.Features.Cartera.Commands.CrearCuentaPorCobrar;
 using LAMAMedellin.Application.Features.Cartera.Commands.CrearMiembro;
@@ -98,6 +99,25 @@ public sealed class CarteraController(ISender sender) : ControllerBase
         });
     }
 
+    [HttpPost("generar-renovacion-anual")]
+    [Authorize(Roles = Roles.TesoreriaEscritura)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GenerarRenovacionAnual(
+        [FromBody] GenerarRenovacionAnualRequest request,
+        CancellationToken cancellationToken)
+    {
+        var resultado = await sender.Send(
+            new GenerarRenovacionAnualCommand(request.Anio, request.TasaCambioUsada),
+            cancellationToken);
+
+        return Ok(new
+        {
+            anio = request.Anio,
+            obligacionesGeneradas = resultado,
+            mensaje = $"Se han generado {resultado} renovaciones de membresia internacional para {request.Anio}."
+        });
+    }
+
     [HttpGet("pendiente")]
     [ProducesResponseType(typeof(List<CarteraPendienteDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCarteraPendiente(CancellationToken cancellationToken)
@@ -158,6 +178,7 @@ public sealed class CarteraController(ISender sender) : ControllerBase
 }
 
 public sealed record GenerarCarteraMensualRequest(string Periodo);
+public sealed record GenerarRenovacionAnualRequest(int Anio, decimal TasaCambioUsada);
 public sealed record RegistrarPagoRequest(decimal Monto, Guid BancoId, MedioPago MedioPago);
 public sealed record CrearMiembroRequest(
     string DocumentoIdentidad,
