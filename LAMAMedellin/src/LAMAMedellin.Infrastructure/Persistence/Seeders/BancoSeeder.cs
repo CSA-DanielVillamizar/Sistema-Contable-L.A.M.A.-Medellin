@@ -28,8 +28,8 @@ public static class BancoSeeder
         }
 
         await context.Bancos.AddAsync(new Banco(
-            nombre: "Bancolombia - Cuenta principal",
-            numeroCuenta: "CTA-PRINCIPAL-LAMA",
+            nombre: "Bancolombia Ahorros",
+            numeroCuenta: "23000013774",
             saldoActual: 0m,
             cuentaContableId: cuentaBanco.Id));
 

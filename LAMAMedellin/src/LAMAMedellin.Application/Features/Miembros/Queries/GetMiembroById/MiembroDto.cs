@@ -10,9 +10,9 @@ public sealed record MiembroDto(
     string Rango,
     bool EsActivo,
     string TipoSangre,
-    string NombreContactoEmergencia,
-    string TelefonoContactoEmergencia,
-    string MarcaMoto,
-    string ModeloMoto,
-    int Cilindraje,
-    string Placa);
+    string? NombreContactoEmergencia,
+    string? TelefonoContactoEmergencia,
+    string? MarcaMoto,
+    string? ModeloMoto,
+    int? Cilindraje,
+    string? Placa);

@@ -50,32 +50,26 @@ public sealed class MiembroConfiguration : IEntityTypeConfiguration<Miembro>
             .HasDefaultValue(true)
             .IsRequired();
 
+        // Sangre, contacto de emergencia y moto no siempre se conocen (ver
+        // Miembro.cs): sin esposas, hijos y varios socios historicos no
+        // tendrian donde registrarse.
         builder.Property(m => m.TipoSangre)
-            .HasConversion<int>()
-            .IsRequired();
+            .HasConversion<int?>();
 
         builder.Property(m => m.NombreContactoEmergencia)
-            .HasMaxLength(150)
-            .IsRequired();
+            .HasMaxLength(150);
 
         builder.Property(m => m.TelefonoContactoEmergencia)
-            .HasMaxLength(30)
-            .IsRequired();
+            .HasMaxLength(30);
 
         builder.Property(m => m.MarcaMoto)
-            .HasMaxLength(100)
-            .IsRequired();
+            .HasMaxLength(100);
 
         builder.Property(m => m.ModeloMoto)
-            .HasMaxLength(100)
-            .IsRequired();
-
-        builder.Property(m => m.Cilindraje)
-            .IsRequired();
+            .HasMaxLength(100);
 
         builder.Property(m => m.Placa)
-            .HasMaxLength(20)
-            .IsRequired();
+            .HasMaxLength(20);
 
         builder.HasQueryFilter(m => !m.IsDeleted);
     }

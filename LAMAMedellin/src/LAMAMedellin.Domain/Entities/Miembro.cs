@@ -21,14 +21,14 @@ public sealed class Miembro : BaseEntity
     public TipoAfiliacion TipoAfiliacion { get; private set; }
     public bool EsActivo { get; private set; } = true;
 
-    public GrupoSanguineo TipoSangre { get; private set; }
-    public string NombreContactoEmergencia { get; private set; }
-    public string TelefonoContactoEmergencia { get; private set; }
+    public GrupoSanguineo? TipoSangre { get; private set; }
+    public string? NombreContactoEmergencia { get; private set; }
+    public string? TelefonoContactoEmergencia { get; private set; }
 
-    public string MarcaMoto { get; private set; }
-    public string ModeloMoto { get; private set; }
-    public int Cilindraje { get; private set; }
-    public string Placa { get; private set; }
+    public string? MarcaMoto { get; private set; }
+    public string? ModeloMoto { get; private set; }
+    public int? Cilindraje { get; private set; }
+    public string? Placa { get; private set; }
 
 #pragma warning disable CS8618
     private Miembro() { }
@@ -40,13 +40,13 @@ public sealed class Miembro : BaseEntity
         string apellidos,
         string apodo,
         DateOnly fechaIngreso,
-        GrupoSanguineo tipoSangre,
-        string nombreContactoEmergencia,
-        string telefonoContactoEmergencia,
-        string marcaMoto,
-        string modeloMoto,
-        int cilindraje,
-        string placa,
+        GrupoSanguineo? tipoSangre,
+        string? nombreContactoEmergencia,
+        string? telefonoContactoEmergencia,
+        string? marcaMoto,
+        string? modeloMoto,
+        int? cilindraje,
+        string? placa,
         RangoClub rango = RangoClub.Aspirante,
         TipoAfiliacion tipoAfiliacion = TipoAfiliacion.Prospect)
     {
@@ -65,19 +65,21 @@ public sealed class Miembro : BaseEntity
         Rango = rango;
         TipoAfiliacion = tipoAfiliacion;
 
+        // Sangre, contacto de emergencia y moto no siempre se conocen al
+        // ingreso (esposas, hijos y algunos socios historicos no los tienen
+        // registrados). Se guardan si vienen, sin inventar un valor cuando no.
         TipoSangre = tipoSangre;
-        NombreContactoEmergencia = ValidarTextoRequerido(nombreContactoEmergencia, nameof(nombreContactoEmergencia), 150);
-        TelefonoContactoEmergencia = ValidarTelefono(telefonoContactoEmergencia, nameof(telefonoContactoEmergencia));
+        NombreContactoEmergencia = string.IsNullOrWhiteSpace(nombreContactoEmergencia)
+            ? null
+            : ValidarTextoRequerido(nombreContactoEmergencia, nameof(nombreContactoEmergencia), 150);
+        TelefonoContactoEmergencia = string.IsNullOrWhiteSpace(telefonoContactoEmergencia)
+            ? null
+            : ValidarTelefono(telefonoContactoEmergencia, nameof(telefonoContactoEmergencia));
 
-        MarcaMoto = ValidarTextoRequerido(marcaMoto, nameof(marcaMoto), 100);
-        ModeloMoto = ValidarTextoRequerido(modeloMoto, nameof(modeloMoto), 100);
-        if (cilindraje <= 0)
-        {
-            throw new ArgumentException("Cilindraje debe ser mayor que cero.", nameof(cilindraje));
-        }
-
-        Cilindraje = cilindraje;
-        Placa = ValidarPlaca(placa, nameof(placa));
+        MarcaMoto = string.IsNullOrWhiteSpace(marcaMoto) ? null : ValidarTextoRequerido(marcaMoto, nameof(marcaMoto), 100);
+        ModeloMoto = string.IsNullOrWhiteSpace(modeloMoto) ? null : ValidarTextoRequerido(modeloMoto, nameof(modeloMoto), 100);
+        Cilindraje = cilindraje is > 0 ? cilindraje : null;
+        Placa = string.IsNullOrWhiteSpace(placa) ? null : ValidarPlaca(placa, nameof(placa));
     }
 
     public void PromoverRango(RangoClub nuevoRango)
