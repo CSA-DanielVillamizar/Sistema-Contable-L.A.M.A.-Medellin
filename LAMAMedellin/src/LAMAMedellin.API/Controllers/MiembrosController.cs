@@ -56,6 +56,7 @@ public sealed class MiembrosController(ISender sender) : ControllerBase
                 request.ModeloMoto,
                 request.Cilindraje,
                 request.Placa,
+                request.TipoAfiliacion,
                 request.Rango),
             cancellationToken);
 
@@ -77,6 +78,7 @@ public sealed class MiembrosController(ISender sender) : ControllerBase
                 request.ModeloMoto,
                 request.Cilindraje,
                 request.Placa,
+                request.TipoAfiliacion,
                 request.Rango,
                 request.EsActivo),
             cancellationToken);
@@ -106,6 +108,7 @@ public sealed class MiembrosController(ISender sender) : ControllerBase
         string ModeloMoto,
         int Cilindraje,
         string Placa,
-        RangoClub Rango,
+        TipoAfiliacion TipoAfiliacion,
+        RangoClub? Rango,
         bool EsActivo = true);
 }

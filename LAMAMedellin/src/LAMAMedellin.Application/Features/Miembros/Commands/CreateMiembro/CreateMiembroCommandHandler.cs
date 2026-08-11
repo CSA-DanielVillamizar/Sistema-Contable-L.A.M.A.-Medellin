@@ -29,7 +29,8 @@ public sealed class CreateMiembroCommandHandler(IMiembroRepository miembroReposi
             request.ModeloMoto,
             request.Cilindraje,
             request.Placa,
-            request.Rango);
+            request.Rango,
+            request.TipoAfiliacion);
 
         await miembroRepository.AddAsync(miembro, cancellationToken);
         await miembroRepository.SaveChangesAsync(cancellationToken);

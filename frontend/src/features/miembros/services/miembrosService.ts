@@ -15,6 +15,7 @@ export type Miembro = {
     apodo: string;
     fechaIngreso: string;
     rango: string;
+    tipoAfiliacion: string;
     esActivo: boolean;
     tipoSangre: string;
     contactoEmergenciaNombre: string;
@@ -35,7 +36,8 @@ export type CrearMiembroPayload = {
     modeloMoto: string;
     cilindraje: number;
     placa: string;
-    rango: number;
+    tipoAfiliacion: number;
+    rango: number | null;
     esActivo: boolean;
 };
 
@@ -47,7 +49,8 @@ export type ActualizarMiembroPayload = {
     modeloMoto: string;
     cilindraje: number;
     placa: string;
-    rango: number;
+    tipoAfiliacion: number;
+    rango: number | null;
     esActivo: boolean;
 };
 
@@ -84,6 +87,7 @@ function mapMiembro(item: unknown): Miembro {
         apodo: toStringValue(dto.apodo),
         fechaIngreso: toStringValue(dto.fechaIngreso),
         rango: toStringValue(dto.rango),
+        tipoAfiliacion: toStringValue(dto.tipoAfiliacion),
         esActivo: toBooleanValue(dto.esActivo),
         tipoSangre: toStringValue(dto.tipoSangre),
         contactoEmergenciaNombre: toStringValue(

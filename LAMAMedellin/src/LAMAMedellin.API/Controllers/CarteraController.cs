@@ -193,7 +193,7 @@ public sealed record CrearMiembroRequest(
     string ModeloMoto,
     int Cilindraje,
     string Placa,
-    RangoClub Rango);
+    RangoClub? Rango);
 
 public sealed record CrearConceptoCobroRequest(
     string Nombre,

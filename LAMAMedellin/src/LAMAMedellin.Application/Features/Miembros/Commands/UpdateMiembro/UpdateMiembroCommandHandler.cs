@@ -25,7 +25,8 @@ public sealed class UpdateMiembroCommandHandler(IMiembroRepository miembroReposi
             throw new ExcepcionNegocio("No existe un flujo de reactivacion en el dominio actual de Miembro.");
         }
 
-        miembro.PromoverRango(request.Rango);
+        miembro.AsignarRango(request.Rango);
+        miembro.CambiarTipoAfiliacion(request.TipoAfiliacion);
         miembro.ActualizarDatosEmergencia(
             request.TipoSangre,
             request.NombreContactoEmergencia,

@@ -12,5 +12,6 @@ public sealed record UpdateMiembroCommand(
     string ModeloMoto,
     int Cilindraje,
     string Placa,
-    RangoClub Rango,
+    TipoAfiliacion TipoAfiliacion,
+    RangoClub? Rango,
     bool EsActivo) : IRequest<Unit>;

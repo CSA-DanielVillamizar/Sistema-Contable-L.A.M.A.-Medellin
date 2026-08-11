@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 // Mirrors: CrearMiembroCommandValidator.cs + Miembro.cs (dominio)
 // Los limites de longitud son los del validator del backend, no aproximaciones.
-const rangosClubValidos = [1, 2, 3, 4] as const;
+const rangosClubValidos = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 const gruposSanguineosValidos = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
 export const crearMiembroSchema = z.object({
@@ -79,14 +79,21 @@ export const crearMiembroSchema = z.object({
         .trim()
         .min(1, 'Placa es obligatoria.')
         .max(20, 'Placa no puede exceder 20 caracteres.'),
+    // Sin cargo se representa como '' en el <select> (la mayoria de los
+    // miembros no ocupa ninguno) y se traduce a null.
     rango: z
-        .coerce
-        .number()
-        .int('Rango inválido.')
-        .refine(
-            (value) => rangosClubValidos.includes(value as (typeof rangosClubValidos)[number]),
-            'Rango debe ser un valor válido.',
-        ),
+        .union([
+            z.literal(''),
+            z
+                .coerce
+                .number()
+                .int('Rango inválido.')
+                .refine(
+                    (value) => rangosClubValidos.includes(value as (typeof rangosClubValidos)[number]),
+                    'Rango debe ser un valor válido.',
+                ),
+        ])
+        .transform((value) => (value === '' ? null : value)),
 });
 
 export type CrearMiembroFormInput = z.input<typeof crearMiembroSchema>;

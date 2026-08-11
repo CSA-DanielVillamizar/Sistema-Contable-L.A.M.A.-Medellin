@@ -27,7 +27,7 @@ public static class MiembroSeeder
             "Sin Modelo",
             150,
             "GEN000",
-            RangoClub.MiembroActivo)
+            null)
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001")
         };
@@ -35,43 +35,43 @@ public static class MiembroSeeder
         var miembros = new List<Miembro>
         {
             miembroGenerico,
-            CrearMiembro("Hector Mario", "Gonzalez Henao", "8336963", "hecmarg@yahoo.com", "3104363831", RangoClub.MiembroActivo),
-            CrearMiembro("Ramon Antonio", "Gonzalez Castano", "15432593", "raangoca@gmail.com", "3137672573", RangoClub.MiembroActivo),
-            CrearMiembro("Jhon Harvey", "Gomez Patino", "9528949", "jhongo01@hotmail.com", "3006155416", RangoClub.MiembroActivo),
-            CrearMiembro("William Humberto", "Jimenez Perez", "98496540", "williamhjp@hotmail.com", "3017969572", RangoClub.MiembroActivo),
-            CrearMiembro("Carlos Alberto", "Araque Betancur", "71334468", "cocoloquisimo@gmail.com", "3206693638", RangoClub.MiembroActivo),
-            CrearMiembro("Milton Dario", "Gomez Rivera", "98589814", "miltondariog@gmail.com", "3183507127", RangoClub.MiembroActivo),
-            CrearMiembro("Carlos Mario", "Ceballos", "75049349", "carmace7@gmail.com", "3147244972", RangoClub.MiembroActivo),
-            CrearMiembro("Carlos Andres", "Perez Areiza", "98699136", "carlosap@gmail.com", "3017560517", RangoClub.MiembroActivo),
-            CrearMiembro("Juan Esteban", "Suarez Correa", "1095808546", "suarezcorreaj@gmail.com", "3156160015", RangoClub.MiembroActivo),
-            CrearMiembro("Jhon Emmanuel", "Arzuza Paez", "72345562", "jhonarzuza@gmail.com", "3003876340", RangoClub.MiembroActivo),
-            CrearMiembro("Jose Edinson", "Ospina Cruz", "8335981", "chattu.1964@hotmail.com", "3008542336", RangoClub.MiembroActivo),
-            CrearMiembro("Jefferson", "Montoya Munoz", "1128406344", "majayura2011@hotmail.com", "3508319246", RangoClub.MiembroActivo),
-            CrearMiembro("Anderson Arlex", "Betancur Rua", "1036634452", "armigas7@gmail.com", "3194207889", RangoClub.MiembroActivo),
-            CrearMiembro("Robinson Alejandro", "Galvis Parra", "71380596", "robin11952@hotmail.com", "3105127314", RangoClub.MiembroActivo),
-            CrearMiembro("Carlos Mario", "Diaz Diaz", "15506596", "carlosmario.diazdiaz@gmail.com", "3213167406", RangoClub.MiembroActivo),
-            CrearMiembro("Juan Esteban", "Osorio", "1128399797", "Juan.osorio1429@correo.policia.gov.co", "3112710782", RangoClub.MiembroActivo),
-            CrearMiembro("Carlos Julio", "Rendon Diaz", "8162536", "movie.cj@gmail.com", "3507757020", RangoClub.MiembroActivo),
-            CrearMiembro("Daniel Andrey", "Villamizar Araque", "8106002", "dvillamizara@gmail.com", "3106328171", RangoClub.MiembroActivo),
-            CrearMiembro("Jhon David", "Sanchez", "0", "jhonda361@gmail.com", "3013424220", RangoClub.MiembroActivo),
-            CrearMiembro("Angela Maria", "Rodriguez Ochoa", "43703788", "angelarodriguez40350@gmail.com", "3104490476", RangoClub.MiembroActivo),
-            CrearMiembro("Yeferson Bairon", "Usuga Agudelo", "0", "yeferson915@hotmail.com", "3002891509", RangoClub.MiembroActivo),
-            CrearMiembro("Jennifer Andrea", "Cardona Benitez", "1035424338", "tucoach21@gmail.com", "3014005382", RangoClub.Prospecto),
-            CrearMiembro("Laura Viviana", "Salazar Moreno", "1090419626", "laura.s.enf@hotmail.com", "3014307375", RangoClub.MiembroActivo),
-            CrearMiembro("Jose Julian", "Villamizar Araque", "8033065", "julianvilllamizar@outlook.com", "3014873771", RangoClub.MiembroActivo),
-            CrearMiembro("Gustavo Adolfo", "Gomez Zuluaga", "1094923731", string.Empty, "3132672208", RangoClub.Prospecto),
-            CrearMiembro("Nelson Augusto", "Montoya Mataute", "98472306", string.Empty, "3137100335", RangoClub.Prospecto),
-            CrearMiembro("Janeth Gisela", "Ospina Giraldo", "0", "chattu.1964@hotmail.com", "3008542336", RangoClub.Prospecto),
-            CrearMiembro("Maria Cristina", "Jimenez Angel", "0", "macrii2009@gmail.com", "3148103529", RangoClub.Prospecto),
-            CrearMiembro("Yolanda", "Echeverry Bohorquez", "0", "yolaeb@hotmail.com", "3113185201", RangoClub.Prospecto),
-            CrearMiembro("Linda Yulieth", "Zuleta Lopez", "0", "linzu28@hotmail.com", "3232611826", RangoClub.Prospecto),
-            CrearMiembro("Karol Natalia", "Santamaria Gonzalez", "0", "zeaelectricos@hotmail.com", "3146324621", RangoClub.Prospecto),
-            CrearMiembro("Lizet Natalia", "Gomez Franco", "0", "natygomez90@gmail.com", "3102874898", RangoClub.Prospecto),
-            CrearMiembro("Diana", "Larrota", "0", string.Empty, "3144009341", RangoClub.Prospecto),
-            CrearMiembro("Jazmin Adriana", "Rojas", "0", string.Empty, string.Empty, RangoClub.Prospecto),
-            CrearMiembro("Leidy", "Hurtado", "0", string.Empty, "3209768510", RangoClub.Prospecto),
-            CrearMiembro("Natalia", "Londono Ocampo", "1094930482", string.Empty, string.Empty, RangoClub.Prospecto),
-            CrearMiembro("Sandra", "Zapata", "21991558", string.Empty, "6042846744", RangoClub.Prospecto)
+            CrearMiembro("Hector Mario", "Gonzalez Henao", "8336963", "hecmarg@yahoo.com", "3104363831"),
+            CrearMiembro("Ramon Antonio", "Gonzalez Castano", "15432593", "raangoca@gmail.com", "3137672573"),
+            CrearMiembro("Jhon Harvey", "Gomez Patino", "9528949", "jhongo01@hotmail.com", "3006155416"),
+            CrearMiembro("William Humberto", "Jimenez Perez", "98496540", "williamhjp@hotmail.com", "3017969572"),
+            CrearMiembro("Carlos Alberto", "Araque Betancur", "71334468", "cocoloquisimo@gmail.com", "3206693638"),
+            CrearMiembro("Milton Dario", "Gomez Rivera", "98589814", "miltondariog@gmail.com", "3183507127"),
+            CrearMiembro("Carlos Mario", "Ceballos", "75049349", "carmace7@gmail.com", "3147244972"),
+            CrearMiembro("Carlos Andres", "Perez Areiza", "98699136", "carlosap@gmail.com", "3017560517"),
+            CrearMiembro("Juan Esteban", "Suarez Correa", "1095808546", "suarezcorreaj@gmail.com", "3156160015"),
+            CrearMiembro("Jhon Emmanuel", "Arzuza Paez", "72345562", "jhonarzuza@gmail.com", "3003876340"),
+            CrearMiembro("Jose Edinson", "Ospina Cruz", "8335981", "chattu.1964@hotmail.com", "3008542336"),
+            CrearMiembro("Jefferson", "Montoya Munoz", "1128406344", "majayura2011@hotmail.com", "3508319246"),
+            CrearMiembro("Anderson Arlex", "Betancur Rua", "1036634452", "armigas7@gmail.com", "3194207889"),
+            CrearMiembro("Robinson Alejandro", "Galvis Parra", "71380596", "robin11952@hotmail.com", "3105127314"),
+            CrearMiembro("Carlos Mario", "Diaz Diaz", "15506596", "carlosmario.diazdiaz@gmail.com", "3213167406"),
+            CrearMiembro("Juan Esteban", "Osorio", "1128399797", "Juan.osorio1429@correo.policia.gov.co", "3112710782"),
+            CrearMiembro("Carlos Julio", "Rendon Diaz", "8162536", "movie.cj@gmail.com", "3507757020"),
+            CrearMiembro("Daniel Andrey", "Villamizar Araque", "8106002", "dvillamizara@gmail.com", "3106328171"),
+            CrearMiembro("Jhon David", "Sanchez", "0", "jhonda361@gmail.com", "3013424220"),
+            CrearMiembro("Angela Maria", "Rodriguez Ochoa", "43703788", "angelarodriguez40350@gmail.com", "3104490476"),
+            CrearMiembro("Yeferson Bairon", "Usuga Agudelo", "0", "yeferson915@hotmail.com", "3002891509"),
+            CrearMiembro("Jennifer Andrea", "Cardona Benitez", "1035424338", "tucoach21@gmail.com", "3014005382"),
+            CrearMiembro("Laura Viviana", "Salazar Moreno", "1090419626", "laura.s.enf@hotmail.com", "3014307375"),
+            CrearMiembro("Jose Julian", "Villamizar Araque", "8033065", "julianvilllamizar@outlook.com", "3014873771"),
+            CrearMiembro("Gustavo Adolfo", "Gomez Zuluaga", "1094923731", string.Empty, "3132672208"),
+            CrearMiembro("Nelson Augusto", "Montoya Mataute", "98472306", string.Empty, "3137100335"),
+            CrearMiembro("Janeth Gisela", "Ospina Giraldo", "0", "chattu.1964@hotmail.com", "3008542336"),
+            CrearMiembro("Maria Cristina", "Jimenez Angel", "0", "macrii2009@gmail.com", "3148103529"),
+            CrearMiembro("Yolanda", "Echeverry Bohorquez", "0", "yolaeb@hotmail.com", "3113185201"),
+            CrearMiembro("Linda Yulieth", "Zuleta Lopez", "0", "linzu28@hotmail.com", "3232611826"),
+            CrearMiembro("Karol Natalia", "Santamaria Gonzalez", "0", "zeaelectricos@hotmail.com", "3146324621"),
+            CrearMiembro("Lizet Natalia", "Gomez Franco", "0", "natygomez90@gmail.com", "3102874898"),
+            CrearMiembro("Diana", "Larrota", "0", string.Empty, "3144009341"),
+            CrearMiembro("Jazmin Adriana", "Rojas", "0", string.Empty, string.Empty),
+            CrearMiembro("Leidy", "Hurtado", "0", string.Empty, "3209768510"),
+            CrearMiembro("Natalia", "Londono Ocampo", "1094930482", string.Empty, string.Empty),
+            CrearMiembro("Sandra", "Zapata", "21991558", string.Empty, "6042846744")
         };
 
         await context.Set<Miembro>().AddRangeAsync(miembros);
@@ -83,8 +83,7 @@ public static class MiembroSeeder
         string apellidos,
         string documento,
         string correo,
-        string celular,
-        RangoClub rango)
+        string celular)
     {
         var correoNormalizado = string.IsNullOrWhiteSpace(correo)
             ? $"sin-correo-{nombre.Replace(" ", "", StringComparison.OrdinalIgnoreCase).ToLowerInvariant()}.{apellidos.Replace(" ", "", StringComparison.OrdinalIgnoreCase).ToLowerInvariant()}@lama.local"
@@ -109,7 +108,7 @@ public static class MiembroSeeder
             "Softail",
             883,
             GenerarPlacaTemporal(documento),
-            rango);
+            null);
     }
 
     /// <summary>

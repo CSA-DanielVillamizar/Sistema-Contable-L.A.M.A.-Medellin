@@ -3,6 +3,7 @@
 import MiembroUpsertModal from '@/features/miembros/components/MiembroUpsertModal';
 import EstadoDeError from '@/components/layout/EstadoDeError';
 import { useGetMiembros } from '@/features/miembros/hooks/useGetMiembros';
+import { labelDeRango, labelDeTipoAfiliacion } from '@/features/miembros/schemas/miembroSchema';
 import type { Miembro } from '@/features/miembros/services/miembrosService';
 import { useMemo, useState } from 'react';
 
@@ -113,9 +114,14 @@ export default function MiembrosPage() {
                                                     </p>
                                                     <p className="truncate text-xs italic text-slate-500">{miembro.apodo || 'Sin apodo'}</p>
                                                     <div className="mt-2 flex flex-wrap gap-2">
-                                                        <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
-                                                            {miembro.rango}
+                                                        <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">
+                                                            {labelDeTipoAfiliacion(miembro.tipoAfiliacion)}
                                                         </span>
+                                                        {miembro.rango ? (
+                                                            <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+                                                                {labelDeRango(miembro.rango)}
+                                                            </span>
+                                                        ) : null}
                                                         <span className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${estadoBadgeClass(miembro.esActivo)}`}>
                                                             {miembro.esActivo ? 'Activo' : 'Inactivo'}
                                                         </span>
@@ -172,11 +178,15 @@ export default function MiembrosPage() {
                                 </section>
 
                                 <section className="rounded-xl border border-rose-200 bg-rose-50/40 p-4">
-                                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Rol y Estado</h3>
+                                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Tipo de Miembro y Estado</h3>
                                     <div className="grid grid-cols-1 gap-4 text-sm text-slate-700 md:grid-cols-2">
                                         <div>
-                                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Rol en el club</p>
-                                            <p>{miembroActivo.rango}</p>
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Tipo de miembro</p>
+                                            <p>{labelDeTipoAfiliacion(miembroActivo.tipoAfiliacion)}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Cargo directivo</p>
+                                            <p>{labelDeRango(miembroActivo.rango)}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Estado</p>

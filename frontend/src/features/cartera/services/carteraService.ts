@@ -1,6 +1,10 @@
 import apiClient, { type RespuestaApi } from '@/lib/apiClient';
 
-/** Espeja CrearMiembroRequest en CarteraController.cs. Todos los campos son obligatorios. */
+/**
+ * Espeja CrearMiembroRequest en CarteraController.cs. Todos los campos son
+ * obligatorios excepto rango: la mayoria de los miembros no ocupa cargo
+ * directivo.
+ */
 export type CrearMiembroPayload = {
     documentoIdentidad: string;
     nombres: string;
@@ -14,7 +18,7 @@ export type CrearMiembroPayload = {
     modeloMoto: string;
     cilindraje: number;
     placa: string;
-    rango: number;
+    rango: number | null;
 };
 
 export type CrearConceptoCobroPayload = {

@@ -51,7 +51,11 @@ public sealed class CreateMiembroCommandValidator : AbstractValidator<CreateMiem
             .NotEmpty()
             .MaximumLength(20);
 
-        RuleFor(x => x.Rango)
+        RuleFor(x => x.TipoAfiliacion)
             .IsInEnum();
+
+        RuleFor(x => x.Rango)
+            .IsInEnum()
+            .When(x => x.Rango is not null);
     }
 }

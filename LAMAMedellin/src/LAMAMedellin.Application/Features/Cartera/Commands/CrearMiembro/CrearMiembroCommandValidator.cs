@@ -53,6 +53,7 @@ public sealed class CrearMiembroCommandValidator : AbstractValidator<CrearMiembr
             .MaximumLength(20).WithMessage("Placa no puede exceder 20 caracteres.");
 
         RuleFor(x => x.Rango)
-            .IsInEnum().WithMessage("Rango debe ser un valor válido.");
+            .IsInEnum().WithMessage("Rango debe ser un valor válido.")
+            .When(x => x.Rango is not null);
     }
 }

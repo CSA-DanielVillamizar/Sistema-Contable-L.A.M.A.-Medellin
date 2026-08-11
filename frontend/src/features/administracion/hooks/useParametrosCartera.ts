@@ -13,12 +13,17 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
  * cartera masiva del mes.
  */
 export const TIPOS_AFILIACION = [
-    { valor: 1, nombre: 'Full Member Color' },
-    { valor: 2, nombre: 'Rockets Prospect' },
+    { valor: 1, nombre: 'Full Color Member' },
+    { valor: 2, nombre: 'Rockets' },
     { valor: 3, nombre: 'Prospect' },
     { valor: 4, nombre: 'Spousal (esposa)', exento: true },
     { valor: 5, nombre: 'Asociado' },
-    { valor: 6, nombre: 'Lady L.A.M.A.' },
+    { valor: 6, nombre: 'Lady L.A.M.A. (legado)' },
+    { valor: 7, nombre: 'Youth', exento: true },
+    { valor: 8, nombre: 'Dama L.A.M.A. Prospect' },
+    { valor: 9, nombre: 'Dama L.A.M.A. Rockets' },
+    { valor: 10, nombre: 'Dama L.A.M.A. Full Color Member' },
+    { valor: 11, nombre: 'Honorary Member', exento: true },
 ] as const;
 
 export type TarifaCuota = {

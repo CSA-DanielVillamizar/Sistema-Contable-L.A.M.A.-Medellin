@@ -23,15 +23,20 @@ const defaultValues: CrearMiembroFormInput = {
   modeloMoto: '',
   cilindraje: 0,
   placa: '',
-  rango: 1,
+  rango: '',
 };
 
-// Valores tomados de RangoClub.cs
+// Valores tomados de RangoClub.cs. La mayoria de los miembros no ocupa
+// ningun cargo directivo, de ahi la opcion "Sin cargo" en el formulario.
 const rangosClub = [
-  { value: 1, label: 'Aspirante' },
-  { value: 2, label: 'Prospecto' },
-  { value: 3, label: 'Miembro activo' },
-  { value: 4, label: 'Directivo' },
+  { value: 1, label: 'President' },
+  { value: 2, label: 'Vice President' },
+  { value: 3, label: 'Treasurer' },
+  { value: 4, label: 'Business Manager' },
+  { value: 5, label: 'Secretary' },
+  { value: 6, label: 'Moto Touring Officer (MTO)' },
+  { value: 7, label: 'Sergeant At Arms' },
+  { value: 8, label: 'Road Captain' },
 ];
 
 // Valores tomados de GrupoSanguineo.cs
@@ -90,7 +95,7 @@ export default function CrearMiembroForm() {
 
     reset({
       ...defaultValues,
-      rango: values.rango,
+      rango: values.rango === null ? '' : values.rango,
     });
   };
 
@@ -152,11 +157,12 @@ export default function CrearMiembroForm() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">Rango en el club</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">Cargo en el club (opcional)</label>
           <select
             {...register('rango')}
             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-blue-100 focus:border-blue-500 focus:ring-2"
           >
+            <option value="">Sin cargo</option>
             {rangosClub.map((rango) => (
               <option key={rango.value} value={rango.value}>
                 {rango.label}

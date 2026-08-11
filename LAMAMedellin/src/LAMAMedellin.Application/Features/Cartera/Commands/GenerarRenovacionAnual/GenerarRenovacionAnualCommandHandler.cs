@@ -10,11 +10,12 @@ namespace LAMAMedellin.Application.Features.Cartera.Commands.GenerarRenovacionAn
 /// Genera la obligacion anual de renovacion de membresia internacional
 /// L.A.M.A. para cada miembro activo (historia fx-02 / capitulo Medellin).
 ///
-/// A diferencia de la cuota mensual, aqui no hay exentos: Full Color,
-/// Rockets, Prospecto, Lady L.A.M.A., Spousal y Youth pagan USD 20; Asociado
-/// paga USD 40. El capitulo la recauda en diciembre, asi que se representa
-/// con el periodo YYYY-12 para reutilizar la misma idempotencia por
-/// miembro+concepto+periodo que ya usa la cartera mensual.
+/// Full Color, Rockets, Prospecto, las tres etapas de Dama L.A.M.A., Spousal
+/// y Youth pagan USD 20; Asociado paga USD 40; Honorary esta exento (ver
+/// TipoAfiliacionExtensions.ExentoDeRenovacionAnual). El capitulo la recauda
+/// en diciembre, asi que se representa con el periodo YYYY-12 para reutilizar
+/// la misma idempotencia por miembro+concepto+periodo que ya usa la cartera
+/// mensual.
 ///
 /// La tasa de cambio la confirma quien ejecuta la generacion (igual que en
 /// ingresos/egresos en USD): no se consulta ninguna fuente automatica desde
@@ -47,6 +48,11 @@ public sealed class GenerarRenovacionAnualCommandHandler(
 
         foreach (var miembro in miembrosActivos)
         {
+            if (miembro.TipoAfiliacion.ExentoDeRenovacionAnual())
+            {
+                continue;
+            }
+
             // Idempotencia real: se consulta por miembro, concepto Y periodo,
             // igual que la generacion mensual. Volver a ejecutar el mismo
             // anio no duplica nada.

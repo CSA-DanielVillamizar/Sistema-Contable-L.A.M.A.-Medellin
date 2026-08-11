@@ -16,4 +16,5 @@ public sealed record CreateMiembroCommand(
     string ModeloMoto,
     int Cilindraje,
     string Placa,
-    RangoClub Rango) : IRequest<Guid>;
+    TipoAfiliacion TipoAfiliacion,
+    RangoClub? Rango) : IRequest<Guid>;

@@ -15,7 +15,13 @@ public sealed class Miembro : BaseEntity
     public string Apodo { get; private set; }
 
     public DateOnly? FechaIngreso { get; private set; }
-    public RangoClub Rango { get; private set; }
+
+    /// <summary>
+    /// Cargo directivo, si lo tiene. La mayoria de los miembros no ocupan
+    /// ningun cargo: queda nulo, no un valor por defecto que aparente ser un
+    /// cargo real.
+    /// </summary>
+    public RangoClub? Rango { get; private set; }
 
     /// <summary>
     /// Determina si paga cuota mensual y a que centro de costo se imputa
@@ -51,7 +57,7 @@ public sealed class Miembro : BaseEntity
         string? modeloMoto,
         int? cilindraje,
         string? placa,
-        RangoClub rango = RangoClub.Aspirante,
+        RangoClub? rango = null,
         TipoAfiliacion tipoAfiliacion = TipoAfiliacion.Prospect)
     {
         DocumentoIdentidad = string.IsNullOrWhiteSpace(documentoIdentidad)
@@ -83,16 +89,21 @@ public sealed class Miembro : BaseEntity
         Placa = string.IsNullOrWhiteSpace(placa) ? null : ValidarPlaca(placa, nameof(placa));
     }
 
-    public void PromoverRango(RangoClub nuevoRango)
+    /// <summary>
+    /// Asigna o quita el cargo directivo del miembro.
+    ///
+    /// Antes se llamaba PromoverRango y exigia que el nuevo valor fuera
+    /// "mayor" que el anterior: tenia sentido cuando RangoClub era una
+    /// progresion (Aspirante -&gt; Prospecto -&gt; MiembroActivo -&gt; Directivo).
+    /// Ahora que representa cargos reales de la directiva (Presidente,
+    /// Secretario, etc.) no hay un orden entre ellos, y null es un valor
+    /// valido (quitarle el cargo a quien ya no lo ocupa).
+    /// </summary>
+    public void AsignarRango(RangoClub? nuevoRango)
     {
         if (!EsActivo)
         {
-            throw new InvalidOperationException("No se puede promover un miembro inactivo.");
-        }
-
-        if ((int)nuevoRango < (int)Rango)
-        {
-            throw new InvalidOperationException("No se permite degradar rango con PromoverRango.");
+            throw new InvalidOperationException("No se puede asignar cargo a un miembro inactivo.");
         }
 
         Rango = nuevoRango;

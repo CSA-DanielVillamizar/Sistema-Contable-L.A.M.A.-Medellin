@@ -2,7 +2,14 @@
 
 import { useActualizarMiembro } from '@/features/miembros/hooks/useActualizarMiembro';
 import { useCrearMiembro } from '@/features/miembros/hooks/useCrearMiembro';
-import { gruposSanguineosOptions, mapGrupoSanguineoToValue, mapRangoClubToValue, rangosClubOptions } from '@/features/miembros/schemas/miembroSchema';
+import {
+    gruposSanguineosOptions,
+    mapGrupoSanguineoToValue,
+    mapRangoClubToValue,
+    mapTipoAfiliacionToValue,
+    rangosClubOptions,
+    tipoAfiliacionOptions,
+} from '@/features/miembros/schemas/miembroSchema';
 import type { ActualizarMiembroPayload, CrearMiembroPayload, Miembro } from '@/features/miembros/services/miembrosService';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
@@ -28,7 +35,8 @@ interface FormState {
     modeloMoto: string;
     cilindraje: number;
     placa: string;
-    rango: number;
+    tipoAfiliacion: number;
+    rango: number | null;
     esActivo: boolean;
 }
 
@@ -45,7 +53,8 @@ const defaultFormState: FormState = {
     modeloMoto: '',
     cilindraje: 150,
     placa: '',
-    rango: 1,
+    tipoAfiliacion: 3,
+    rango: null,
     esActivo: true,
 };
 
@@ -63,6 +72,7 @@ function toFormState(miembro: Miembro): FormState {
         modeloMoto: miembro.moto.modelo,
         cilindraje: miembro.moto.cilindraje,
         placa: miembro.moto.placa,
+        tipoAfiliacion: mapTipoAfiliacionToValue(miembro.tipoAfiliacion),
         rango: mapRangoClubToValue(miembro.rango),
         esActivo: miembro.esActivo,
     };
@@ -82,7 +92,12 @@ export default function MiembroUpsertModal({ mode, miembro, onClose }: MiembroUp
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target as HTMLInputElement;
-        const numFields = ['tipoSangre', 'cilindraje', 'rango'];
+        const numFields = ['tipoSangre', 'cilindraje', 'tipoAfiliacion'];
+
+        if (name === 'rango') {
+            setFormData((prev) => ({ ...prev, rango: value === '' ? null : parseInt(value, 10) }));
+            return;
+        }
 
         setFormData((prev) => ({
             ...prev,
@@ -113,6 +128,7 @@ export default function MiembroUpsertModal({ mode, miembro, onClose }: MiembroUp
                     modeloMoto: formData.modeloMoto.trim(),
                     cilindraje: formData.cilindraje,
                     placa: formData.placa.trim().toUpperCase(),
+                    tipoAfiliacion: formData.tipoAfiliacion,
                     rango: formData.rango,
                     esActivo: true,
                 };
@@ -128,6 +144,7 @@ export default function MiembroUpsertModal({ mode, miembro, onClose }: MiembroUp
                     modeloMoto: formData.modeloMoto.trim(),
                     cilindraje: formData.cilindraje,
                     placa: formData.placa.trim().toUpperCase(),
+                    tipoAfiliacion: formData.tipoAfiliacion,
                     rango: formData.rango,
                     esActivo: formData.esActivo,
                 };
@@ -230,13 +247,29 @@ export default function MiembroUpsertModal({ mode, miembro, onClose }: MiembroUp
                                 />
                             </div>
                             <div>
-                                <label className={labelClassName}>Rango</label>
+                                <label className={labelClassName}>Tipo de miembro</label>
                                 <select
-                                    name="rango"
-                                    value={formData.rango}
+                                    name="tipoAfiliacion"
+                                    value={formData.tipoAfiliacion}
                                     onChange={handleChange}
                                     className={inputClassName}
                                 >
+                                    {tipoAfiliacionOptions.map((opt) => (
+                                        <option key={opt.value} value={opt.value}>
+                                            {opt.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className={labelClassName}>Cargo (opcional)</label>
+                                <select
+                                    name="rango"
+                                    value={formData.rango ?? ''}
+                                    onChange={handleChange}
+                                    className={inputClassName}
+                                >
+                                    <option value="">Sin cargo</option>
                                     {rangosClubOptions.map((opt) => (
                                         <option key={opt.value} value={opt.value}>
                                             {opt.label}

@@ -36,10 +36,11 @@ public sealed class MiembroConfiguration : IEntityTypeConfiguration<Miembro>
         builder.Property(m => m.FechaIngreso)
             .HasColumnType("date");
 
+        // La mayoria de los miembros no tiene cargo directivo (ver
+        // Miembro.cs): nulo, no un valor por defecto que aparente ser un
+        // cargo real.
         builder.Property(m => m.Rango)
-            .HasConversion<int>()
-            .HasDefaultValue(RangoClub.Aspirante)
-            .IsRequired();
+            .HasConversion<int?>();
 
         builder.Property(m => m.TipoAfiliacion)
             .HasConversion<int>()

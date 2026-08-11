@@ -27,7 +27,7 @@ public static class TarifaCuotaSeeder
         var tarifas = Enum.GetValues<TipoAfiliacion>()
             .Select(tipo => new TarifaCuota(
                 tipo,
-                tipo == TipoAfiliacion.Esposa ? 0M : cuotaBase))
+                tipo.ExentoDeCuotaMensual() ? 0M : cuotaBase))
             .ToList();
 
         await context.Set<TarifaCuota>().AddRangeAsync(tarifas);
